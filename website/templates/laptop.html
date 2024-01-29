@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title %}pantek{% endblock %}
+
+{% block content %}
+  <h3 align="center">Fill this Form</h3>
+  <form method="POST" action="{{ url_for('auth.show_laptop_information') }}">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        name="name"
+        placeholder="Enter Name"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        placeholder="Enter Email Address"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="startDate">Choose start date:</label>
+      <input type="date"
+             class="from-control"
+             id="startDate"
+             name="startDate"
+             placeholder="Select start date" required>
+    </div>
+
+    <div class="form-group">
+      <label for="endDate">Choose end date:</label>
+      <input type="date"
+             class="from-control"
+             id="endDate"
+             name="endDate"
+             placeholder="Select end date" required>
+    </div>
+
+    <button type="button" onclick="showLaptopList()">Choose Laptops</button>
+
+    <div id="laptopList" style="display:none;">
+        <select id="availableLaptops" multiple>
+            {% for laptop in available_laptops %}
+                <option value="{{ laptop.id }}">{{ laptop.name_laptop }}</option>
+            {% endfor %}
+        </select>
+        <button type="button" onclick="selectLaptop()">Select</button>
+    </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+   <script>
+      // Initialize Flatpickr instances
+      flatpickr("#startDate", {
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        inline: false, // Calendar appears when input is clicked
+        clickOpens: true, // Calendar closes after selecting a date
+      });
+
+      flatpickr("#endDate", {
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        inline: false,
+        clickOpens: true,
+        onChange: function(selectedDates, dateStr, instance) {
+          // Close the calendar after selecting a date
+          instance.close();
+        },
+      });
+
+      function showLaptopList() {
+    document.getElementById('laptopList').style.display = 'block';
+  }
+
+  function selectLaptop() {
+    var selectElement = document.getElementById('availableLaptops');
+    var selectedOption = selectElement.options[selectElement.selectedIndex];
+    var selectedLaptopId = selectedOption.value;
+    var selectedLaptopName = selectedOption.text;
+
+    // Display the selected laptop in the form
+    var form = document.getElementById('selectedLaptopsForm');
+    var listItem = document.createElement('li');
+    listItem.textContent = selectedLaptopName;
+    form.appendChild(listItem);
+
+    // Remove the selected option from the dropdown
+    selectElement.remove(selectElement.selectedIndex);
+
+    // If no options left, hide the laptop list
+    if (selectElement.length === 0) {
+      document.getElementById('laptopList').style.display = 'none';
+    }
+
+    // Update the dropdown menu
+    updateDropdownMenu(selectedLaptopId);
+  }
+
+  function updateDropdownMenu(selectedLaptopId) {
+    var dropdownMenu = document.getElementById('availableLaptops');
+    var options = dropdownMenu.options;
+
+    // Remove the selected laptop from the dropdown menu
+    for (var i = 0; i < options.length; i++) {
+      if (options[i].value === selectedLaptopId) {
+        dropdownMenu.remove(i);
+        break;
+      }
+    }
+  }
+  </script>
+{% endblock %}

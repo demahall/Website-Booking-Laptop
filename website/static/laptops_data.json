@@ -1,0 +1,22 @@
+[
+  {
+    "name_laptop": "ZenBook Pro",
+    "hersteller": "ASUS"
+  },
+  {
+    "name_laptop": "MacBook Air",
+    "hersteller": "Apple"
+  },
+  {
+    "name_laptop": "ThinkPad X1 Carbon",
+    "hersteller": "Lenovo"
+  },
+  {
+    "name_laptop": "Surface Laptop 4",
+    "hersteller": "Microsoft"
+  },
+  {
+    "name_laptop": "Predator Helios 300",
+    "hersteller": "Acer"
+  }
+]

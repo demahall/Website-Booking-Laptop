@@ -1,18 +1,34 @@
 from . import db
-from flask_login import UserMixin
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
+
+# Association Table
+booking_laptop_association = db.Table(
+    'booking_laptop_association',
+    db.Column('booking_id', db.Integer, db.ForeignKey('booking.id')),
+    db.Column('laptop_id', db.Integer, db.ForeignKey('laptop.id'))
+)
 
 
-class Note(db.Model):
+class Booking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    data = db.Column(db.String(10000))
+    name = db.Column(db.String(150))
+    email = db.Column(db.String(150))
+    startDate = db.Column(db.DateTime(timezone=True))
+    endDate = db.Column(db.DateTime(timezone=True))
+    status = db.Column(db.String(20), default="Pending")
     date = db.Column(db.DateTime(timezone=True), default=func.now())
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    laptops = db.relationship('Laptop', secondary=booking_laptop_association, back_populates='bookings',lazy= 'dynamic')
 
 
-class User(db.Model, UserMixin):
+class Laptop(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(150), unique=True)
-    password = db.Column(db.String(150))
-    first_name = db.Column(db.String(150))
-    notes = db.relationship('Note')
+    name_laptop = db.Column(db.String(150))
+    hersteller = db.Column(db.String(150))
+
+    booking_id = db.Column(db.Integer,db.ForeignKey('booking.id'))
+    bookings = db.relationship('Booking', back_populates='laptops')
+
+
+

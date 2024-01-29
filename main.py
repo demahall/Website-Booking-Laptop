@@ -1,4 +1,4 @@
-from website import create_app
+from website import create_app,create_database
 
 app = create_app()
 

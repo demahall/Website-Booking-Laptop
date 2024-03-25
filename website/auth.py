@@ -1,60 +1,66 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
-from website.models import Booking,Laptop
-from datetime import datetime
-from website import db   ##means from __init__.py import db
-
+from flask import Blueprint, render_template, request, flash, redirect, url_for, session
+from werkzeug.security import check_password_hash, generate_password_hash
+from website.models import Booking, Laptop
+from website import db
 
 
 auth = Blueprint('auth', __name__)
 
-@auth.route('/laptop_information', methods=['GET'])
-def show_laptop_information():
-    available_laptops = Laptop.query.filter(Laptop.booking_id.is_(None)).all()
-    return render_template("laptop.html", available_laptops=available_laptops)
+# Hardcoded admin credentials (replace with a more secure solution)
+ADMIN_USERNAME = 'admin'
+ADMIN_PASSWORD_HASH = generate_password_hash('admin_password')
 
-@auth.route('/book_laptops', methods=['POST'])
-def book_laptops():
-    name = request.form.get('name')
-    email = request.form.get('email')
-    startDate = request.form.get('startDate')
-    endDate = request.form.get('endDate')
-    selected_laptops = request.form.getlist('selected_laptops')
+@auth.route('/admin_login', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
 
-    result = check_date(startDate, endDate)
+        if username == ADMIN_USERNAME and check_password_hash(ADMIN_PASSWORD_HASH, password):
+            session['admin_logged_in'] = True
+            flash('Admin login successful!', 'success')
+            return redirect(url_for('auth.admin_bookings'))
 
-    if result is not None:
-        start_date, end_date = result
+        flash('Invalid username or password', 'error')
 
-        new_booking = Booking(name=name, email=email, startDate=start_date, endDate=end_date)
+    return render_template('admin_login.html')
 
-        for laptop_id in selected_laptops:
-            laptop = Laptop.query.filter_by(id=laptop_id, booking_id=None).first()
-            if laptop:
-                new_booking.laptops.append(laptop)
-                laptop.booking = new_booking  # Mark the laptop as booked
+@auth.route('/admin_logout')
+def admin_logout():
+    session.pop('admin_logged_in', None)
+    flash('Admin logout successful!', 'success')
+    return redirect(url_for('views.book_laptops'))
 
-        db.session.add(new_booking)
-        db.session.commit()
-        flash('Booking successful!', 'success')
-    else:
-        flash('Invalid date format or start date must be earlier than end date', 'error')
+@auth.route('/admin_bookings',methods =['GET'])
+def admin_bookings():
+    if not session.get('admin_logged_in'):
+        flash('Unauthorized access. Please login as admin.', 'error')
+        return redirect(url_for('views.show_laptop_information'))
 
-    return redirect(url_for('auth.show_laptop_information'))
+    bookings = Booking.query.all()
+    return render_template('admin_bookings.html', bookings=bookings)
 
-def check_date(start_date, end_date):
-    try:
-        start_date = datetime.strptime(start_date, '%Y-%m-%d')
-        end_date = datetime.strptime(end_date, '%Y-%m-%d')
+@auth.route('/admin_bookings/<int:booking_id>', methods=['POST'])
+def update_booking_status(booking_id):
+    # Get the new status from the form data
+    new_status = request.form['status']
 
-        if start_date > end_date:
-            return start_date, end_date  # Valid dates
-        else:
-            return None  # Invalid dates
-    except ValueError:
-        return None  # Invalid date format
+    # Find the booking by its ID
+    booking = Booking.query.get(booking_id)
 
+    if not booking:
+        # Handle the case where the booking ID is not found
+        flash('Booking not found.', 'error')
+        return redirect(url_for('auth.admin_bookings'))
 
+    # Update the status of the booking
+    booking.status = new_status
 
+    if booking.status == 'returned':
+        for laptop in booking.laptops:
+            laptop.booking_id = None
 
+    db.session.commit()
 
-
+    # Redirect back to the admin bookings page
+    return redirect(url_for('auth.admin_bookings'))

@@ -2,8 +2,9 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 
+
 db = SQLAlchemy()
-DB_NAME = "test.db"
+DB_NAME = "database.db"
 
 
 def create_app():
@@ -13,7 +14,10 @@ def create_app():
     db.init_app(app)
 
     from .auth import auth
+    from .views import views
+
     app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(views,url_prefix='/')
 
     from .models import Laptop,Booking
     
@@ -21,13 +25,10 @@ def create_app():
         db.create_all()
         db.configure_mappers()
 
-    def load_laptop(id):
-        return Laptop.query.get(int(id))
-
     return app
-
 
 def create_database(app):
     if not path.exists('website/' + DB_NAME):
-        db.create_all(app=app)
+        db.create_all(app = app)
         print('Created Database!')
+

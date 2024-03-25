@@ -1,6 +1,8 @@
-from . import db
+from website import db
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
+from datetime import datetime
+from sqlalchemy import DateTime
 
 # Association Table
 booking_laptop_association = db.Table(
@@ -13,22 +15,34 @@ booking_laptop_association = db.Table(
 class Booking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
-    email = db.Column(db.String(150))
-    startDate = db.Column(db.DateTime(timezone=True))
-    endDate = db.Column(db.DateTime(timezone=True))
+    selected_dates = db.Column(db.String(150))
     status = db.Column(db.String(20), default="Pending")
     date = db.Column(db.DateTime(timezone=True), default=func.now())
 
-    laptops = db.relationship('Laptop', secondary=booking_laptop_association, back_populates='bookings',lazy= 'dynamic')
+    laptops = db.relationship('Laptop', secondary=booking_laptop_association, back_populates='bookings')
 
 
 class Laptop(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name_laptop = db.Column(db.String(150))
+    name = db.Column(db.String(150))
     hersteller = db.Column(db.String(150))
+    service_tag = db.Column(db.String(150))
+    user_password = db.Column(db.String(150))
+    dongle_id = db.Column(db.String(150))
+    vol_c_id = db.Column(db.String(150))
+    mac_addresse = db.Column(db.String(150))
+    puma_und_concerto_version = db.Column(db.String(150))
+    puma_und_concerto_lizenz_datum = db.Column(db.String(150))
+    lynx_version = db.Column(db.String(150))
+    lynx_lizenz_datum = db.Column(db.String(150))
+    cameo_version = db.Column(db.String(150))
+    cameo_lizenz_datum = db.Column(db.String(150))
+    creta_version = db.Column(db.String(150))
+    creta_lizenz_datum = db.Column(db.String(150))
+    gewaehrleistung = db.Column(db.String(150))
 
     booking_id = db.Column(db.Integer,db.ForeignKey('booking.id'))
-    bookings = db.relationship('Booking', back_populates='laptops')
+    bookings = db.relationship('Booking',secondary=booking_laptop_association, back_populates='laptops')
 
 
 

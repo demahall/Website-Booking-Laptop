@@ -14,13 +14,9 @@
       href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
       crossorigin="anonymous"
     />
-    <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
-    />
-    <script
-            src="https://cdn.jsdelivr.net/npm/flatpickr"
-    ></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
     <title>{% block title %}Home{% endblock %}</title>
   </head>
   <body>
@@ -32,10 +28,19 @@
         data-target="#navbar"
       >
         <span class="navbar-toggler-icon"></span>
+
       </button>
       <div class="collapse navbar-collapse" id="navbar">
         <div class="navbar-nav">
-          <a class="nav-item nav-link" id="laptop" href="/laptop_information">Laptop</a>
+          {% if not session.get('admin_logged_in') %}
+            <a class="nav-item nav-link" id="Booking From" href="/">Booking Form</a>
+            <a class="nav-item nav-link" id="Laptop Information" href="/laptop_information">Laptop Information</a>
+            <a class="nav-item nav-link" id="Admin" href="/admin_login">Admin</a>
+          {% else %}
+            <a class="nav-item nav-link" id="Add Laptop" href="/admin/add_laptop">Add Laptop</a>
+            <a class="nav-item nav-link" id="Update Specification" href="/admin/update_specification">Update Specification Page</a>
+            <a class="nav-item nav-link" id="Logout" href="/admin_logout">Logout</a>
+          {% endif %}
         </div>
       </div>
     </nav>
@@ -59,35 +64,5 @@
     {% endif %} {% endfor %} {% endif %} {% endwith %}
 
     <div class="container">{% block content %} {% endblock %}</div>
-    <script
-      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
-
-
-
-{% block javascript %}
-    <script type="text/javascript">
-      function deleteNote(noteId) {
-  fetch("/delete-note", {
-    method: "POST",
-    body: JSON.stringify({ noteId: noteId }),
-  }).then((_res) => {
-    window.location.href = "/";
-  });
-  }
-</script>
-{% endblock %}
   </body>
 </html>

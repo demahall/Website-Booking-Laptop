@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Admin Bookings{% endblock %}
+
+{% block content %}
+  <h3 align="center">Admin Bookings</h3>
+  {% if bookings %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Status</th>
+          <th>Calendar Week</th>
+          <th>Book Date</th>
+          <th>Laptops</th>
+          <th>Status</th> <!-- New column for dropdown menu -->
+        </tr>
+      </thead>
+      <tbody>
+        {% for booking in bookings %}
+          <tr>
+            <td>{{ booking.name }}</td>
+            <td>{{ booking.status }}</td>
+            <td>{{ booking.calendar_week }}</td>
+            <td>{{ booking.date.strftime('%d.%m.%Y') }}</td>
+            <td>
+              {% for laptop in booking.laptops %}
+                {{ laptop.name }}<br>
+              {% endfor %}
+            </td>
+            <td>
+              {% if booking.status == 'returned' %}
+                Returned
+              {% elif booking.status == 'booked' %}
+                <form method="POST" action="{{ url_for('auth.update_booking_status', booking_id=booking.id) }}">
+                  <select name="status">
+                    <option value="returned" selected>Returned</option>
+                  </select>
+                  <button type="submit">Update</button>
+                </form>
+              {% else %}
+                <form method="POST" action="{{ url_for('auth.update_booking_status', booking_id=booking.id) }}">
+                  <select name="status">
+                    <option value="booked" {% if booking.status == 'booked' %} selected {% endif %}>Booked</option>
+                    <option value="returned">Returned</option>
+                  </select>
+                  <button type="submit">Update</button>
+                </form>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No bookings available.</p>
+  {% endif %}
+{% endblock %}

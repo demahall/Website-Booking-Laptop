@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Laptop Information{% endblock %}
+
+{% block content %}
+  <h3 align="center">Laptop Information</h3>
+
+    <script>
+        // Function to toggle the visibility of the dropdown menu
+        window.onload = function() {
+            var criteriaButton = document.getElementById('criteriaButton');
+            var criteriaDropdown = document.getElementById('criteria');
+
+            criteriaButton.addEventListener('click', function() {
+                // Toggle the display style of the dropdown menu
+                if (criteriaDropdown.style.display === 'none') {
+                    criteriaDropdown.style.display = 'block';
+                } else {
+                    criteriaDropdown.style.display = 'none';
+                }
+            });
+
+            var filterForm = document.getElementById('filterForm');
+            filterForm.addEventListener('submit', function() {
+                // Hide the menu upon form submission
+                criteriaDropdown.style.display = 'none';
+            });
+        };
+    </script>
+
+    <form id="filterForm" method="POST" action="{{ url_for('views.show_laptop') }}">
+        <!-- Button to toggle the dropdown menu -->
+        <button type="button" id="criteriaButton">Select Criteria</button>
+        <!-- Dropdown menu -->
+        <select id="criteria" name="criteria" multiple style="display: none;">
+            <option value="hersteller">Hersteller</option>
+            <option value="mac_addresse">MAC Address</option>
+            <!-- Add more options for other criteria -->
+        </select>
+        <button type="submit">Apply Filter</button>
+    </form>
+
+    <hr>
+
+    <!-- Display filtered criteria for each laptop -->
+    <table class="table">
+        <thead>
+
+            <tr>
+                <th>Laptop</th>
+                {% if selected_criteria %}
+                    {% for criterion in selected_criteria %}
+                        <th>{{ criterion }}</th>
+                    {% endfor %}
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for laptop, criteria in filtered_laptops.items() %}
+            <tr>
+                <td>{{ laptop }}</td>
+                {% for criterion in criteria %}
+                    <td>{{criterion}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}

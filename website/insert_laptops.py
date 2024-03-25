@@ -2,11 +2,11 @@ import json
 from website import db,create_app
 from website.models import Laptop
 import os
-
+from flask import Flask
 
 curr_dir = os.getcwd()
 
-def insert_laptops_from_json(file_path=curr_dir+'/static/laptops_data.json'):
+def insert_laptops_from_json(file_path=curr_dir+'/static/laptop_information.json'):
 
     app = create_app()
     app.app_context().push()
@@ -20,4 +20,5 @@ def insert_laptops_from_json(file_path=curr_dir+'/static/laptops_data.json'):
     db.session.commit()
 
 # Call the function to insert laptops
-insert_laptops_from_json()
+if __name__ == "__main__":
+    insert_laptops_from_json()

@@ -1,0 +1,17 @@
+/* styles.css */
+
+#laptopListContainer {
+  display: flex;
+  flex-wrap: wrap; /* Wrap items to the next row when they exceed container width */
+  align-items: flex-start; /* Align items at the start of the container */
+}
+
+#laptopList {
+  /* Styles for the laptop list */
+  flex: 1; /* Take up remaining space */
+}
+
+#filterContainer {
+  /* Styles for the filter container */
+}
+

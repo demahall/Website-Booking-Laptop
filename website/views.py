@@ -3,14 +3,33 @@ from website.models import Booking,Laptop
 from website import db
 from sqlalchemy.orm import Session
 
-
-
 views = Blueprint('views',__name__)
 session = Session()
-@views.route('/', methods=['GET'])
+
+@views.route('/', methods=['GET','POST'])
 def show_laptop_information():
-    available_laptops = Laptop.query.filter(Laptop.booking_id.is_(None)).all()
-    return render_template("laptop.html", available_laptops=available_laptops)
+
+    if request.method == 'POST':
+        criteria = request.form.get('criteria')
+        query = request.form.get('query')
+
+        laptops = Laptop.query.filter(Laptop.booking_id.is_(None)).all()
+
+        if query and criteria:
+            if criteria == 'hersteller':
+                laptops = [laptop for laptop in laptops if query.lower() in laptop.hersteller.lower()]
+            elif criteria == 'mac_addresse':
+                laptops = [laptop for laptop in laptops if query.lower() in laptop.mac_addresse.lower()]
+
+            return render_template("laptop.html",available_laptops=laptops)
+        else:
+            return render_template("laptop.html",available_laptops=None)
+
+    else:
+        # Handle GET request
+        laptops = Laptop.query.filter(Laptop.booking_id.is_(None)).all()
+        return render_template("laptop.html", available_laptops=laptops)
+
 
 @views.route('/laptop_information', methods=['GET', 'POST'])
 def show_laptop():
@@ -59,20 +78,7 @@ def book_laptops():
     '''
 
     return redirect(url_for('views.show_laptop_information'))
-@views.route('/get_suggestions', methods=['POST'])
-def get_suggestions():
 
-    query = request.json['query']
-    criteria = request.json['criteria']
-    suggestions = []
-    available_laptops = Laptop.query.filter(Laptop.booking_id.is_(None)).all()
-
-    if criteria == 'hersteller':
-        suggestions = [laptop for laptop in available_laptops if query.lower() in laptop.hersteller.lower()]
-    elif criteria == 'mac_addresse':
-        suggestions = [laptop for laptop in available_laptops if query.lower() in laptop.mac_addresse.lower()]
-
-    return render_template("laptop.html", suggestions=suggestions)
 def filter_laptops(selected_criteria):
     # Initialize a dictionary to store the filtered criteria for each laptop
     filtered_laptops = {}

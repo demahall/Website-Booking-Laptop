@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}Modify Laptops{% endblock %}
+{% block content %}
+<div class="container">
+    <h3 class="text-center mt-4 mb-5">Modify Laptops</h3>
+    <div class="row justify-content-center" id="buttonContainer">
+        <!-- Loop through available laptops and generate clickable elements -->
+        {% for laptop in laptops %}
+        <div class="col-lg-3 mb-3">
+            <form action="{{ url_for('modify_laptop.update_laptop_info', laptop_id=laptop.id) }}" method="GET">
+                <button class="btn btn-dark btn-block laptop-btn">{{ laptop.name }}</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% if laptop %}
+    <div class="container mt-4">
+        <h3 align="center">Laptop Information</h3>
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <form action="{{ url_for('modify_laptop.update_laptop_info', laptop_id=laptop.id) }}" method="POST">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ laptop.name }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="hersteller">Hersteller:</label>
+                        <input type="text" class="form-control" id="hersteller" name="hersteller" value="{{ laptop.hersteller }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="service_tag">Service Tag:</label>
+                        <input type="text" class="form-control" id="service_tag" name="service_tag" value="{{ laptop.service_tag }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="dongle_id">Dongle_ID:</label>
+                        <input type="text" class="form-control" id="dongle_id" name="dongle_id" value="{{ laptop.dongle_id }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="user_password">User/Password:</label>
+                        <input type="text" class="form-control" id="user_password" name="user_password" value="{{ laptop.user_password }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="vol_c_id">Vol C ID:</label>
+                        <input type="text" class="form-control" id="vol_c_id" name="vol_c_id" value="{{ laptop.vol_c_id }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="mac_addresse">MAC Addresse:</label>
+                        <input type="text" class="form-control" id="mac_addresse" name="mac_addresse" value="{{ laptop.mac_addresse }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="puma_und_concerto_version">Puma and Concerto Version:</label>
+                        <input type="text" class="form-control" id="puma_und_concerto_version" name="puma_und_concerto_version" value="{{ laptop.puma_und_concerto_version }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="puma_und_concerto_lizenz_datum">PUMA und Concerto Lizenz Datum:</label>
+                        <input type="text" class="form-control" id="puma_und_concerto_lizenz_datum" name="puma_und_concerto_lizenz_datum" value="{{ laptop.puma_und_concerto_lizenz_datum }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="lynx_version">Lynx Version:</label>
+                        <input type="text" class="form-control" id="lynx_version" name="lynx_version" value="{{ laptop.lynx_version }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="lynx_lizenz_datum">Lynx Lizenz Datum:</label>
+                        <input type="text" class="form-control" id="lynx_lizenz_datum" name="lynx_lizenz_datum" value="{{ laptop.lynx_lizenz_datum }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="cameo_version">Cameo Version:</label>
+                        <input type="text" class="form-control" id="cameo_version" name="cameo_version" value="{{ laptop.cameo_version }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="cameo_lizenz_datum">Cameo Lizenz Datum:</label>
+                        <input type="text" class="form-control" id="cameo_lizenz_datum" name="cameo_lizenz_datum" value="{{ laptop.cameo_lizenz_datum }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="creta_version">Creta Version:</label>
+                        <input type="text" class="form-control" id="creta_version" name="creta_version" value="{{ laptop.creta_version }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="creta_lizenz_datum">Creta Lizenz Datum:</label>
+                        <input type="text" class="form-control" id="creta_lizenz_datum" name="creta_lizenz_datum" value="{{ laptop.creta_lizenz_datum }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="gewaehrleistung">Gewaehrleistung:</label>
+                        <input type="text" class="form-control" id="gewaehrleistung" name="gewaehrleistung" value="{{ laptop.gewaehrleistung }}" readonly>
+                    </div>
+                    <button type="button" id="editButton" class="btn btn-primary">Edit</button>
+                    <button type="submit" id="saveButton" class="btn btn-success d-none">Save</button>
+                </form>
+                <button type="submit" class="btn btn-danger mt-3" onclick="return confirm('Are you sure you want to delete this laptop?')">Delete Laptop</button>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+
+<script src="/static/laptop_edit.js"></script>
+{% endblock %}

@@ -16,6 +16,7 @@
     />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <title>{% block title %}Home{% endblock %}</title>
   </head>
@@ -37,8 +38,8 @@
             <a class="nav-item nav-link" id="Laptop Information" href="/laptop_information">Laptop Information</a>
             <a class="nav-item nav-link" id="Admin" href="/admin_login">Admin</a>
           {% else %}
-            <a class="nav-item nav-link" id="Add Laptop" href="/admin/add_laptop">Add Laptop</a>
-            <a class="nav-item nav-link" id="Update Specification" href="/admin/update_specification">Update Specification Page</a>
+            <a class="nav-item nav-link" id="Add Laptop" href="/admin_bookings/add_laptop">Add Laptop</a>
+            <a class="nav-item nav-link" id="Update Specification" href="/admin_bookings/modify_laptop">Update Specification Page</a>
             <a class="nav-item nav-link" id="Logout" href="/admin_logout">Logout</a>
           {% endif %}
         </div>

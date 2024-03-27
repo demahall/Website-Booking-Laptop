@@ -2,6 +2,7 @@
 {% block title %}Booking Form{% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="static/laptop_page_style.css">
 <h3 align="center">Fill this Form</h3>
 
 
@@ -25,55 +26,39 @@
     />
   </div>
 
-  <button type="button" onclick="showLaptopList()">Choose Laptops</button>
+  <button type="button" onclick="showAvailableLaptops()">Choose Laptops</button>
 
-  <div id="laptopList" style="display:none;">
+  <div id="laptopListContainer">
+    <div id="laptopList" style = 'display : none;'>
       <ul id="availableLaptops">
-          {% for laptop in available_laptops %}
-              <li>
-                  <input type="checkbox" id="laptop{{ laptop.id }}" name="selected_laptops" value="{{ laptop.id }}" class="laptop-checkbox">
-                  <label for="laptop{{ laptop.id }}">{{ laptop.name }}</label>
-              </li>
-          {% endfor %}
-      </ul>
-      <button type="button" onclick="selectLaptops()">Select</button>
-  </div>
-
-
-  <button type="button" onclick="showFilter()">Filter</button>
-
-  <div id="filterContainer" style="display:none;">
-    <h3>Filter Options</h3>
-    <select id="filterCriteria">
-      <option value="hersteller">Hersteller</option>
-      <option value="mac_addresse">MAC_Addresse</option>
-      <!-- Add other criteria options here -->
-    </select>
-    <input type="text" id="filterInput" placeholder="Enter filter query">
-    <button onclick="applyFilter()">Apply Filter</button>
-  </div>
-
-  <div id="filteredLaptopsContainer" style="display:none;">
-    <h3>Filtered Laptops</h3>
-    <form method="POST" action="{{ url_for('views.get_suggestions') }}">
-      <ul id="filteredLaptops">
-        {% for laptop in suggestions %}
-          <li>
-            <input type="checkbox" id="filteredLaptops{{ laptop.id }}" name="selected_laptops" value="{{ laptop.id }}" class="laptop-checkbox">
-            <label for="laptop{{ laptop.id }}">{{ laptop.name }}</label>
-          </li>
+        {% for laptop in available_laptops %}
+        <li>
+          <input type="checkbox" id="laptop{{ laptop.id }}" name="selected_laptops" value="{{ laptop.id }}" class="laptop-checkbox">
+          <label for="laptop{{ laptop.id }}">{{ laptop.name }}</label>
+        </li>
         {% endfor %}
       </ul>
-    <button type="button" onclick="selectLaptops()">Select</button>
-    </form>
+      <button type="button" onclick="selectLaptops()">Select</button>
+    </div>
+
+    <div id="filterContainer" >
+      <h3>Filter Options</h3>
+      <select id="filterCriteria">
+        <option value="name">Name</option>
+        <option value="hersteller">Hersteller</option>
+      <!-- Add other criteria options here -->
+      </select>
+      <input type="text" id="filterInput" placeholder="Enter filter query">
+      <button id="applyFilterButton" type="button" onclick="applyFilter()">Apply Filter</button>
+    </div>
   </div>
+
 
   <!-- Display selected laptops here -->
   <ul id="selectedLaptopsForm"></ul>
 
   <button type="submit" class="btn btn-primary">Submit</button>
 
-
-<script src="/static/script.js"></script>
-
+<script src="/static/filter_laptop.js"></script>
 {% endblock %}
+

@@ -44,5 +44,25 @@ class Laptop(db.Model):
     booking_id = db.Column(db.Integer,db.ForeignKey('booking.id'))
     bookings = db.relationship('Booking',secondary=booking_laptop_association, back_populates='laptops')
 
+    def serialize(self):
+        return {
+            'id' : self.id,
+            'name' : self.name,
+            'hersteller' : self.hersteller,
+            'service_tag' :self.service_tag,
+            'user_password' :self.user_password,
+            'dongle_id'  :self.dongle_id,
+            'vol_c_id' :self.vol_c_id,
+            'mac_addresse'  : self.mac_addresse,
+            'puma_und_concerto_version'  :self.puma_und_concerto_version,
+            'puma_und_concerto_lizenz_datum' :self.puma_und_concerto_lizenz_datum,
+            'lynx_version' :self.lynx_version,
+            'lynx_lizenz_datum' :self.lynx_lizenz_datum,
+            'cameo_version' :self.cameo_version,
+            'cameo_lizenz_datum' :self.cameo_lizenz_datum,
+            'creta_version' :self.creta_version,
+            'creta_lizenz_datum':self.creta_lizenz_datum,
+            'gewaehrleistung' :self.gewaehrleistung
+        }
 
 

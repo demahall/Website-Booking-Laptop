@@ -15,9 +15,14 @@ def create_app():
 
     from .auth import auth
     from .views import views
+    from .add_laptop import add_laptop_bp
+    from .modify_laptop import modify_laptop_bp
 
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(views,url_prefix='/')
+    app.register_blueprint(add_laptop_bp,url_prefix='/admin_bookings/')
+    app.register_blueprint(modify_laptop_bp, url_prefix='/admin_bookings/')
+
 
     from .models import Laptop,Booking
     

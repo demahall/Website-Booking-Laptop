@@ -45,11 +45,8 @@ def print_booking():
 
 def available_laptop():
     available_laptops = Laptop.query.filter(Laptop.booking_id.is_(None)).all()
-    print(type(available_laptops))
 
-    for available_laptop in available_laptops:
-        print(f"Laptop ID: {available_laptop.id}, Name: {available_laptop.name}")
-
+    print(f'{available_laptops}')
 def change_status(booking_id,new_status):
 
     booking = session.query(Booking,booking_id)

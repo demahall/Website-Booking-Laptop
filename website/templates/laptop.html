@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="static/laptop_page_style.css">
 <h3 align="center">Fill this Form</h3>
 
-
+<form id="bookingForm" method="POST" action="{{ url_for('views.book_laptops')}}">
   <div class="form-group">
     <label for="name">Name</label>
     <input
@@ -53,11 +53,10 @@
     </div>
   </div>
 
-
-  <!-- Display selected laptops here -->
+ <!-- Display selected laptops here -->
   <ul id="selectedLaptopsForm"></ul>
-
   <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 
 <script src="/static/filter_laptop.js"></script>
 {% endblock %}

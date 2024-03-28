@@ -1,7 +1,7 @@
 from website import create_app, db
 from website.models import Laptop,Booking
 from sqlalchemy.orm import Session
-from sqlalchemy import and_
+from sqlalchemy import or_
 
 app = create_app()
 
@@ -41,12 +41,17 @@ def print_booking():
     bookings= Booking.query.all()
 
     for booking in bookings:
-        print(f"ID: {booking.id}, Name: {booking.name}, Status: {booking.status}, Laptops: {booking.laptops}")
+        print(f"ID: {booking.id}, Name: {booking.name}, Status: {booking.status}, Laptops: {booking.laptops}, Booking Date: {booking.date}")
 
 def available_laptop():
     available_laptops = Laptop.query.filter(Laptop.booking_id.is_(None)).all()
+    available_booked_laptops = Laptop.query.join(Booking.laptops).filter(
+        or_(Booking.status == 'returned', Booking.status == 'pending')).all()
+    print(f'{available_booked_laptops}')
+    available_laptops.extend(available_booked_laptops)
 
     print(f'{available_laptops}')
+
 def change_status(booking_id,new_status):
 
     booking = session.query(Booking,booking_id)
@@ -121,6 +126,6 @@ if __name__ == "__main__":
     #reset_laptops()
     #change_status(1,'Returned')
     #delete_booking()
-    #print_booking()
+    print_booking()
     #filter_laptops(['hersteller','mac_addresse'])
 

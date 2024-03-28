@@ -2,34 +2,27 @@ from flask import Blueprint,jsonify ,render_template, request, flash, redirect, 
 from website.models import Booking,Laptop
 from website import db
 from sqlalchemy.orm import Session
+from sqlalchemy import or_
 
 views = Blueprint('views',__name__)
 session = Session()
 
-@views.route('/', methods=['GET','POST'])
-def show_laptop_information():
 
-    if request.method == 'POST':
-        criteria = request.form.get('criteria')
-        query = request.form.get('query')
+@views.route('/',methods=['GET'])
+def booking_form_page():
+    # Retrieve laptops that are not currently booked
+    laptops = Laptop.query.filter(Laptop.booking_id.is_(None)).all()
 
-        laptops = Laptop.query.filter(Laptop.booking_id.is_(None)).all()
+    # Retrieve laptops associated with bookings that have a status of 'returned' or 'pending'
+    booked_laptops = Laptop.query.join(Booking.laptops).filter(
+        or_(Booking.status == 'returned', Booking.status == 'pending')).all()
 
-        if query and criteria:
-            if criteria == 'hersteller':
-                laptops = [laptop for laptop in laptops if query.lower() in laptop.hersteller.lower()]
-            elif criteria == 'mac_addresse':
-                laptops = [laptop for laptop in laptops if query.lower() in laptop.mac_addresse.lower()]
+    flash(f'{booked_laptops}')
 
-            return render_template("laptop.html",available_laptops=laptops)
-        else:
-            return render_template("laptop.html",available_laptops=None)
+    # Combine the available laptops and the booked laptops
+    laptops = laptops + booked_laptops
 
-    else:
-        # Handle GET request
-        laptops = Laptop.query.filter(Laptop.booking_id.is_(None)).all()
-        return render_template("laptop.html", available_laptops=laptops)
-
+    return render_template("laptop.html", available_laptops=laptops)
 
 @views.route('/laptop_information', methods=['GET', 'POST'])
 def show_laptop():
@@ -48,36 +41,30 @@ def show_laptop():
 
     return render_template('laptop_details.html', filtered_laptops=filtered_laptops, selected_criteria=selected_criteria)
 
-
-
 @views.route('/', methods=['POST'])
 def book_laptops():
-
     name = request.form.get('name')
     selected_dates = request.form.get('dates')
     selected_laptops = request.form.getlist('selected_laptops')
 
-    '''if selected_laptops:
-        # Create a new booking instance
-        new_booking = Booking(name=name, selected_dates=selected_dates)
-        db.session.add(new_booking)
-        db.session.commit()
+    if not name or not selected_dates or not selected_laptops:
+        flash('Please fill in all required fields.', 'error')
+        return redirect(url_for('views.booking_form_page'))
 
-        for laptop_id in selected_laptops:
-            laptop = Laptop.query.get(laptop_id)
-            if laptop and not laptop.booking_id:
-                laptop.booking_id = new_booking.id
-                new_booking.laptops.append(laptop)
-                db.session.commit()
+    new_booking = Booking(name=name, selected_dates=selected_dates)
+    db.session.add(new_booking)
+    db.session.flush()
 
+    for laptop_id in selected_laptops:
+        laptop = Laptop.query.get(laptop_id)
+        if laptop and not laptop.booking_id:
+            laptop.booking_id = new_booking.id
+            new_booking.laptops.append(laptop)
 
-        flash('Booking successful!', 'success')
+    db.session.commit()
+    flash('Booking successful!', 'success')
 
-    else:
-        flash('Please select at least one laptop.', 'error')
-    '''
-
-    return redirect(url_for('views.show_laptop_information'))
+    return redirect(url_for('views.booking_form_page'))
 
 def filter_laptops(selected_criteria):
     # Initialize a dictionary to store the filtered criteria for each laptop

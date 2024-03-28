@@ -16,7 +16,7 @@ class Booking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
     selected_dates = db.Column(db.String(150))
-    status = db.Column(db.String(20), default="Pending")
+    status = db.Column(db.String(20), default="pending")
     date = db.Column(db.DateTime(timezone=True), default=func.now())
 
     laptops = db.relationship('Laptop', secondary=booking_laptop_association, back_populates='bookings')

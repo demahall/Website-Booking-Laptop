@@ -38,41 +38,6 @@ function showAvailableLaptops() {
 
 }
 
-function applyFilter() {
-    // Get the criteria and query from the input fields
-    var criteria = document.getElementById('filterCriteria').value;
-    var query = document.getElementById('filterInput').value;
-
-    // Send a POST request to the server with the criteria and query
-    fetch('/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: new URLSearchParams({
-            'criteria': criteria,
-            'query': query
-        })
-    })
-    .then(response => {
-        if (response.ok) {
-            // If response is successful, return the HTML content
-            return response.text();
-        } else {
-            // If response is not successful, throw an error
-            throw new Error('Network response was not ok.');
-        }
-    })
-    .then(data => {
-        // Update the laptop list container with the fetched HTML content
-        document.getElementById('laptopListContainer').innerHTML = data;
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        // Handle the error here, such as displaying a message to the user
-    });
-}
-document.getElementById('applyFilterButton').addEventListener('click', applyFilter);
 
 function selectLaptops() {
   var selectedLaptops = document.querySelectorAll('.laptop-checkbox:checked');
@@ -94,17 +59,6 @@ function selectLaptops() {
   laptopListContainer.style.display='none';
 }
 
-function validateAndSubmit() {
-    var name = document.getElementById('name').value.trim();
-    var dates = document.getElementById('dates').value.trim();
-
-
-    if (name === '' || dates === '') {
-        alert('Please fill in all required fields.');
-        return;
-        }
-
-      // If all validations pass, submit the form
-      document.getElementById('bookingForm').submit();
-    }
+document.getElementById("submitButton").addEventListener("click", function() {
+});
 

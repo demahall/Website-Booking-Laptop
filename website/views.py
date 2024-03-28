@@ -10,19 +10,53 @@ session = Session()
 
 @views.route('/',methods=['GET'])
 def booking_form_page():
-    # Retrieve laptops that are not currently booked
-    laptops = Laptop.query.filter(Laptop.booking_id.is_(None)).all()
-
-    # Retrieve laptops associated with bookings that have a status of 'returned' or 'pending'
-    booked_laptops = Laptop.query.join(Booking.laptops).filter(
-        or_(Booking.status == 'returned', Booking.status == 'pending')).all()
-
-    flash(f'{booked_laptops}')
-
-    # Combine the available laptops and the booked laptops
-    laptops = laptops + booked_laptops
-
+    laptops = available_laptops()
     return render_template("laptop.html", available_laptops=laptops)
+
+@views.route('/filter', methods=['GET', 'POST'])
+def show_laptop_information():
+    laptops = available_laptops()
+    filtered_laptops = []
+    if request.method == 'POST':
+        criteria = request.form.get('criteria')
+        query = request.form.get('query')
+        if query and criteria:
+            if criteria == 'hersteller':
+                filtered_laptops = [laptop.serialize() for laptop in laptops if query.lower() in laptop.hersteller.lower()]
+            elif criteria == 'dongle_id':
+                filtered_laptops = [laptop.serialize() for laptop in laptops if query.lower() in laptop.dongle_id.lower()]
+            elif criteria == 'mac_addresse':
+                filtered_laptops = [laptop.serialize() for laptop in laptops if query.lower() in laptop.mac_addresse.lower()]
+            elif criteria == 'lynx_version':
+                filtered_laptops = [laptop.serialize() for laptop in laptops if query.lower() in laptop.lynx_version.lower()]
+            elif criteria == 'puma_und_concerto_version':
+                filtered_laptops = [laptop.serialize() for laptop in laptops
+                                    if query.lower() in laptop.puma_und_concerto_version.lower()]
+            elif criteria == 'creta_version':
+                filtered_laptops = [laptop.serialize() for laptop in laptops if query.lower() in laptop.creta_version.lower()]
+            return jsonify(filtered_laptops)
+        else:
+            return jsonify([laptop.serialize() for laptop in laptops])
+    else:
+        # Handle GET request
+        flash('Method not allowed!')
+        return redirect(url_for('views.booking_form_page'))
+
+@views.route('/suggestions', methods=['POST'])
+def get_suggestions():
+    laptops = available_laptops()
+    criteria = request.form.get('criteria')
+    partial_query = request.form.get('partial_query')
+
+    if criteria in Laptop.__table__.columns:
+
+        columns = [getattr(laptop,criteria) for laptop in laptops]
+        suggestions = [suggestion for suggestion in columns if partial_query.lower() in suggestion.lower()]
+        suggestions = list(set(suggestions))
+        return jsonify(suggestions)
+    else:
+        return jsonify([])
+
 
 @views.route('/laptop_information', methods=['GET', 'POST'])
 def show_laptop():
@@ -31,7 +65,6 @@ def show_laptop():
     if request.method == 'POST':
         # Get the selected criteria from the form
         selected_criteria = request.form.getlist('criteria')
-
         filtered_laptops = filter_laptops(selected_criteria)
 
     else:
@@ -90,7 +123,17 @@ def filter_laptops(selected_criteria):
     return filtered_laptops
 
 
+def available_laptops():
+    # Retrieve laptops that are not currently booked
+    laptops = Laptop.query.filter(Laptop.booking_id.is_(None)).all()
 
+    # Retrieve laptops associated with bookings that have a status of 'returned' or 'pending'
+    booked_laptops = Laptop.query.join(Booking.laptops).filter(
+        or_(Booking.status == 'returned', Booking.status == 'pending')).all()
+
+    # Combine the available laptops and the booked laptops
+    laptops = laptops + booked_laptops
+    return laptops
 
 
 

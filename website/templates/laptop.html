@@ -26,7 +26,7 @@
     />
   </div>
 
-  <button type="button" onclick="showAvailableLaptops()">Choose Laptops</button>
+  <button id="choose_laptop_button" type="button" onclick="showAvailableLaptops()">Choose Laptops</button>
 
   <div id="laptopListContainer">
     <div id="laptopList" style = 'display : none;'>
@@ -38,26 +38,42 @@
         </li>
         {% endfor %}
       </ul>
-      <button type="button" onclick="selectLaptops()">Select</button>
+      <button id= "selectButton" type="button" onclick="selectLaptops()">Select</button>
     </div>
 
-    <div id="filterContainer" >
+    <div id="filterContainer" style = 'display : none'>
       <h3>Filter Options</h3>
       <select id="filterCriteria">
-        <option value="name">Name</option>
         <option value="hersteller">Hersteller</option>
+        <option value="dongle_id">Dongle ID</option>
+        <option value="mac_addresse">MAC Addresse</option>
+        <option value="puma_und_concerto_version">Puma Version</option>
+        <option value="lynx_version">Lynx Version</option>
+        <option value="creta_version">Creta Version</option>
       <!-- Add other criteria options here -->
       </select>
       <input type="text" id="filterInput" placeholder="Enter filter query">
+      <div id="suggestionsContainer" style="display: none;">
+        <ul id="suggestionsList"></ul>
+      </div>
       <button id="applyFilterButton" type="button" onclick="applyFilter()">Apply Filter</button>
     </div>
+  </div>
+
+  <!-- Display filtered laptops -->
+  <div id="filtered_laptop_list" style="display: none;">
+    <ul id="filtered_laptops">
+        <!-- List items for laptops will be dynamically added here -->
+    </ul>
+    <button type="button" onclick="selectLaptops()">Select</button>
   </div>
 
  <!-- Display selected laptops here -->
   <ul id="selectedLaptopsForm"></ul>
   <button type="submit" class="btn btn-primary">Submit</button>
-</form>
 
+</form>
 <script src="/static/filter_laptop.js"></script>
+
 {% endblock %}
 

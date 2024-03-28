@@ -47,10 +47,22 @@ def available_laptop():
     available_laptops = Laptop.query.filter(Laptop.booking_id.is_(None)).all()
     available_booked_laptops = Laptop.query.join(Booking.laptops).filter(
         or_(Booking.status == 'returned', Booking.status == 'pending')).all()
-    print(f'{available_booked_laptops}')
+
     available_laptops.extend(available_booked_laptops)
 
-    print(f'{available_laptops}')
+    return available_laptops
+
+def get_suggestions():
+    haha='hersteller'
+    partial_query = 'DELL'
+    laptops = available_laptop()
+    if haha in Laptop.__table__.columns:
+        columns = [getattr(laptop,haha) for laptop in laptops]
+        suggestions = [suggestion for suggestion in columns if partial_query.lower() in suggestion.lower()]
+        suggestions = list(set(suggestions))
+        print(suggestions)
+
+
 
 def change_status(booking_id,new_status):
 
@@ -120,12 +132,13 @@ def return_laptop(booking_id):
 
 if __name__ == "__main__":
 
-    available_laptop()
+    #available_laptop()
     #new_bookings(name='Danil Doe', calendar_week=2, laptop_ids=[1,2])
     #return_laptop(booking_id=5)
     #reset_laptops()
     #change_status(1,'Returned')
     #delete_booking()
-    print_booking()
+    #print_booking()
     #filter_laptops(['hersteller','mac_addresse'])
+    get_suggestions()
 

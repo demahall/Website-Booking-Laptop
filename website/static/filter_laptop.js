@@ -28,47 +28,12 @@ function showAvailableLaptops() {
 
 }
 
-function applyFilter() {
-    // Get the criteria and query from the input fields
-    var criteria = document.getElementById('filterCriteria').value;
-    var query = document.getElementById('filterInput').value;
-
-    // Send a POST request to the server with the criteria and query
-    fetch('/filter', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: new URLSearchParams({
-            'criteria': criteria,
-            'query': query
-        })
-    })
-    .then(response => {
-        if (response.ok) {
-            // If response is successful, return the HTML content
-            return response.json();
-        } else {
-            // If response is not successful, throw an error
-            throw new Error('Network response was not ok.');
-        }
-    })
-    .then(filteredLaptops  => {
-
-        renderLaptops(filteredLaptops);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        // Handle the error here, such as displaying a message to the user
-    });
-}
-
 function renderLaptops(filteredLaptops) {
     var filtered_laptop_list = document.getElementById('filtered_laptop_list');
     var filtered_laptops = document.getElementById('filtered_laptops');
 
     // Clear previous content
-    availableLaptops.innerHTML = '';
+    filtered_laptops.innerHTML = '';
 
     // Iterate over the filtered laptops and create list items
     filteredLaptops.forEach(function(laptop) {
@@ -88,7 +53,7 @@ function renderLaptops(filteredLaptops) {
         listItem.appendChild(checkbox);
         listItem.appendChild(label);
 
-        availableLaptops.appendChild(listItem);
+        filtered_laptops.appendChild(listItem);
     });
 
     // Show the laptop list
@@ -121,16 +86,20 @@ function fetchSuggestions(criteria, partialQuery) {
     });
 }
 
+var selectedSuggestion = '';
+
 function renderSuggestions(suggestions) {
     var suggestionsList = document.getElementById('suggestionsList');
     suggestionsList.innerHTML = ''; // Clear previous suggestions
 
     suggestions.forEach(function(suggestion) {
         var listItem = document.createElement('li');
-        listItem.textContent = suggestion;
+        listItem.innerHTML = suggestion.replace(/\n/g, '<br>'); // Display suggestion with newline breaks
+        listItem.dataset.suggestionValue = suggestion; // Store unaltered suggestion text as a custom data attribute
         listItem.addEventListener('click', function() {
             // Handle selection of suggestion
-            document.getElementById('filterInput').value = suggestion;
+            selectedSuggestion = this.dataset.suggestionValue; // Store unaltered suggestion text in the global variable
+            document.getElementById('filterInput').value = selectedSuggestion; // Set filter input value to the selected suggestion
             // Trigger filtering process
             applyFilter();
         });
@@ -139,6 +108,41 @@ function renderSuggestions(suggestions) {
 
     var suggestionsContainer = document.getElementById('suggestionsContainer');
     suggestionsContainer.style.display = 'block';
+}
+
+function applyFilter() {
+    // Get the criteria and query from the input fields
+    var criteria = document.getElementById('filterCriteria').value;
+    var query = selectedSuggestion;
+
+    // Send a POST request to the server with the criteria and query
+    fetch('/filter', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            'criteria': criteria,
+            'query': query
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            // If response is successful, return the HTML content
+            return response.json();
+        } else {
+            // If response is not successful, throw an error
+            throw new Error('Network response was not ok.');
+        }
+    })
+    .then(filteredLaptops  => {
+        console.log(filteredLaptops)
+        renderLaptops(filteredLaptops);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Handle the error here, such as displaying a message to the user
+    });
 }
 
 // Call getSuggestions whenever the input field value changes
@@ -167,7 +171,7 @@ function selectLaptops() {
 
   selectedLaptops.forEach(function (laptop) {
     var listItem = document.createElement('li');
-    listItem.textContent = laptop.nextElementSibling.textContent;
+    listItem.innerHTML = laptop.nextElementSibling.textContent;
     form.appendChild(listItem);
   });
 

@@ -1,0 +1,83 @@
+/* styles.css */
+
+#laptopListContainer {
+  display: flex;
+  flex-wrap: wrap; /* Wrap items to the next row when they exceed container width */
+  align-items: flex-start; /* Align items at the start of the container */
+}
+
+#laptopList {
+  /* Styles for the laptop list */
+  flex: 1; /* Take up remaining space */
+}
+
+#filterContainer {
+  /* Styles for the filter container */
+}
+
+#suggestionsContainer {
+    display: none;
+    position: absolute;
+    min-width: 200px; /* Set a minimum width */
+    max-width: 400px; /* Set a maximum width */
+    max-height: 200px; /* Limit maximum height to enable scrolling */
+    overflow-y: auto; /* Enable vertical scrolling if needed */
+    border: 1px solid #ccc; /* Add border for visual separation */
+    background-color: #fff; /* Set background color */
+    z-index: 999; /* Ensure suggestions appear above other content */
+}
+
+#suggestionsList {
+    list-style-type: none; /* Remove default list styles */
+    padding: 0;
+    margin: 0;
+}
+
+#suggestionsList li {
+    padding: 10px; /* Add padding for better readability */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transition: background-color 0.3s; /* Smooth transition for highlighting */
+}
+
+#suggestionsList li:hover {
+    background-color: #f0f0f0; /* Highlight suggestion on hover */
+}
+
+#filtered_laptop_list {
+  display: none;
+  position: absolute;
+  width: calc(100% - 20px); /* Adjust width as needed */
+  max-height: 200px; /* Limit maximum height to enable scrolling */
+  overflow-y: auto; /* Enable vertical scrolling if needed */
+  border: 1px solid #ccc; /* Add border for visual separation */
+  background-color: #fff; /* Set background color */
+  z-index: 999; /* Ensure filtered laptop list appears above other content */
+  margin: 10px; /* Add margin for better spacing */
+  padding: 0; /* Remove default padding */
+}
+
+#filteredLaptopList {
+  list-style-type: none; /* Remove default list styles */
+  padding: 0;
+  margin: 0;
+}
+
+#filteredLaptopList li {
+  padding: 10px; /* Add padding for better readability */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  transition: background-color 0.3s; /* Smooth transition for highlighting */
+  border-bottom: 1px solid #ccc; /* Add border between items */
+}
+
+#filteredLaptopList li:last-child {
+  border-bottom: none; /* Remove border from the last item */
+}
+
+#filteredLaptopList li:hover {
+  background-color: #f0f0f0; /* Highlight item on hover */
+}
+
+#filteredLaptopList li.selected {
+  background-color: #007bff; /* Change background color for selected items */
+  color: #fff; /* Change text color for selected items */
+}

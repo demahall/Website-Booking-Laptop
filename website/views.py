@@ -11,7 +11,7 @@ session = Session()
 @views.route('/',methods=['GET'])
 def booking_form_page():
     laptops = available_laptops()
-    return render_template("laptop.html", available_laptops=laptops)
+    return render_template("booking_form.html", available_laptops=laptops)
 
 @views.route('/filter', methods=['GET', 'POST'])
 def show_laptop_information():
@@ -34,6 +34,7 @@ def show_laptop_information():
                                     if query.lower() in laptop.puma_und_concerto_version.lower()]
             elif criteria == 'creta_version':
                 filtered_laptops = [laptop.serialize() for laptop in laptops if query.lower() in laptop.creta_version.lower()]
+
             return jsonify(filtered_laptops)
         else:
             return jsonify([laptop.serialize() for laptop in laptops])
@@ -49,7 +50,6 @@ def get_suggestions():
     partial_query = request.form.get('partial_query')
 
     if criteria in Laptop.__table__.columns:
-
         columns = [getattr(laptop,criteria) for laptop in laptops]
         suggestions = [suggestion for suggestion in columns if partial_query.lower() in suggestion.lower()]
         suggestions = list(set(suggestions))

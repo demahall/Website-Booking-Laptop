@@ -2,7 +2,7 @@
 {% block title %}Booking Form{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="static/laptop_page_style.css">
+<link rel="stylesheet" href="static/booking_form.css">
 <h3 align="center">Fill this Form</h3>
 
 <form id="bookingForm" method="POST" action="{{ url_for('views.book_laptops')}}">
@@ -62,10 +62,11 @@
 
   <!-- Display filtered laptops -->
   <div id="filtered_laptop_list" style="display: none;">
-    <ul id="filtered_laptops">
+    <div id="filteredLaptopList">
+      <ul id="filtered_laptops">
         <!-- List items for laptops will be dynamically added here -->
-    </ul>
-    <button type="button" onclick="selectLaptops()">Select</button>
+      </ul>
+    </div>
   </div>
 
  <!-- Display selected laptops here -->

@@ -22,23 +22,16 @@
     <input id="dates"
       name="dates"
       type="text"
-      placeholder="Select dates"
+      placeholder="Dates"
     />
   </div>
 
-  <button id="choose_laptop_button" type="button" onclick="showAvailableLaptops()">Choose Laptops</button>
+  <button id="choose_laptop_button" type="button" onclick="handleChooseLaptops()">Choose Laptops</button>
 
   <div id="laptopListContainer">
     <div id="laptopList" style = 'display : none;'>
       <ul id="availableLaptops">
-        {% for laptop in available_laptops %}
-        <li>
-          <input type="checkbox" id="laptop{{ laptop.id }}" name="selected_laptops" value="{{ laptop.id }}" class="laptop-checkbox">
-          <label for="laptop{{ laptop.id }}">{{ laptop.name }}</label>
-        </li>
-        {% endfor %}
       </ul>
-      <button id= "selectButton" type="button" onclick="selectLaptops()">Select</button>
     </div>
 
     <div id="filterContainer" style = 'display : none'>
@@ -58,16 +51,17 @@
       </div>
       <button id="applyFilterButton" type="button" onclick="applyFilter()">Apply Filter</button>
     </div>
+
+    <div id="filtered_laptop_list" style="display: none;">
+      <div id="filteredLaptopList">
+        <ul id="filtered_laptops">
+          <!-- List items for laptops will be dynamically added here -->
+        </ul>
+      </div>
+    </div>
+    <button id="selectButton" type="button" onclick="selectLaptops()" style="display: none;">Select</button>
   </div>
 
-  <!-- Display filtered laptops -->
-  <div id="filtered_laptop_list" style="display: none;">
-    <div id="filteredLaptopList">
-      <ul id="filtered_laptops">
-        <!-- List items for laptops will be dynamically added here -->
-      </ul>
-    </div>
-  </div>
 
  <!-- Display selected laptops here -->
   <ul id="selectedLaptopsForm"></ul>

@@ -13,6 +13,7 @@ def booking_form_page():
     laptops = available_laptops()
     return render_template("booking_form.html", available_laptops=laptops)
 
+
 @views.route('/filter', methods=['GET', 'POST'])
 def show_laptop_information():
     laptops = available_laptops()
@@ -40,8 +41,7 @@ def show_laptop_information():
             return jsonify([laptop.serialize() for laptop in laptops])
     else:
         # Handle GET request
-        flash('Method not allowed!')
-        return redirect(url_for('views.booking_form_page'))
+        return jsonify([laptop.serialize() for laptop in laptops])
 
 @views.route('/suggestions', methods=['POST'])
 def get_suggestions():

@@ -26,17 +26,10 @@
               {% endfor %}
             </td>
             <td>
-              {{ booking.status }}
               {% if booking.status == 'returned' %}
                 Returned
-              {% elif booking.status == 'booked' %}
-                <form method="POST" action="{{ url_for('auth.update_booking_status', booking_id=booking.id) }}">
-                  <select name="status">
-                    <option value="returned" selected>Returned</option>
-                  </select>
-                  <button type="submit">Update</button>
-                </form>
               {% else %}
+                {{ booking.status }}
                 <form method="POST" action="{{ url_for('auth.update_booking_status', booking_id=booking.id) }}">
                   <select name="status">
                     <option value="booked" {% if booking.status == 'booked' %} selected {% endif %}>Booked</option>

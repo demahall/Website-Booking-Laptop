@@ -22,6 +22,8 @@ def show_laptop_information():
         criteria = request.form.get('criteria')
         query = request.form.get('query')
         if query and criteria:
+            if criteria == 'name':
+                filtered_laptops = [laptop.serialize() for laptop in laptops if query.lower() in laptop.name.lower()]
             if criteria == 'hersteller':
                 filtered_laptops = [laptop.serialize() for laptop in laptops if query.lower() in laptop.hersteller.lower()]
             elif criteria == 'dongle_id':
@@ -73,6 +75,23 @@ def show_laptop():
 
 
     return render_template('laptop_details.html', filtered_laptops=filtered_laptops, selected_criteria=selected_criteria)
+
+
+@views.route('/laptop_information/<int:laptop_id>')
+def hover_information(laptop_id):
+    laptop = Laptop.query.get_or_404(laptop_id)
+
+    # Check if the laptop is booked and get booking information
+    booking = laptop.booking
+    borrower_name = ""
+    borrowing_duration = ""
+    if booking:
+        borrower_name = booking.name
+        borrowing_duration = f"{booking.selected_dates}"
+
+    return render_template('laptop_details.html', laptop=laptop, borrower_name=borrower_name,
+                           borrowing_duration=borrowing_duration)
+
 
 @views.route('/', methods=['POST'])
 def book_laptops():
@@ -133,6 +152,9 @@ def available_laptops():
 
     # Combine the available laptops and the booked laptops
     laptops = laptops + booked_laptops
+
+    laptops.sort(key=lambda laptop: laptop.name, reverse=False)
+
     return laptops
 
 

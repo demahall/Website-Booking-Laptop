@@ -56,11 +56,20 @@ def update_booking_status(booking_id):
     # Update the status of the booking
     booking.status = new_status
 
-    if booking.status == 'returned':
-        for laptop in booking.laptops:
-            laptop.booking_id = None
-
     db.session.commit()
 
     # Redirect back to the admin bookings page
+    return redirect(url_for('auth.admin_bookings'))
+
+@auth.route('/delete_booking/<int:booking_id>', methods=['POST'])
+def delete_booking(booking_id):
+    # Retrieve the booking object
+    booking = Booking.query.get_or_404(booking_id)
+
+    # Delete the booking
+    db.session.delete(booking)
+    db.session.commit()
+
+    flash('Booking deleted successfully', 'success')
+
     return redirect(url_for('auth.admin_bookings'))

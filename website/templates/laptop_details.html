@@ -5,6 +5,14 @@
   <h3 align="center">Laptop Information</h3>
 
     <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltips = document.querySelectorAll('[data-toggle="tooltip"]');
+            tooltips.forEach(function(tooltip) {
+                new bootstrap.Tooltip(tooltip);
+            });
+        });
+
         // Function to toggle the visibility of the dropdown menu
         window.onload = function() {
             var criteriaButton = document.getElementById('criteriaButton');
@@ -33,9 +41,12 @@
         <!-- Dropdown menu -->
         <select id="criteria" name="criteria" multiple style="display: none;">
             <option value="hersteller">Hersteller</option>
-            <option value="mac_addresse">MAC Address</option>
+            <option value="dongle_id">Dongle ID</option>
+            <option value="mac_addresse">MAC Addresse</option>
             <option value="puma_und_concerto_version">Puma Version</option>
-            <!-- Add more options for other criteria -->
+            <option value="lynx_version">Lynx Version</option>
+            <option value="creta_version">Creta Version</option>
+                <!-- Add more options for other criteria -->
         </select>
         <button type="submit">Apply Filter</button>
     </form>
@@ -45,12 +56,11 @@
     <!-- Display filtered criteria for each laptop -->
     <table class="table">
         <thead>
-
             <tr>
                 <th>Laptop</th>
                 {% if selected_criteria %}
                     {% for criterion in selected_criteria %}
-                        <th>{{ criterion }}</th>
+                        <th>{{ criterion.capitalize() }}</th>
                     {% endfor %}
                 {% endif %}
             </tr>
@@ -58,7 +68,9 @@
         <tbody>
             {% for laptop, criteria in filtered_laptops.items() %}
             <tr>
-                <td>{{ laptop }}</td>
+                <td>{{ laptop }}
+                    <span data-toggle="tooltip" title="Borrower: {{ borrower_name }}, Duration: {{ borrowing_duration }}">{{ laptop.name }}</span>
+                </td>
                 {% for criterion in criteria %}
                     <td>{{criterion}}</td>
                 {% endfor %}

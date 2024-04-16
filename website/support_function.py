@@ -19,14 +19,6 @@ def insert_laptops_from_json(file_path=curr_dir+'/static/laptop_information.json
 
     db.session.commit()
 
-def run_migrations(message):
-    app = create_app()
-    with app.app_context():
-        os.system(f'flask db migrate -m "{message}"')
-        os.system('flask db upgrade')
-
-
 # Call the function to insert laptops
 if __name__ == "__main__":
-    #insert_laptops_from_json()
-    run_migrations("Add comment column to Booking table")
+    insert_laptops_from_json()

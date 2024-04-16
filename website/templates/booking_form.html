@@ -2,79 +2,68 @@
 {% block title %}Booking Form{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="static/booking_form.css" xmlns="http://www.w3.org/1999/html">
-<h3 align="center">Fill this Form</h3>
+<link rel="stylesheet" href="static/booking_form.css">
+<div class="container">
+  <h2 class="text-center mb-5">Booking Form</h2>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <form id="bookingForm" method="POST" action="{{ url_for('views.book_laptops')}}">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name">
+        </div>
 
-<form id="bookingForm" method="POST" action="{{ url_for('views.book_laptops')}}">
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input
-      type="text"
-      class="form-control"
-      id="name"
-      name="name"
-      placeholder="Enter Name"
-    />
-  </div>
+        <div class="form-group">
+          <label for="dates">Select dates:</label>
+          <input id="dates" name="dates" type="text" placeholder="Dates">
+        </div>
 
-  <div class="form-group">
-    <label for="dates">Select dates:</label>
-    <input id="dates"
-      name="dates"
-      type="text"
-      placeholder="Dates"
-    />
-  </div>
+        <div class="form-group text-center">
+          <button id="choose_laptop_button" type="button" class="btn btn-primary" onclick="handleChooseLaptops()">Choose Laptops</button>
+        </div>
 
-  <button id="choose_laptop_button" type="button" onclick="handleChooseLaptops()">Choose Laptops</button>
+        <div id="laptopListContainer" style="display: none;">
+          <div id="laptopList">
+            <ul id="availableLaptops"></ul>
+          </div>
 
-  <div id="laptopListContainer">
-    <div id="laptopList" style = 'display : none;'>
-      <ul id="availableLaptops">
-      </ul>
+            <div id="filterContainer" style="display: none; width: 50%; margin-bottom: 20px;">
+            <h4>Filter Options</h4>
+             <select id="filterCriteria" class="form-control" style="margin-bottom: 10px;">
+              <option value="name">Name</option>
+              <option value="hersteller">Hersteller</option>
+              <option value="dongle_id">Dongle ID</option>
+              <option value="mac_addresse">MAC Addresse</option>
+              <option value="puma_und_concerto_version">Puma Version</option>
+              <option value="lynx_version">Lynx Version</option>
+              <option value="creta_version">Creta Version</option>
+            </select>
+            <input type="text" id="filterInput" class="form-control" placeholder="Enter filter query">
+            <div id="suggestionsContainer" style="display: none;">
+              <ul id="suggestionsList"></ul>
+            </div>
+            <button id="applyFilterButton" type="button" class="btn btn-primary mt-2" onclick="applyFilter()">Apply Filter</button>
+          </div>
+
+          <div id="filteredLaptopList" style="display: none;">
+            <ul id="filtered_laptops"></ul>
+          </div>
+
+          <button id="selectButton" type="button" class="btn btn-primary" onclick="selectLaptops()" style="display: none;">Select</button>
+        </div>
+
+        <div class="form-group">
+          <label for="comment">Comment:</label>
+          <textarea id="comment" name="comment" rows="4" class="form-control"></textarea>
+        </div>
+
+        <ul id="selectedLaptopsForm"></ul>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+      </form>
     </div>
-
-    <div id="filterContainer" style = 'display : none'>
-      <h3>Filter Options</h3>
-      <select id="filterCriteria">
-        <option value="name">Name</option>
-        <option value="hersteller">Hersteller</option>
-        <option value="dongle_id">Dongle ID</option>
-        <option value="mac_addresse">MAC Addresse</option>
-        <option value="puma_und_concerto_version">Puma Version</option>
-        <option value="lynx_version">Lynx Version</option>
-        <option value="creta_version">Creta Version</option>
-      <!-- Add other criteria options here -->
-      </select>
-      <input type="text" id="filterInput" placeholder="Enter filter query">
-      <div id="suggestionsContainer" style="display: none;">
-        <ul id="suggestionsList"></ul>
-      </div>
-      <button id="applyFilterButton" type="button" onclick="applyFilter()">Apply Filter</button>
-    </div>
-
-
-    <div id="filteredLaptopList" style="display: none;">
-      <ul id="filtered_laptops">
-        <!-- List items for laptops will be dynamically added here -->
-      </ul>
-    </div>
-
-    <button id="selectButton" type="button" onclick="selectLaptops()" style="display: none;">Select</button>
   </div>
-
-  <div class="comment">
-    <label for="comment">Comment:</label>
-    <textarea id="comment" name="comment" rows="4" cols="50"></textarea><br><br>
-  </div>
-
-
- <!-- Display selected laptops here -->
-  <ul id="selectedLaptopsForm"></ul>
-  <button type="submit" class="btn btn-primary">Submit</button>
-
-</form>
+</div>
 <script src="/static/filter_laptop.js"></script>
-
 {% endblock %}
-

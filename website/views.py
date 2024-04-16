@@ -1,15 +1,18 @@
-from flask import Blueprint,jsonify ,render_template, request, flash, redirect, url_for
+from flask import Blueprint,jsonify ,render_template, request, flash, redirect, url_for, session as flask_session
 from website.models import Booking,Laptop
 from website import db
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session as SQLAlchemySession
 from sqlalchemy import or_
 
 views = Blueprint('views',__name__)
-session = Session()
+session = SQLAlchemySession()
 
 
 @views.route('/',methods=['GET'])
 def booking_form_page():
+    if flask_session.get('admin_logged_in'):
+        return redirect(url_for('auth.admin_bookings'))
+
     laptops = available_laptops()
     return render_template("booking_form.html", available_laptops=laptops)
 
@@ -71,7 +74,7 @@ def show_laptop():
 
     else:
         # If no criteria selected, display all laptops
-        filtered_laptops = {laptop.name: {} for laptop in Laptop.query.all()}
+        filtered_laptops = {(laptop.name,laptop.id): {} for laptop in Laptop.query.all()}
 
 
     return render_template('laptop_details.html', filtered_laptops=filtered_laptops, selected_criteria=selected_criteria)
@@ -82,15 +85,26 @@ def hover_information(laptop_id):
     laptop = Laptop.query.get_or_404(laptop_id)
 
     # Check if the laptop is booked and get booking information
-    booking = laptop.booking
+    booking = laptop.bookings
     borrower_name = ""
     borrowing_duration = ""
     if booking:
-        borrower_name = booking.name
-        borrowing_duration = f"{booking.selected_dates}"
+        # Iterate over each booking associated with the laptop
+        for b in booking:
+            # Check if the booking status is "booked"
+            if b.status == "booked":
+                # Get the borrower name and duration for the booked laptop
+                borrower_name = b.name
+                borrowing_duration = b.selected_dates
+                # Break the loop if a booked booking is found
+                break
 
-    return render_template('laptop_details.html', laptop=laptop, borrower_name=borrower_name,
-                           borrowing_duration=borrowing_duration)
+    # Return the booking information as JSON
+    return jsonify({
+        "borrower_name": borrower_name,
+        "borrowing_duration": borrowing_duration
+    })
+
 
 
 @views.route('/', methods=['POST'])
@@ -98,7 +112,7 @@ def book_laptops():
     name = request.form.get('name')
     selected_dates = request.form.get('dates')
     selected_laptops = request.form.getlist('selected_laptops')
-    comment = request.form('comment')
+    comment = request.form.get('comment')
 
     if not name or not selected_dates or not selected_laptops:
         flash('Please fill in all required fields.', 'error')
@@ -138,7 +152,7 @@ def filter_laptops(selected_criteria):
                 laptop_criteria.append(f"{criterion_value}")
 
         # Store the filtered criteria for the current laptop
-        filtered_laptops[laptop.name] = laptop_criteria
+        filtered_laptops[(laptop.name,laptop.id)] = laptop_criteria
 
     return filtered_laptops
 

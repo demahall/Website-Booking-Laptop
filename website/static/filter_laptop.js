@@ -224,7 +224,6 @@ function selectLaptops() {
   var selectedLaptops = document.querySelectorAll('.laptop-checkbox:checked');
     // Debugging: Display selected laptops
     var selectedLaptopIds = Array.from(selectedLaptops).map(laptop => laptop.value);
-    alert("Selected Laptops: " + selectedLaptopIds); // or console.log
 
   // Display the selected laptops in the form
   var form = document.getElementById('selectedLaptopsForm');

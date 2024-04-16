@@ -4,6 +4,7 @@ from website.models import Booking, Laptop
 from website import db
 
 
+
 auth = Blueprint('auth', __name__)
 
 # Hardcoded admin credentials (replace with a more secure solution)
@@ -33,9 +34,11 @@ def admin_logout():
 
 @auth.route('/admin_bookings',methods =['GET'])
 def admin_bookings():
+
     if not session.get('admin_logged_in'):
         flash('Unauthorized access. Please login as admin.', 'error')
         return redirect(url_for('views.show_laptop_information'))
+
 
     bookings = Booking.query.all()
     return render_template('admin_bookings.html', bookings=bookings)

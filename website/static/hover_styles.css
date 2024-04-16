@@ -4,12 +4,18 @@
     color: #000000; /* Black text color */
     font-size: 14px; /* Font size */
     border: 1px solid #000000; /* Black border */
-}
-
-.tooltip-arrow {
-    border-top-color: #000000 !important; /* Black arrow color */
-}
-
-.tooltip-inner {
+    position: absolute; /* Position tooltip absolutely */
+    z-index: 9999; /* Ensure tooltip appears on top */
     padding: 8px 12px; /* Inner padding */
+}
+
+.tooltip::before {
+    content: ''; /* Create arrow */
+    position: absolute; /* Position arrow absolutely */
+    border-style: solid; /* Define arrow shape */
+    border-width: 6px 6px 0 6px; /* Adjust arrow size */
+    border-color: #000000 transparent transparent transparent; /* Set arrow color */
+    bottom: -6px; /* Position arrow at bottom */
+    left: 50%; /* Center arrow horizontally */
+    transform: translateX(-50%); /* Adjust position */
 }

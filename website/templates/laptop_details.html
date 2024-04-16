@@ -22,7 +22,7 @@
                         // Construct tooltip content
                         var tooltipContent = '';
                         if (data.borrower_name && data.borrowing_duration) {
-                            tooltipContent = `Gebucht von : ${data.borrower_name}, Zeitraum: ${data.borrowing_duration}`;
+                            tooltipContent = `Gebucht von : ${data.borrower_name}, Zeitraum: von ${data.borrowing_duration}`;
                         } else {
                             tooltipContent = 'Noch nicht gebucht';
                         }

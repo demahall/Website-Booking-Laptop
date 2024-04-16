@@ -2,7 +2,7 @@ import json
 from website import db,create_app
 from website.models import Laptop
 import os
-from flask import Flask
+
 
 curr_dir = os.getcwd()
 
@@ -19,6 +19,14 @@ def insert_laptops_from_json(file_path=curr_dir+'/static/laptop_information.json
 
     db.session.commit()
 
+def run_migrations(message):
+    app = create_app()
+    with app.app_context():
+        os.system(f'flask db migrate -m "{message}"')
+        os.system('flask db upgrade')
+
+
 # Call the function to insert laptops
 if __name__ == "__main__":
-    insert_laptops_from_json()
+    #insert_laptops_from_json()
+    run_migrations("Add comment column to Booking table")

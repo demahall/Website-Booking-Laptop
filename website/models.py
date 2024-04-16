@@ -1,8 +1,6 @@
 from website import db
 from sqlalchemy.sql import func
-from sqlalchemy.orm import relationship
-from datetime import datetime
-from sqlalchemy import DateTime
+
 
 # Association Table
 booking_laptop_association = db.Table(
@@ -18,6 +16,7 @@ class Booking(db.Model):
     selected_dates = db.Column(db.String(150))
     status = db.Column(db.String(20), default="pending")
     date = db.Column(db.DateTime(timezone=True), default=func.now())
+    comment = db.Column(db.Text)
 
     laptops = db.relationship('Laptop', secondary=booking_laptop_association, back_populates='bookings')
 

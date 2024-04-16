@@ -2,7 +2,7 @@ var laptopListContainer = document.getElementById('laptopListContainer');
 var laptopList = document.getElementById('laptopList');
 var filterContainer = document.getElementById('filterContainer');
 var selectButton = document.getElementById('selectButton');
-var filteredLaptopList = document.getElementById('filtered_laptop_list');
+var filteredLaptopList = document.getElementById('filteredLaptopList');
 var availableLaptops = document.getElementById('availableLaptops');
 var filtered_laptops = document.getElementById('filtered_laptops');
 var suggestionsList = document.getElementById('suggestionsList')
@@ -118,7 +118,7 @@ function renderLaptops(filteredLaptops) {
     // Hidden the list of available laptops
     document.getElementById('laptopList').style.display = 'none';
     // Show the laptop list
-    filtered_laptop_list.style.display = 'block';
+    filteredLaptopList.style.display = 'block';
     selectButton.style.top = filteredLaptopList.getBoundingClientRect().bottom + 'px';
 }
 

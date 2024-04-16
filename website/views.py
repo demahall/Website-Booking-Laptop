@@ -98,12 +98,13 @@ def book_laptops():
     name = request.form.get('name')
     selected_dates = request.form.get('dates')
     selected_laptops = request.form.getlist('selected_laptops')
+    comment = request.form('comment')
 
     if not name or not selected_dates or not selected_laptops:
         flash('Please fill in all required fields.', 'error')
         return redirect(url_for('views.booking_form_page'))
 
-    new_booking = Booking(name=name, selected_dates=selected_dates)
+    new_booking = Booking(name=name, selected_dates=selected_dates,comment=comment)
     db.session.add(new_booking)
     db.session.flush()
 

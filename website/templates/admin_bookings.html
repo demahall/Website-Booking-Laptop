@@ -12,6 +12,7 @@
           <th>Book Date</th>
           <th>Laptops</th>
           <th>Status</th>
+          <th>Comment</th>
           <th>Action</th> <!-- New column for dropdown menu -->
         </tr>
       </thead>
@@ -40,6 +41,7 @@
                 </form>
               {% endif %}
             </td>
+            <td> {{booking.comment}}</td>
             <td>
               <form method="POST" action="{{ url_for('auth.delete_booking', booking_id=booking.id) }}">
                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>

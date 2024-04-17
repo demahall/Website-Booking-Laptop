@@ -1,0 +1,15 @@
+
+.footer {
+    background-color: #ffffff;
+    color: #000000;
+    text-align: left;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin: 20px;
+}
+
+.footer div {
+    margin-bottom: 10px; /* Adjust spacing between rows as needed */
+}

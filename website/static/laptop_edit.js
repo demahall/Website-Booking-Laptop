@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     const editButton = document.getElementById('editButton');
     const saveButton = document.getElementById('saveButton');
+    const deleteButton = document.getElementById('deleteButton');
+    const confirmDeleteInput = document.getElementById('confirmDeleteInput');
 
     const name_input = document.getElementById('name');
     const hersteller_input = document.getElementById('hersteller');

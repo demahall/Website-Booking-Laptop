@@ -7,6 +7,7 @@ modify_laptop_bp = Blueprint('modify_laptop', __name__)
 @modify_laptop_bp.route('/modify_laptop',methods = ['GET'])
 def modify_laptop_page():
     laptops = Laptop.query.all()
+    laptops.sort(key=lambda  laptop:laptop.name, reverse=False)
     return render_template('laptop_edit.html',laptops=laptops)
 
 @modify_laptop_bp.route('/update_laptop_info/<int:laptop_id>', methods=['GET','POST'])
@@ -53,12 +54,20 @@ def update_laptop_info(laptop_id):
         return redirect(url_for('modify_laptop.update_laptop_info', laptop_id=laptop_id))
     return render_template('laptop_edit.html', laptop=laptop)
 
-@modify_laptop_bp.route('/delete_laptop/<int:laptop_id>',methods=['POST'])
+@modify_laptop_bp.route('/delete_laptop/<int:laptop_id>', methods=['POST'])
 def delete_laptop(laptop_id):
     laptop = Laptop.query.get_or_404(laptop_id)
-    db.session.delete(laptop)
-    db.session.commit()
-    flash(f'{laptop.name} has been deleted','success')
+
+    # Check if the user confirmed the deletion
+    confirm_delete = request.form.get('confirm_delete')
+    flash(confirm_delete)
+    if confirm_delete == 'yes':
+        db.session.delete(laptop)
+        db.session.commit()
+        flash(f'{laptop.name} has been deleted', 'success')
+    else:
+        flash('Deletion cancelled', 'info')
+
     return redirect(url_for('modify_laptop.modify_laptop_page'))
 
 

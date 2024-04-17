@@ -65,17 +65,17 @@ def get_suggestions():
 
 @views.route('/laptop_information', methods=['GET', 'POST'])
 def show_laptop():
-
+    laptops = Laptop.query.all()
+    laptops.sort(key=lambda laptop: laptop.name, reverse=False)
     selected_criteria = []
+
     if request.method == 'POST':
         # Get the selected criteria from the form
         selected_criteria = request.form.getlist('criteria')
-        filtered_laptops = filter_laptops(selected_criteria)
-
+        filtered_laptops = filter_laptops(selected_criteria,laptops)
     else:
         # If no criteria selected, display all laptops
-        filtered_laptops = {(laptop.name,laptop.id): {} for laptop in Laptop.query.all()}
-
+        filtered_laptops = {(laptop.name,laptop.id): {} for laptop in laptops}
 
     return render_template('laptop_details.html', filtered_laptops=filtered_laptops, selected_criteria=selected_criteria)
 
@@ -133,12 +133,12 @@ def book_laptops():
 
     return redirect(url_for('views.booking_form_page'))
 
-def filter_laptops(selected_criteria):
+def filter_laptops(selected_criteria,laptops):
     # Initialize a dictionary to store the filtered criteria for each laptop
     filtered_laptops = {}
 
     # Iterate over each laptop in the database
-    for laptop in Laptop.query.all():
+    for laptop in laptops:
         # Initialize a list to store the filtered criteria for the current laptop
         laptop_criteria = []
 

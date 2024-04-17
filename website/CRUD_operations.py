@@ -41,7 +41,7 @@ def print_booking():
     bookings= Booking.query.all()
 
     for booking in bookings:
-        print(f"ID: {booking.id}, Name: {booking.name}, Status: {booking.status}, Laptops: {booking.laptops}, Booking Date: {booking.date}")
+        print(f"ID: {booking.id}, Name: {booking.name}, Status: {booking.status}, Laptops: {[laptop.name for laptop in booking.laptops]}, Booking Date: {booking.date}")
 
 def available_laptop():
     available_laptops = Laptop.query.filter(Laptop.booking_id.is_(None)).all()
@@ -50,7 +50,7 @@ def available_laptop():
 
     available_laptops.extend(available_booked_laptops)
 
-    return available_laptops
+    print(f'{[laptop.name for laptop in available_laptops]}')
 
 def get_suggestions():
     haha='hersteller'
@@ -109,36 +109,27 @@ def new_bookings(name, calendar_week, laptop_ids):
     print('Booking created successfully')
 
 
-def return_laptop(booking_id):
+def laptop_status(laptop_id):
 
-    booking = db.session.query(Booking).get(booking_id)
+    laptop = db.session.query(Laptop).get(laptop_id)
 
-
-    if not booking:
-        print(f'Booking with ID {booking_id} not found.')
-        return
-
-    booking.status = "Returned"
-
-    for laptop in booking.laptops:
-        laptop.booking_id = None  # Remove booking association from the laptop
-    db.session.commit()
-
-    print(f'Laptop returned successfully from booking {booking_id}')
+    if laptop.booking_id is not None:
+        print(db.session.query(Booking).get(laptop.booking_id).name)
 
 
-
+    print(f'Laptop with {laptop.name} is {laptop.booking_id} and {laptop.bookings}')
 
 
 if __name__ == "__main__":
 
-    #available_laptop()
+    available_laptop()
     #new_bookings(name='Danil Doe', calendar_week=2, laptop_ids=[1,2])
     #return_laptop(booking_id=5)
     #reset_laptops()
     #change_status(1,'Returned')
     #delete_booking()
-    #print_booking()
+    print_booking()
+    laptop_status(56)
     #filter_laptops(['hersteller','mac_addresse'])
-    get_suggestions()
+
 

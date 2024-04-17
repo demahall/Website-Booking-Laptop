@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Modify Laptops{% endblock %}
+{% block title %}Laptop Information{% endblock %}
 {% block content %}
 <div class="container">
     <h3 class="text-center mt-4 mb-5">Modify Laptops</h3>
@@ -17,7 +17,6 @@
 
 {% if laptop %}
     <div class="container mt-4">
-        <h3 align="center">Laptop Information</h3>
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <form action="{{ url_for('modify_laptop.update_laptop_info', laptop_id=laptop.id) }}" method="POST">
@@ -85,15 +84,21 @@
                         <label for="gewaehrleistung">Gewaehrleistung:</label>
                         <input type="text" class="form-control" id="gewaehrleistung" name="gewaehrleistung" value="{{ laptop.gewaehrleistung }}" readonly>
                     </div>
-                    <button type="button" id="editButton" class="btn btn-primary">Edit</button>
-                    <button type="submit" id="saveButton" class="btn btn-success d-none">Save</button>
+                    <div class="d-flex justify-content-between"> <!-- Align buttons horizontally -->
+                        <button type="button" id="editButton" class="btn btn-primary">Edit</button>
+                        <button type="submit" id="saveButton" class="btn btn-success d-none">Save</button>
+                        <form id="deleteForm" action="{{ url_for('modify_laptop.delete_laptop', laptop_id=laptop.id) }}" method="POST">
+                            <input type="hidden" id="confirmDeleteInput" name="confirm_delete" value="">
+                            <button type="button" id="confirmDeleteButton" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
                 </form>
-                <button type="submit" class="btn btn-danger mt-3" onclick="return confirm('Are you sure you want to delete this laptop?')">Delete Laptop</button>
+
             </div>
         </div>
     </div>
 {% endif %}
-
+{% include "delete_confirmation.html" %}
 
 <script src="/static/laptop_edit.js"></script>
 {% endblock %}

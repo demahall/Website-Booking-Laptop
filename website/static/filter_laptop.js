@@ -96,7 +96,6 @@ function renderLaptops(filteredLaptops) {
 
     // Iterate over the filtered laptops and create list items
     filteredLaptops.forEach(function(laptop) {
-        console.log(laptop)
         var listItem = document.createElement('li');
         var checkbox = document.createElement('input');
         checkbox.type = 'checkbox';

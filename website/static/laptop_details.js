@@ -30,41 +30,39 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Function to toggle the visibility of the dropdown menu
-window.onload = function() {
+document.addEventListener('DOMContentLoaded', function() {
     var criteriaButton = document.getElementById('criteriaButton');
-    var criteriaDropdown = document.getElementById('criteria');
-    var applyFilter = document.getElementById('applyFilter');
-    var table = document.getElementById('table');
+    var criteriaDropdown = document.getElementById('criteriaDropdown');
+    var applyFilterButton = document.getElementById('applyFilter');
+    var laptopTable = document.getElementById('table');
 
     criteriaButton.addEventListener('click', function() {
         // Toggle the display style of the dropdown menu
         if (criteriaDropdown.style.display === 'none') {
             criteriaDropdown.style.display = 'block';
-
         } else {
             criteriaDropdown.style.display = 'none';
         }
     });
 
-    applyFilter.addEventListener('click', function() {
-        // Hide the menu upon form submission
-        console.log(criteriaDropdown)
-        criteriaDropdown.style.display = 'none';
-        table.style.display = 'block' ;
-              // Get the selected options
+    // Add click event listener to Apply Filter button
+    applyFilterButton.addEventListener('click', function() {
+        // Get the selected options from the criteria dropdown
         var selectedOptions = criteriaDropdown.selectedOptions;
 
-        // Create an array to store the selected values
-        var selectedValues = [];
+        console.log(selectedOptions)
 
-        // Iterate over the selected options to get their values
+        // Create an array to store the selected criteria
+        var selectedCriteria = [];
+
+        // Iterate over the selected options and add them to the selected criteria array
         for (var i = 0; i < selectedOptions.length; i++) {
-            var selectedValue = selectedOptions[i].value;
-            selectedValues.push(selectedValue);
+            var criterion = selectedOptions[i].value;
+            selectedCriteria.push(criterion);
         }
 
-        // Now, selectedValues array contains all the selected values
-        console.log(selectedValues);
+
     });
-};
+
+
+});

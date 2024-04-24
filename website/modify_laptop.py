@@ -60,7 +60,6 @@ def delete_laptop(laptop_id):
 
     # Check if the user confirmed the deletion
     confirm_delete = request.form.get('confirm_delete')
-    flash(confirm_delete)
     if confirm_delete == 'yes':
         db.session.delete(laptop)
         db.session.commit()

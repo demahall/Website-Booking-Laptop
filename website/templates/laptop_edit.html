@@ -16,7 +16,7 @@
 </div>
 
 {% if laptop %}
-    <div class="container mt-4">
+    <div class="container ">
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <form action="{{ url_for('modify_laptop.update_laptop_info', laptop_id=laptop.id) }}" method="POST">
@@ -87,18 +87,17 @@
                     <div class="d-flex justify-content-between"> <!-- Align buttons horizontally -->
                         <button type="button" id="editButton" class="btn btn-primary">Edit</button>
                         <button type="submit" id="saveButton" class="btn btn-success d-none">Save</button>
-                        <form id="deleteForm" action="{{ url_for('modify_laptop.delete_laptop', laptop_id=laptop.id) }}" method="POST">
-                            <input type="hidden" id="confirmDeleteInput" name="confirm_delete" value="">
-                            <button type="button" id="confirmDeleteButton" class="btn btn-danger">Delete</button>
-                        </form>
+                        <button type="button" id="deleteButton" data-target="#deleteConfirmationModal" data-toggle="modal" class="btn btn-danger">Delete Laptop</button>
                     </div>
                 </form>
-
+                <form id="deleteForm" class="float-right" action="{{ url_for('modify_laptop.delete_laptop', laptop_id=laptop.id) }}" method="POST">
+                    <input type="hidden" id="confirmDeleteInput" name="confirm_delete" value="">
+                </form>
             </div>
         </div>
     </div>
+
 {% endif %}
 {% include "delete_confirmation.html" %}
-
 <script src="/static/laptop_edit.js"></script>
 {% endblock %}

@@ -9,7 +9,7 @@
         <!-- Button to toggle the dropdown menu -->
         <button type="button" id="criteriaButton">Select Criteria</button>
         <!-- Dropdown menu -->
-        <select id="criteria" name="criteria" multiple style="display: none;">
+        <select id="criteriaDropdown" name="criteria" multiple style="display: none;">
             <option value="hersteller">Hersteller</option>
             <option value="dongle_id">Dongle ID</option>
             <option value="mac_addresse">MAC Addresse</option>
@@ -23,28 +23,13 @@
     <hr>
 
     <!-- Display filtered criteria for each laptop -->
-    <table class="table" id="table" style="display: none;">
+    <table class="table" id="laptopTable" style="display: none;">
         <thead>
             <tr>
-                <th>Laptop</th>
-                {% if selected_criteria %}
-                    {% for criterion in selected_criteria %}
-                        <th>{{ criterion.capitalize() }}</th>
-                    {% endfor %}
-                {% endif %}
+                <th>Laptop Name</th>
             </tr>
         </thead>
         <tbody>
-            {% for (laptop_name, laptop_id), criterias in filtered_laptops.items() %}
-            <tr>
-                <td>
-                    <span class="laptop-name" data-laptop-id="{{ laptop_id }}">{{ laptop_name }}</span>
-                </td>
-                {% for criteria in criterias %}
-                    <td>{{ criteria }}</td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
         </tbody>
     </table>
 

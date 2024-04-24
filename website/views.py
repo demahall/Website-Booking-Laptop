@@ -63,21 +63,30 @@ def get_suggestions():
         return jsonify([])
 
 
+from flask import request, jsonify
+
 @views.route('/laptop_information', methods=['GET', 'POST'])
 def show_laptop():
     laptops = Laptop.query.all()
     laptops.sort(key=lambda laptop: laptop.name, reverse=False)
-    selected_criteria = []
 
     if request.method == 'POST':
         # Get the selected criteria from the form
         selected_criteria = request.form.getlist('criteria')
-        filtered_laptops = filter_laptops(selected_criteria,laptops)
-    else:
-        # If no criteria selected, display all laptops
-        filtered_laptops = {(laptop.name,laptop.id): {} for laptop in laptops}
+        filtered_laptops = filter_laptops(selected_criteria, laptops)
 
-    return render_template('laptop_details.html', filtered_laptops=filtered_laptops, selected_criteria=selected_criteria)
+        # Convert filtered laptop details to JSON format
+        laptop_details = {}
+        for (laptop_name, laptop_id), criteria in filtered_laptops.items():
+            laptop_details[(laptop_name, laptop_id)] = {
+                'criteria': criteria
+            }
+
+        return jsonify(laptop_details)
+
+    else:
+        return render_template('laptop_details.html')
+
 
 
 @views.route('/laptop_information/<int:laptop_id>')
@@ -143,18 +152,18 @@ def filter_laptops(selected_criteria,laptops):
         laptop_criteria = []
 
         # Iterate over each selected criterion
-        for criterion in selected_criteria:
+        for selected_criterion in selected_criteria:
             # Check if the criterion exists as an attribute of the laptop
-            if hasattr(laptop, criterion):
+            if hasattr(laptop, selected_criterion):
                 # Get the value of the criterion for the current laptop
-                criterion_value = getattr(laptop, criterion)
+                criterion_value = getattr(laptop, selected_criterion)
                 # Add the criterion and its value to the list of filtered criteria
                 laptop_criteria.append(f"{criterion_value}")
 
-        # Store the filtered criteria for the current laptop
-        filtered_laptops[(laptop.name,laptop.id)] = laptop_criteria
+    return jsonify({ "laptop_name" : [laptop.name for laptop in laptops]
+                       "laptop_details"
 
-    return filtered_laptops
+    })
 
 
 def available_laptops():

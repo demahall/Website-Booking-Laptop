@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const editButton = document.getElementById('editButton');
     const saveButton = document.getElementById('saveButton');
     const deleteButton = document.getElementById('deleteButton');
-    const confirmDeleteInput = document.getElementById('confirmDeleteInput');
+    var confirmDeleteButton = document.getElementById('confirmDeleteButton');
 
     const name_input = document.getElementById('name');
     const hersteller_input = document.getElementById('hersteller');
@@ -50,4 +50,13 @@ document.addEventListener('DOMContentLoaded', function () {
         // Perform validation and submit the form
         document.getElementById('laptopForm').submit();
     });
+
+
+    confirmDeleteButton.addEventListener('click',function (){
+        document.getElementById('confirmDeleteInput').value = "yes";
+        console.log(document.getElementById('confirmDeleteInput').value);
+        document.getElementById('deleteForm').submit();
+        console.log(document.getElementById('deleteForm'));
+    });
+
 });

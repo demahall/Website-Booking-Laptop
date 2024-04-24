@@ -38,19 +38,6 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-
-<!-- Add a hidden input field to hold the confirmation value -->
-<input type="hidden" id="confirmDeleteInput" name="confirm_delete" value="">
-
-<script>
-    // Attach event listener to the confirm delete button
-    document.getElementById('confirmDeleteButton').addEventListener('click', function() {
-        // Set the confirmation value to 'yes'
-        document.getElementById('confirmDeleteInput').value = 'yes';
-        // Submit the form
-        document.getElementById('deleteForm').submit();
-    });
-</script>
-
+<script src="/static/laptop_edit.js"></script>
 </body>
 </html>

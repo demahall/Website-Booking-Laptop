@@ -64,7 +64,7 @@ function showAvailableLaptops() {
         })
         .then(data => {
             availableLaptops.innerHTML = ''; // Clear previous content
-
+            console.log(data);
             data.forEach(function(laptop) {
                 var listItem = document.createElement('li');
                 var checkbox = document.createElement('input');

@@ -12,26 +12,29 @@ app.app_context().push()
 
 def filter_laptops(selected_criteria):
     # Initialize a dictionary to store the filtered criteria for each laptop
+    laptops = Laptop.query.all()
     filtered_laptops = {}
 
-    # Iterate over each laptop in the database
-    for laptop in Laptop.query.all():
-        # Initialize a list to store the filtered criteria for the current laptop
-        laptop_criteria = []
+    # Retrieve the bookings for each laptop and associate them with the laptops
+    laptop_bookings = {}
+    for laptop in laptops:
+        bookings = laptop.bookings
+        booking = next((b for b in bookings if b.status == "booked"), None)
+        if booking:
+            laptop_bookings[laptop.name] = f'{booking.name} from {booking.selected_dates}'
+        else:
+            laptop_bookings[laptop.name] = 'noch nicht gebucht'
 
-        # Iterate over each selected criterion
-        for criterion in selected_criteria:
-            # Check if the criterion exists as an attribute of the laptop
-            if hasattr(laptop, criterion):
-                # Get the value of the criterion for the current laptop
-                criterion_value = getattr(laptop, criterion)
-                # Add the criterion and its value to the list of filtered criteria
-                laptop_criteria.append(f"{criterion.capitalize()}: {criterion_value}")
+    # Populate the filtered laptops dictionary with laptop names, borrowers, and selected dates
+    filtered_laptops["Laptop Name"] = [laptop.name for laptop in laptops]
+    filtered_laptops["Booked by"] = [laptop_bookings[laptop.name] for laptop in laptops]
 
-        # Store the filtered criteria for the current laptop
-        filtered_laptops[laptop.name] = laptop_criteria
+    # Populate the filtered laptops dictionary with other selected criteria
+    for criterion in selected_criteria:
+        filtered_laptops[f'{criterion.capitalize()}'] = [getattr(laptop, criterion) for laptop in laptops]
 
-    print (filtered_laptops.items())
+    print(filtered_laptops["Laptop Name"])
+    print(filtered_laptops["Booked by"])
 
 
 
@@ -62,8 +65,6 @@ def get_suggestions():
         suggestions = list(set(suggestions))
         print(suggestions)
 
-
-
 def change_status(booking_id,new_status):
 
     booking = session.query(Booking,booking_id)
@@ -75,13 +76,13 @@ def change_status(booking_id,new_status):
     else:
         print('booking id not found')
 
-
 def delete_booking(booking_ids):
 
     for booking_id in booking_ids:
-        booking = db.session.query(Booking).get(booking_id)
+        booking = Booking.query.get(booking_id)
         if booking:
             db.session.delete(booking)
+            print('done!')
         else:
             return
     # Commit the changes
@@ -122,14 +123,14 @@ def laptop_status(laptop_id):
 
 if __name__ == "__main__":
 
-    available_laptop()
+    #available_laptop()
     #new_bookings(name='Danil Doe', calendar_week=2, laptop_ids=[1,2])
     #return_laptop(booking_id=5)
     #reset_laptops()
     #change_status(1,'Returned')
-    #delete_booking()
-    print_booking()
-    laptop_status(56)
+    delete_booking([4])
+    #print_booking()
+    #laptop_status(56)
     #filter_laptops(['hersteller','mac_addresse'])
 
 

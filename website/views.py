@@ -63,58 +63,22 @@ def get_suggestions():
         return jsonify([])
 
 
-from flask import request, jsonify
+@views.route('/laptop_information', methods=['GET'])
+def laptop_information_page():
+    return render_template('laptop_details.html')
 
-@views.route('/laptop_information', methods=['GET', 'POST'])
+
+@views.route('/show_laptop', methods=['GET', 'POST'])
 def show_laptop():
+
     laptops = Laptop.query.all()
-    laptops.sort(key=lambda laptop: laptop.name, reverse=False)
 
     if request.method == 'POST':
         # Get the selected criteria from the form
-        selected_criteria = request.form.getlist('criteria')
+        selected_criteria = request.json.get('criteria')
         filtered_laptops = filter_laptops(selected_criteria, laptops)
-
-        # Convert filtered laptop details to JSON format
-        laptop_details = {}
-        for (laptop_name, laptop_id), criteria in filtered_laptops.items():
-            laptop_details[(laptop_name, laptop_id)] = {
-                'criteria': criteria
-            }
-
-        return jsonify(laptop_details)
-
-    else:
-        return render_template('laptop_details.html')
-
-
-
-@views.route('/laptop_information/<int:laptop_id>')
-def hover_information(laptop_id):
-    laptop = Laptop.query.get_or_404(laptop_id)
-
-    # Check if the laptop is booked and get booking information
-    booking = laptop.bookings
-    borrower_name = ""
-    borrowing_duration = ""
-    if booking:
-        # Iterate over each booking associated with the laptop
-        for b in booking:
-            # Check if the booking status is "booked"
-            if b.status == "booked":
-                # Get the borrower name and duration for the booked laptop
-                borrower_name = b.name
-                borrowing_duration = b.selected_dates
-                # Break the loop if a booked booking is found
-                break
-
-    # Return the booking information as JSON
-    return jsonify({
-        "borrower_name": borrower_name,
-        "borrowing_duration": borrowing_duration
-    })
-
-
+        print(filtered_laptops.keys())
+        return jsonify(filtered_laptops)
 
 @views.route('/', methods=['POST'])
 def book_laptops():
@@ -146,25 +110,25 @@ def filter_laptops(selected_criteria,laptops):
     # Initialize a dictionary to store the filtered criteria for each laptop
     filtered_laptops = {}
 
-    # Iterate over each laptop in the database
+    laptop_bookings={}
     for laptop in laptops:
-        # Initialize a list to store the filtered criteria for the current laptop
-        laptop_criteria = []
+        bookings=laptop.bookings
+        booking = next((b for b in bookings if b.status == "booked"), None)
+        if booking:
+            laptop_bookings[laptop.name] = f'{booking.name} from {booking.selected_dates}'
+        else:
+            laptop_bookings[laptop.name] = 'noch nicht gebucht'
 
-        # Iterate over each selected criterion
-        for selected_criterion in selected_criteria:
-            # Check if the criterion exists as an attribute of the laptop
-            if hasattr(laptop, selected_criterion):
-                # Get the value of the criterion for the current laptop
-                criterion_value = getattr(laptop, selected_criterion)
-                # Add the criterion and its value to the list of filtered criteria
-                laptop_criteria.append(f"{criterion_value}")
+    # Populate the filtered laptops dictionary with laptop names, borrowers, and selected dates
 
-    return jsonify({ "laptop_name" : [laptop.name for laptop in laptops]
-                       "laptop_details"
+    filtered_laptops["Laptop Name"] = [laptop.name for laptop in laptops]
+    filtered_laptops["Booked by"] = [laptop_bookings[laptop.name] for laptop in laptops]
 
-    })
+    for criterion in selected_criteria:
+        if hasattr(Laptop, criterion):
+            filtered_laptops[f'{criterion}'] = [getattr(laptop,criterion) for laptop in laptops]
 
+    return filtered_laptops
 
 def available_laptops():
     # Retrieve laptops that are not currently booked
@@ -177,7 +141,14 @@ def available_laptops():
     # Combine the available laptops and the booked laptops
     laptops = laptops + booked_laptops
 
-    laptops.sort(key=lambda laptop: laptop.name, reverse=False)
+    # Custom sorting function to sort by numeric order in laptop names
+    def custom_sort(laptop):
+        parts = laptop.name.split()  # Split the name by spaces
+        numeric_part = int(parts[-1]) if parts[-1].isdigit() else float('inf')  # Extract the numeric part
+        return (parts[0], numeric_part)  # Tuple for sorting
+
+    # Sort the laptops using the custom sorting function
+    laptops.sort(key=custom_sort)
 
     return laptops
 

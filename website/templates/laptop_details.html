@@ -1,38 +1,39 @@
 {% extends "base.html" %}
 {% block title %}Laptop Information{% endblock %}
 
-
 {% block content %}
-<link rel="stylesheet" href="static/hover_styles.css">
-  <h3 align="center">Laptop Information</h3>
+<link rel="stylesheet" href="/static/laptop_table.css">
+  <h3 id="info-heading" align="center">Laptop Information</h3>
     <form id="filterForm" method="POST" action="{{ url_for('views.show_laptop') }}">
-        <!-- Button to toggle the dropdown menu -->
-        <button type="button" id="criteriaButton">Select Criteria</button>
-        <!-- Dropdown menu -->
-        <select id="criteriaDropdown" name="criteria" multiple style="display: none;">
-            <option value="hersteller">Hersteller</option>
-            <option value="dongle_id">Dongle ID</option>
-            <option value="mac_addresse">MAC Addresse</option>
-            <option value="puma_und_concerto_version">Puma Version</option>
-            <option value="lynx_version">Lynx Version</option>
-            <option value="creta_version">Creta Version</option>
-        </select>
-        <button type="button" id="applyFilter" >Apply Filter</button>
+      <div id="criteriaDropdownContainer">
+          <select id="criteriaDropdown" name="criteria" multiple style="display: none;">
+              <option value="hersteller">Hersteller</option>
+              <option value="user_password">Username and Password</option>
+              <option value="dongle_id">Dongle ID</option>
+              <option value="mac_addresse">MAC Address</option>
+              <option value="puma_und_concerto_version">Puma Version</option>
+              <option value="lynx_version">Lynx Version</option>
+              <option value="creta_version">Creta Version</option>
+          </select>
+      </div>
     </form>
+<button type="button" class="btn btn-secondary" id="criteriaButton">Select Criteria</button>
+<button type="button" class="btn btn-secondary" id="applyFilterButton" onclick="fetchFilteredLaptops()" >Apply Filter</button>
 
-    <hr>
 
-    <!-- Display filtered criteria for each laptop -->
-    <table class="table" id="laptopTable" style="display: none;">
+<div id="table-container">
+    <table id="laptopTable">
+        <!-- Table header will be generated dynamically -->
         <thead>
             <tr>
-                <th>Laptop Name</th>
+                <!-- Table header content will be generated dynamically -->
             </tr>
         </thead>
-        <tbody>
+        <tbody id="laptopTableBody">
+            <!-- Table body content will be generated dynamically -->
         </tbody>
     </table>
-
+</div>
 
 <script src="/static/laptop_details.js"></script>
 {% endblock %}

@@ -72,37 +72,42 @@ def laptop_information_page():
 def show_laptop():
 
     laptops = Laptop.query.all()
+    laptops.sort(key=sort_laptop_name)
 
     if request.method == 'POST':
         # Get the selected criteria from the form
         selected_criteria = request.json.get('criteria')
         filtered_laptops = filter_laptops(selected_criteria, laptops)
-        print(filtered_laptops.keys())
+
         return jsonify(filtered_laptops)
 
 @views.route('/', methods=['POST'])
 def book_laptops():
-    name = request.form.get('name')
-    selected_dates = request.form.get('dates')
-    selected_laptops = request.form.getlist('selected_laptops')
-    comment = request.form.get('comment')
 
-    if not name or not selected_dates or not selected_laptops:
-        flash('Please fill in all required fields.', 'error')
-        return redirect(url_for('views.booking_form_page'))
+    confirm_submit = request.form.get('confirm_submit')
 
-    new_booking = Booking(name=name, selected_dates=selected_dates,comment=comment)
-    db.session.add(new_booking)
-    db.session.flush()
+    if confirm_submit == 'yes':
+        name = request.form.get('name')
+        selected_dates = request.form.get('dates')
+        selected_laptops = request.form.getlist('selected_laptops')
+        comment = request.form.get('comment')
 
-    for laptop_id in selected_laptops:
-        laptop = Laptop.query.get(laptop_id)
-        if laptop and not laptop.booking_id:
-            laptop.booking_id = new_booking.id
-            new_booking.laptops.append(laptop)
+        if not name or not selected_dates or not selected_laptops:
+            flash('Please fill in all required fields.', 'error')
+            return redirect(url_for('views.booking_form_page'))
 
-    db.session.commit()
-    flash('Booking successful!', 'success')
+        new_booking = Booking(name=name, selected_dates=selected_dates,comment=comment)
+        db.session.add(new_booking)
+        db.session.flush()
+
+        for laptop_id in selected_laptops:
+            laptop = Laptop.query.get(laptop_id)
+            if laptop and not laptop.booking_id:
+                laptop.booking_id = new_booking.id
+                new_booking.laptops.append(laptop)
+
+        db.session.commit()
+        flash('Booking successful!', 'success')
 
     return redirect(url_for('views.booking_form_page'))
 
@@ -117,7 +122,7 @@ def filter_laptops(selected_criteria,laptops):
         if booking:
             laptop_bookings[laptop.name] = f'{booking.name} from {booking.selected_dates}'
         else:
-            laptop_bookings[laptop.name] = 'noch nicht gebucht'
+            laptop_bookings[laptop.name] = 'Available'
 
     # Populate the filtered laptops dictionary with laptop names, borrowers, and selected dates
 
@@ -127,6 +132,8 @@ def filter_laptops(selected_criteria,laptops):
     for criterion in selected_criteria:
         if hasattr(Laptop, criterion):
             filtered_laptops[f'{criterion}'] = [getattr(laptop,criterion) for laptop in laptops]
+
+
 
     return filtered_laptops
 
@@ -142,17 +149,17 @@ def available_laptops():
     laptops = laptops + booked_laptops
 
     # Custom sorting function to sort by numeric order in laptop names
-    def custom_sort(laptop):
-        parts = laptop.name.split()  # Split the name by spaces
-        numeric_part = int(parts[-1]) if parts[-1].isdigit() else float('inf')  # Extract the numeric part
-        return (parts[0], numeric_part)  # Tuple for sorting
+
 
     # Sort the laptops using the custom sorting function
-    laptops.sort(key=custom_sort)
+    laptops.sort(key=sort_laptop_name)
 
     return laptops
 
-
+def sort_laptop_name(laptop):
+    parts = laptop.name.split()  # Split the name by spaces
+    numeric_part = int(parts[-1]) if parts[-1].isdigit() else float('inf')  # Extract the numeric part
+    return (parts[0], numeric_part)  # Tuple for sorting
 
 
 

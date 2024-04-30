@@ -76,18 +76,19 @@ def change_status(booking_id,new_status):
     else:
         print('booking id not found')
 
-def delete_booking(booking_ids):
+def show_and_delete_booking(booking_ids):
 
-    for booking_id in booking_ids:
-        booking = Booking.query.get(booking_id)
-        if booking:
-            db.session.delete(booking)
-            print('done!')
-        else:
-            return
-    # Commit the changes
+    laptops_with_booking = Laptop.query.filter(Laptop.booking_id != None).all()
+    print([laptop.name for laptop in laptops_with_booking])
+    print([laptop.booking_id for laptop in laptops_with_booking])
+
+    laptops_to_delete = Laptop.query.filter_by(booking_id=booking_ids).all()
+
+    if laptops_to_delete :
+        for laptop in laptops_to_delete:
+            laptop.booking_id = None
+
     db.session.commit()
-
 def new_bookings(name, calendar_week, laptop_ids):
 
 
@@ -122,13 +123,13 @@ def laptop_status(laptop_id):
 
 
 if __name__ == "__main__":
-
+    show_and_delete_booking(4)
     #available_laptop()
     #new_bookings(name='Danil Doe', calendar_week=2, laptop_ids=[1,2])
     #return_laptop(booking_id=5)
     #reset_laptops()
     #change_status(1,'Returned')
-    delete_booking([4])
+    #delete_booking([4])
     #print_booking()
     #laptop_status(56)
     #filter_laptops(['hersteller','mac_addresse'])

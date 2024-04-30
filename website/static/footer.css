@@ -1,6 +1,7 @@
 
 .footer {
     background-color: #ffffff;
+    font-size: 12px;
     color: #000000;
     text-align: left;
     padding: 20px;
@@ -12,4 +13,8 @@
 
 .footer div {
     margin-bottom: 10px; /* Adjust spacing between rows as needed */
+}
+
+.navbar {
+    margin-bottom: 30px; /* Adjust this value as needed */
 }

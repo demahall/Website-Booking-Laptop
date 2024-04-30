@@ -104,4 +104,6 @@
   color: #fff;
 }
 
-
+.form-control {
+    width: 100%; /* Set the width of both inputs to 100% */
+}

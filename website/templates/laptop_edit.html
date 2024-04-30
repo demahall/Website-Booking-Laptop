@@ -87,7 +87,7 @@
                     <div class="d-flex justify-content-between"> <!-- Align buttons horizontally -->
                         <button type="button" id="editButton" class="btn btn-primary">Edit</button>
                         <button type="submit" id="saveButton" class="btn btn-success d-none">Save</button>
-                        <button type="button" id="deleteButton" data-target="#deleteConfirmationModal" data-toggle="modal" class="btn btn-danger">Delete Laptop</button>
+                        <button type="button" id="deleteButton" data-target="#ConfirmationModal" data-toggle="modal" class="btn btn-danger">Delete Laptop</button>
                     </div>
                 </form>
                 <form id="deleteForm" class="float-right" action="{{ url_for('modify_laptop.delete_laptop', laptop_id=laptop.id) }}" method="POST">
@@ -98,6 +98,7 @@
     </div>
 
 {% endif %}
-{% include "delete_confirmation.html" %}
+{% include "confirmation_window.html" %}
 <script src="/static/laptop_edit.js"></script>
+<script src="/static/handling_confirmation.js"></script>
 {% endblock %}

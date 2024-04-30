@@ -50,13 +50,4 @@ document.addEventListener('DOMContentLoaded', function () {
         // Perform validation and submit the form
         document.getElementById('laptopForm').submit();
     });
-
-
-    confirmDeleteButton.addEventListener('click',function (){
-        document.getElementById('confirmDeleteInput').value = "yes";
-        console.log(document.getElementById('confirmDeleteInput').value);
-        document.getElementById('deleteForm').submit();
-        console.log(document.getElementById('deleteForm'));
-    });
-
 });

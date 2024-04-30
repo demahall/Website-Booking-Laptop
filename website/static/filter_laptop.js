@@ -1,11 +1,13 @@
 var laptopListContainer = document.getElementById('laptopListContainer');
 var laptopList = document.getElementById('laptopList');
 var filterContainer = document.getElementById('filterContainer');
+var filterInput = document.getElementById('filterInput');
 var selectButton = document.getElementById('selectButton');
 var filteredLaptopList = document.getElementById('filteredLaptopList');
 var availableLaptops = document.getElementById('availableLaptops');
 var filtered_laptops = document.getElementById('filtered_laptops');
-var suggestionsList = document.getElementById('suggestionsList')
+var suggestionsList = document.getElementById('suggestionsList');
+var selectedLaptopsForm = document.getElementById('selectedLaptopsForm');
 var selectedSuggestion = '';
 
 
@@ -205,8 +207,6 @@ function applyFilter() {
     });
 }
 
-// Call getSuggestions whenever the input field value changes
-var filterInput = document.getElementById('filterInput');
 filterInput.addEventListener('input', function() {
     var criteria = document.getElementById('filterCriteria').value;
     var partialQuery = filterInput.value.trim();
@@ -225,6 +225,7 @@ function selectLaptops() {
 
     // Clear previous selections
     var form = document.getElementById('selectedLaptopsForm');
+
     form.innerHTML = '';
 
     // Iterate over selected laptops
@@ -242,13 +243,9 @@ function selectLaptops() {
             form.appendChild(listItem);
         }
     });
-
-    var laptopListContainer = document.getElementById('laptopListContainer');
     laptopListContainer.style.display = 'none';
 }
 
 document.getElementById('selectButton').addEventListener('click', selectLaptops);
-document.getElementById("submitButton").addEventListener("click", function() {
-    // Handle form submission if needed
-});
+
 

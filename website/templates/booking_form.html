@@ -2,7 +2,8 @@
 {% block title %}Booking Form{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="static/booking_form.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <div class="container">
   <h2 class="text-center mb-5">Booking Form</h2>
   <div class="row justify-content-center">
@@ -71,8 +72,8 @@
     </div>
   </div>
 </div>
-
-{% include "confirmation_window.html" %}
+<link rel="stylesheet" href="static/booking_form.css">
 <script src="/static/filter_laptop.js"></script>
 <script src="/static/handling_confirmation.js"></script>
+{% include "confirmation_window.html" %}
 {% endblock %}

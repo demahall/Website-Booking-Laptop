@@ -111,6 +111,15 @@ def book_laptops():
 
     return redirect(url_for('views.booking_form_page'))
 
+@views.route('/')
+def index():
+    flashed_messages_exist = check_if_flashed_messages_exist()  # Implement this function to check if flashed messages exist
+    return render_template('base.html', flashed_messages_exist=flashed_messages_exist)
+
+
+
+
+
 def filter_laptops(selected_criteria,laptops):
     # Initialize a dictionary to store the filtered criteria for each laptop
     filtered_laptops = {}

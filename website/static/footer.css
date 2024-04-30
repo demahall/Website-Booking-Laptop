@@ -18,3 +18,15 @@
 .navbar {
     margin-bottom: 30px; /* Adjust this value as needed */
 }
+
+#flash-messages .alert {
+            position: fixed; /* Position flash messages absolutely */
+            top: 50px; /* Adjust the top position as needed */
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            z-index: 1000; /* Ensure flash messages appear above other content */
+
+}
+

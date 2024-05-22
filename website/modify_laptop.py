@@ -51,7 +51,7 @@ def update_laptop_info(laptop_id):
 
         db.session.commit()
 
-        return redirect(url_for('modify_laptop.update_laptop_info', laptop_id=laptop_id))
+        return redirect(url_for('modify_laptop.modify_laptop_page', laptop_id=laptop_id))
     return render_template('laptop_edit.html', laptop=laptop)
 
 @modify_laptop_bp.route('/delete_laptop/<int:laptop_id>', methods=['POST'])

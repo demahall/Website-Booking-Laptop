@@ -10,12 +10,18 @@ session = SQLAlchemySession()
 
 @views.route('/',methods=['GET'])
 def booking_form_page():
-    if flask_session.get('admin_logged_in'):
-        return redirect(url_for('auth.admin_bookings'))
-
     laptops = available_laptops()
     return render_template("booking_form.html", available_laptops=laptops)
 
+@views.route('/bookings_overview',methods=['GET'])
+def bookings_overview_page():
+    flask_session['managing_page'] = True
+    bookings = Booking.query.all()
+    return render_template('admin_bookings.html',bookings=bookings)
+@views.route('/back_to_booking_form')
+def back_to_booking_form():
+    flask_session.pop('managing_page', None)
+    return redirect(url_for('views.booking_form_page'))
 
 @views.route('/filter', methods=['GET', 'POST'])
 def show_laptop_information():
@@ -102,7 +108,7 @@ def book_laptops():
 
         for laptop_id in selected_laptops:
             laptop = Laptop.query.get(laptop_id)
-            if laptop and not laptop.booking_id:
+            if laptop and db.session.query(Booking).get(laptop.booking_id).status != 'booked':
                 laptop.booking_id = new_booking.id
                 new_booking.laptops.append(laptop)
 
@@ -110,13 +116,6 @@ def book_laptops():
         flash('Booking successful!', 'success')
 
     return redirect(url_for('views.booking_form_page'))
-
-@views.route('/')
-def index():
-    flashed_messages_exist = check_if_flashed_messages_exist()  # Implement this function to check if flashed messages exist
-    return render_template('base.html', flashed_messages_exist=flashed_messages_exist)
-
-
 
 
 
@@ -152,18 +151,19 @@ def available_laptops():
 
     # Retrieve laptops associated with bookings that have a status of 'returned' or 'pending'
     booked_laptops = Laptop.query.join(Booking.laptops).filter(
-        or_(Booking.status == 'returned', Booking.status == 'pending')).all()
+      or_(Booking.status == 'returned', Booking.status == 'pending')).all()
 
-    # Combine the available laptops and the booked laptops
-    laptops = laptops + booked_laptops
+    # Combine laptops and booked_laptops (using a set for efficient duplicate removal)
+    laptops = set(laptops + booked_laptops)
 
-    # Custom sorting function to sort by numeric order in laptop names
-
+    # Convert back to a list for potential sorting needs
+    laptops = list(laptops)
 
     # Sort the laptops using the custom sorting function
     laptops.sort(key=sort_laptop_name)
 
     return laptops
+
 
 def sort_laptop_name(laptop):
     parts = laptop.name.split()  # Split the name by spaces

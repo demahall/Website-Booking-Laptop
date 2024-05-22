@@ -30,8 +30,8 @@ def create_app():
 
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(views,url_prefix='/')
-    app.register_blueprint(add_laptop_bp,url_prefix='/admin_bookings/')
-    app.register_blueprint(modify_laptop_bp, url_prefix='/admin_bookings/')
+    app.register_blueprint(add_laptop_bp,url_prefix='/bookings_overview/')
+    app.register_blueprint(modify_laptop_bp, url_prefix='/bookings_overview/')
 
 
     from website.models import Laptop,Booking

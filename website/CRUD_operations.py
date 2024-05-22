@@ -47,13 +47,32 @@ def print_booking():
         print(f"ID: {booking.id}, Name: {booking.name}, Status: {booking.status}, Laptops: {[laptop.name for laptop in booking.laptops]}, Booking Date: {booking.date}")
 
 def available_laptop():
-    available_laptops = Laptop.query.filter(Laptop.booking_id.is_(None)).all()
-    available_booked_laptops = Laptop.query.join(Booking.laptops).filter(
-        or_(Booking.status == 'returned', Booking.status == 'pending')).all()
+    # Retrieve laptops that are not currently booked
+    laptops = Laptop.query.filter(Laptop.booking_id.is_(None)).all()
 
-    available_laptops.extend(available_booked_laptops)
+    print(laptops)
 
-    print(f'{[laptop.name for laptop in available_laptops]}')
+    # Retrieve laptops associated with bookings that have a status of 'returned' or 'pending'
+    booked_laptops = Laptop.query.join(Booking.laptops).filter(
+      or_(Booking.status == 'returned', Booking.status == 'pending')).all()
+
+    print(booked_laptops)
+
+    # Combine laptops and booked_laptops (using a set for efficient duplicate removal)
+    laptops = set(laptops + booked_laptops)
+
+    # Convert back to a list for potential sorting needs
+    laptops = list(laptops)
+
+    # Sort the laptops using the custom sorting function
+    laptops.sort(key=sort_laptop_name)
+
+    print(f'{[laptop.name for laptop in laptops]}')
+
+def sort_laptop_name(laptop):
+    parts = laptop.name.split()  # Split the name by spaces
+    numeric_part = int(parts[-1]) if parts[-1].isdigit() else float('inf')  # Extract the numeric part
+    return (parts[0], numeric_part)  # Tuple for sorting
 
 def get_suggestions():
     haha='hersteller'
@@ -116,22 +135,22 @@ def laptop_status(laptop_id):
     laptop = db.session.query(Laptop).get(laptop_id)
 
     if laptop.booking_id is not None:
-        print(db.session.query(Booking).get(laptop.booking_id).name)
+        print(db.session.query(Booking).get(laptop.booking_id).status)
 
 
     print(f'Laptop with {laptop.name} is {laptop.booking_id} and {laptop.bookings}')
 
 
 if __name__ == "__main__":
-    show_and_delete_booking(4)
-    #available_laptop()
+    #show_and_delete_booking(4)
+    available_laptop()
     #new_bookings(name='Danil Doe', calendar_week=2, laptop_ids=[1,2])
     #return_laptop(booking_id=5)
     #reset_laptops()
     #change_status(1,'Returned')
     #delete_booking([4])
     #print_booking()
-    #laptop_status(56)
+    laptop_status(15)
     #filter_laptops(['hersteller','mac_addresse'])
 
 

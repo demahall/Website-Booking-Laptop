@@ -38,14 +38,14 @@
 
       <div class="collapse navbar-collapse" id="navbar">
         <div class="navbar-nav">
-          {% if not session.get('admin_logged_in') %}
+          {% if not session.get('managing_page') %}
             <a class="nav-item nav-link" id="Booking Form" href="/">Booking Form</a>
             <a class="nav-item nav-link" id="Laptop Information" href="/laptop_information">Laptop Information</a>
-            <a class="nav-item nav-link" id="Admin" href="/admin_login">Admin</a>
+            <a class="nav-item nav-link" id="Bookings Overview" href="/bookings_overview">Bookings Overview</a>
           {% else %}
-            <a class="nav-item nav-link" id="Add Laptop" href="/admin_bookings/add_laptop">Add Laptop</a>
-            <a class="nav-item nav-link" id="Update Specification" href="/admin_bookings/modify_laptop">Update Specification Page</a>
-            <a class="nav-item nav-link" id="Logout" href="/admin_logout">Logout</a>
+            <a class="nav-item nav-link" id="Back To Booking Form" href="/back_to_booking_form">Booking Form</a>
+            <a class="nav-item nav-link" id="Add Laptop" href="/bookings_overview/add_laptop">Add Laptop</a>
+            <a class="nav-item nav-link" id="Update Specification" href="/bookings_overview/modify_laptop">Update Specification Page</a>
           {% endif %}
         </div>
       </div>

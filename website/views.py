@@ -1,6 +1,7 @@
 from flask import Blueprint,jsonify ,render_template, request, flash, redirect, url_for, session as flask_session
-from website.models import Booking,Laptop
+from website.models import Booking,Laptop,Log
 from website import db
+from website.utils import generate_log_message
 from sqlalchemy.orm import Session as SQLAlchemySession
 from sqlalchemy import or_
 
@@ -10,6 +11,8 @@ session = SQLAlchemySession()
 
 @views.route('/',methods=['GET'])
 def booking_form_page():
+    managing_page = request.args.get('managing_page', 'false')
+    flask_session['managing_page'] = (managing_page == 'true')
     laptops = available_laptops()
     return render_template("booking_form.html", available_laptops=laptops)
 
@@ -18,9 +21,15 @@ def bookings_overview_page():
     flask_session['managing_page'] = True
     bookings = Booking.query.all()
     return render_template('admin_bookings.html',bookings=bookings)
+
+@views.route('/logs')
+def logs_page():
+    logs = Log.query.order_by(Log.timestamp.desc()).all()
+    return render_template('logs.html', logs=logs)
+
 @views.route('/back_to_booking_form')
 def back_to_booking_form():
-    flask_session.pop('managing_page', None)
+    flask_session['managing_page'] = False
     return redirect(url_for('views.booking_form_page'))
 
 @views.route('/filter', methods=['GET', 'POST'])
@@ -73,7 +82,6 @@ def get_suggestions():
 def laptop_information_page():
     return render_template('laptop_details.html')
 
-
 @views.route('/show_laptop', methods=['GET', 'POST'])
 def show_laptop():
 
@@ -106,18 +114,22 @@ def book_laptops():
         db.session.add(new_booking)
         db.session.flush()
 
-        for laptop_id in selected_laptops:
-            laptop = Laptop.query.get(laptop_id)
-            if laptop and db.session.query(Booking).get(laptop.booking_id).status != 'booked':
-                laptop.booking_id = new_booking.id
-                new_booking.laptops.append(laptop)
+        selected_laptops = Laptop.query.filter(Laptop.id.in_(selected_laptops)).all()
+
+        laptop_details = []
+
+        for laptop in selected_laptops:
+            laptop.booking_id = new_booking.id
+            new_booking.laptops.append(laptop)
+            laptop_details.append(f"Laptop ID: {laptop.id}, Laptop Name: {laptop.name}")
 
         db.session.commit()
+
+        generate_log_message(action='booking laptops',name=name,selected_dates=selected_dates,laptops=selected_laptops,comment=comment)
+
         flash('Booking successful!', 'success')
 
     return redirect(url_for('views.booking_form_page'))
-
-
 
 def filter_laptops(selected_criteria,laptops):
     # Initialize a dictionary to store the filtered criteria for each laptop
@@ -141,20 +153,21 @@ def filter_laptops(selected_criteria,laptops):
         if hasattr(Laptop, criterion):
             filtered_laptops[f'{criterion}'] = [getattr(laptop,criterion) for laptop in laptops]
 
-
-
     return filtered_laptops
 
 def available_laptops():
     # Retrieve laptops that are not currently booked
     laptops = Laptop.query.filter(Laptop.booking_id.is_(None)).all()
 
-    # Retrieve laptops associated with bookings that have a status of 'returned' or 'pending'
-    booked_laptops = Laptop.query.join(Booking.laptops).filter(
-      or_(Booking.status == 'returned', Booking.status == 'pending')).all()
+    booked_laptops = Laptop.query.filter(Laptop.booking_id.isnot(None)).all()
+
+    filtered_booked_laptops = []
+    for laptop in booked_laptops:
+        if db.session.query(Booking).get(laptop.booking_id).status != 'booked':
+            filtered_booked_laptops.append(laptop)
 
     # Combine laptops and booked_laptops (using a set for efficient duplicate removal)
-    laptops = set(laptops + booked_laptops)
+    laptops = set(laptops + filtered_booked_laptops)
 
     # Convert back to a list for potential sorting needs
     laptops = list(laptops)
@@ -163,7 +176,6 @@ def available_laptops():
     laptops.sort(key=sort_laptop_name)
 
     return laptops
-
 
 def sort_laptop_name(laptop):
     parts = laptop.name.split()  # Split the name by spaces

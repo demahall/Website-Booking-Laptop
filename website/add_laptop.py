@@ -1,11 +1,13 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session
-from website.models import Booking, Laptop
+from website.models import Laptop
 from website import db
+from website.utils import generate_log_message
 
 
 add_laptop_bp = Blueprint('add_laptop', __name__)
 @add_laptop_bp.route('/add_laptop',methods = ['GET','POST'])
 def add_laptop_page():
+    session['managing_page'] = True
     
     if request.method == 'POST':
         name = request.form['name']
@@ -45,6 +47,7 @@ def add_laptop_page():
         db.session.add(new_laptop)
         db.session.commit()
         flash('New laptop added successfully!', 'success')
+        generate_log_message(action='add laptop', name=name)
         return redirect(url_for('add_laptop.add_laptop_page'))
         
 

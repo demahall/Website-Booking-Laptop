@@ -17,6 +17,7 @@ def create_app():
     app.config['SECRET_KEY'] = 'secret_key'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     app.config['SESSION_TYPE'] = 'filesystem'
+
     Session(app)
     db.init_app(app)
     migrate.init_app(app,db)
@@ -34,7 +35,7 @@ def create_app():
     app.register_blueprint(modify_laptop_bp, url_prefix='/bookings_overview/')
 
 
-    from website.models import Laptop,Booking
+    from website.models import Laptop,Booking,Log
     
     with app.app_context():
         db.create_all()

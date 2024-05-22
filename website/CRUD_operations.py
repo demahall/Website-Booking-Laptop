@@ -50,22 +50,22 @@ def available_laptop():
     # Retrieve laptops that are not currently booked
     laptops = Laptop.query.filter(Laptop.booking_id.is_(None)).all()
 
-    print(laptops)
+    booked_laptops = Laptop.query.filter(Laptop.booking_id.isnot(None)).all()
 
-    # Retrieve laptops associated with bookings that have a status of 'returned' or 'pending'
-    booked_laptops = Laptop.query.join(Booking.laptops).filter(
-      or_(Booking.status == 'returned', Booking.status == 'pending')).all()
-
-    print(booked_laptops)
+    filtered_booked_laptops= []
+    for laptop in booked_laptops:
+        print(laptop)
+        if db.session.query(Booking).get(laptop.booking_id).status != 'booked':
+            filtered_booked_laptops.append(laptop)
 
     # Combine laptops and booked_laptops (using a set for efficient duplicate removal)
-    laptops = set(laptops + booked_laptops)
+    laptops = set(laptops + filtered_booked_laptops)
 
-    # Convert back to a list for potential sorting needs
     laptops = list(laptops)
-
+    print(laptops)
     # Sort the laptops using the custom sorting function
     laptops.sort(key=sort_laptop_name)
+    print(laptops)
 
     print(f'{[laptop.name for laptop in laptops]}')
 

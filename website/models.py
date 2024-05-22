@@ -64,4 +64,14 @@ class Laptop(db.Model):
             'gewaehrleistung' :self.gewaehrleistung
         }
 
+class Log(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.DateTime(timezone=True), default=func.now())
+    user_id = db.Column(db.String(100))
+    action = db.Column(db.String(100))
+    details = db.Column(db.String(255))
 
+    def __init__(self, user_id, action,details):
+        self.user_id = user_id
+        self.action = action
+        self.details = details

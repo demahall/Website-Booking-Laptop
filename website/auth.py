@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, session
-from werkzeug.security import check_password_hash, generate_password_hash
-from website.models import Booking, Laptop
+from flask import Blueprint, render_template, request, flash, redirect, url_for
+from website.utils import generate_log_message
+from website.models import Booking
 from website import db
 
 
@@ -10,11 +10,15 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/admin_bookings/<int:booking_id>', methods=['POST'])
 def update_booking_status(booking_id):
+
+
+
     # Get the new status from the form data
     new_status = request.form['status']
 
     # Find the booking by its ID
     booking = Booking.query.get(booking_id)
+    current_status = booking.status
 
     if not booking:
         # Handle the case where the booking ID is not found
@@ -25,6 +29,8 @@ def update_booking_status(booking_id):
     booking.status = new_status
 
     db.session.commit()
+
+    generate_log_message(action='change status booking',booking_id=booking_id, current_status=current_status,new_status=new_status)
 
     # Redirect back to the admin bookings page
     return redirect(url_for('views.bookings_overview_page'))
@@ -43,7 +49,7 @@ def delete_booking(booking_id):
         db.session.delete(booking)
 
         db.session.commit()
-
+        generate_log_message(action='delete booking',booking_id=booking_id)
         flash('Booking deleted successfully', 'success')
 
     return redirect(url_for('views.bookings_overview_page'))

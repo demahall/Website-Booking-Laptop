@@ -28,11 +28,13 @@ def create_app():
     from website.views import views
     from website.add_laptop import add_laptop_bp
     from website.modify_laptop import modify_laptop_bp
+    from website.calendar_overview import calendar_overview_bp
 
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(views,url_prefix='/')
     app.register_blueprint(add_laptop_bp,url_prefix='/bookings_overview/')
     app.register_blueprint(modify_laptop_bp, url_prefix='/bookings_overview/')
+    app.register_blueprint(calendar_overview_bp, url_prefix='/bookings_overview/')
 
 
     from website.models import Laptop,Booking,Log

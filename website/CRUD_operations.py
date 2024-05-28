@@ -1,7 +1,7 @@
 from website import create_app, db
 from website.models import Laptop,Booking
 from sqlalchemy.orm import Session
-from sqlalchemy import or_
+from sqlalchemy import inspect
 
 app = create_app()
 
@@ -140,17 +140,44 @@ def laptop_status(laptop_id):
 
     print(f'Laptop with {laptop.name} is {laptop.booking_id} and {laptop.bookings}')
 
+def filter_laptops():
+    # Initialize a dictionary to store the filtered criteria for each laptop
+    laptops = Laptop.query.all()
+    filtered_laptops = {}
+
+    laptop_bookings={}
+    for laptop in laptops:
+        bookings=laptop.bookings
+        booking = next((b for b in bookings if b.status == "booked"), None)
+        if booking:
+            laptop_bookings[laptop.name] = f'{booking.name} from {booking.selected_dates}'
+        else:
+            laptop_bookings[laptop.name] = 'Available'
+
+    # Populate the filtered laptops dictionary with laptop names, borrowers, and selected dates
+
+    filtered_laptops["Laptop Name"] = [laptop.name for laptop in laptops]
+    filtered_laptops["Booked by"] = [laptop_bookings[laptop.name] for laptop in laptops]
+
+    criteria = [col.key for col in inspect(Laptop).columns]
+    for criterion in criteria:
+        if hasattr(Laptop, criterion):
+            filtered_laptops[f'{criterion}'] = [getattr(laptop,criterion) for laptop in laptops]
+
+    print(filtered_laptops)
+
 
 if __name__ == "__main__":
+    filter_laptops()
     #show_and_delete_booking(4)
-    available_laptop()
+    #available_laptop()
     #new_bookings(name='Danil Doe', calendar_week=2, laptop_ids=[1,2])
     #return_laptop(booking_id=5)
     #reset_laptops()
     #change_status(1,'Returned')
     #delete_booking([4])
     #print_booking()
-    laptop_status(15)
+    #laptop_status(15)
     #filter_laptops(['hersteller','mac_addresse'])
 
 

@@ -102,6 +102,3 @@ function formatKey(key) {
         // Split the key by underscores and capitalize each word
         return key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     }
-
-
-

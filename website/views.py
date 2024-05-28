@@ -3,10 +3,12 @@ from website.models import Booking,Laptop,Log
 from website import db
 from website.utils import generate_log_message
 from sqlalchemy.orm import Session as SQLAlchemySession
-from sqlalchemy import or_
+from sqlalchemy import inspect
 
 views = Blueprint('views',__name__)
 session = SQLAlchemySession()
+
+
 
 
 @views.route('/',methods=['GET'])
@@ -62,6 +64,7 @@ def show_laptop_information():
     else:
         # Handle GET request
         return jsonify([laptop.serialize() for laptop in laptops])
+
 
 @views.route('/suggestions', methods=['POST'])
 def get_suggestions():

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for,session
 from website.utils import generate_log_message
 from website.models import Booking
 from website import db
@@ -10,9 +10,6 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/admin_bookings/<int:booking_id>', methods=['POST'])
 def update_booking_status(booking_id):
-
-
-
     # Get the new status from the form data
     new_status = request.form['status']
 
@@ -53,3 +50,4 @@ def delete_booking(booking_id):
         flash('Booking deleted successfully', 'success')
 
     return redirect(url_for('views.bookings_overview_page'))
+

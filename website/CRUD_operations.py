@@ -169,6 +169,7 @@ def filter_laptops():
 
 if __name__ == "__main__":
     filter_laptops()
+    #"Made changes in development_website branch"
     #show_and_delete_booking(4)
     #available_laptop()
     #new_bookings(name='Danil Doe', calendar_week=2, laptop_ids=[1,2])

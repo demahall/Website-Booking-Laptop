@@ -18,23 +18,23 @@ flatpickr("#dates", {
     minDate: "today", // Set minimum date to today
     weekNumbers: true, // Show week numbers
     onChange: function(selectedDates, dateStr, instance) {
+
         // Convert the selected week range into dates
         if (selectedDates.length === 2) {
             const startDate = selectedDates[0];
             const endDate = selectedDates[1];
 
-            const startOfWeek = new Date(startDate);
-            startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); // Adjust to the start of the week
-
-            const endOfWeek = new Date(endDate);
-            endOfWeek.setDate(endOfWeek.getDate() - endOfWeek.getDay() + 6); // Adjust to the end of the week
-
             // Format the dates and update the input value
-            const startDateFormatted = flatpickr.formatDate(startOfWeek, "d.m.Y");
-            const endDateFormatted = flatpickr.formatDate(endOfWeek, "d.m.Y");
+            const startDateFormatted = flatpickr.formatDate(startDate, "d.m.Y");
+            const endDateFormatted = flatpickr.formatDate(endDate, "d.m.Y");
 
             instance.setDate([startDateFormatted, endDateFormatted]);
         }
+        else {
+            const date = flatpickr.formatDate(selectedDates,"d.m.Y");
+            instance.setDate([date])
+        }
+
     }
 });
 

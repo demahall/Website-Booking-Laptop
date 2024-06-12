@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template,session, request,redirect,url_for,flash
+from flask import Blueprint, render_template,session, request,redirect,url_for,flash,jsonify
 from website.models import Laptop
 from website import db
 from website.utils import generate_log_message
@@ -84,18 +84,25 @@ def update_laptop_info(laptop_id):
 def delete_laptop(laptop_id):
     laptop = Laptop.query.get_or_404(laptop_id)
 
-    # Check if the user confirmed the deletion
-    confirm_delete = request.form.get('confirm_delete')
-    if confirm_delete == 'yes':
-        db.session.delete(laptop)
-        db.session.commit()
-        flash(f'{laptop.name} has been deleted', 'success')
+    if request.method == 'POST':
+        confirm_delete_laptop = request.json.get('confirm_delete')
 
-        generate_log_message(action= 'delete laptop', laptop_id=laptop_id,laptop_name=laptop.name)
-    else:
-        flash('Deletion cancelled', 'info')
+        if confirm_delete_laptop == 'yes':
 
-    return redirect(url_for('modify_laptop.modify_laptop_page'))
+            db.session.delete(laptop)
+            db.session.commit()
+
+            user_name = request.json.get('user')
+            action = request.json.get('action')
+
+
+            generate_log_message(action,user_name=user_name, laptop_id=laptop_id,laptop_name=laptop.name)
+            flash_message = 'Laptop deleted successfully'
+            flash(flash_message, 'success')
+
+            return jsonify(success=True, message=flash_message)
+        else:
+            return jsonify(success=False, message="Confirmation not received"), 400
 
 
 

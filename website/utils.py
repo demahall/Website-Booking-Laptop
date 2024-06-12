@@ -1,11 +1,11 @@
 from website import db
 from website.models import Log
-from flask import request
+from flask import request,flash
 
 
 def generate_log_message(action, **kwargs):
 
-    user_ip = request.remote_addr
+    user_name = kwargs.get('user_name','')
 
     if action == 'booking laptops':
         name = kwargs.get('name', '')
@@ -21,7 +21,7 @@ def generate_log_message(action, **kwargs):
             f"name: {name}, dates: {selected_dates}, "
             f"laptops: [{'; '.join(laptop_details)}] and Comment: {comment}"
         )
-        log_action(user_ip, action, log_message)
+        log_action(name, action, log_message)
 
     elif action == 'change status booking':
         booking_id = kwargs.get('booking_id')
@@ -32,7 +32,7 @@ def generate_log_message(action, **kwargs):
             f"User change Booking {booking_id} from {current_status} to "
             f"{new_status}"
         )
-        log_action(user_ip,action,log_message)
+        log_action(user_name,action,log_message)
 
     elif action == 'delete booking':
         booking_id = kwargs.get('booking_id')
@@ -40,14 +40,14 @@ def generate_log_message(action, **kwargs):
         log_message = (
             f"User delete Booking {booking_id}"
         )
-        log_action(user_ip,action,log_message)
+        log_action(user_name,action,log_message)
 
     elif action == 'add laptop':
         laptop_name = kwargs.get('name','')
         log_message = (
             f"User add a laptop under the name {laptop_name} into database"
         )
-        log_action(user_ip,action,log_message)
+        log_action(user_name,action,log_message)
 
     elif action == 'updated laptop':
         laptop_id = kwargs.get('laptop_id')
@@ -61,15 +61,16 @@ def generate_log_message(action, **kwargs):
             f"User update laptop with ID {laptop_id} and "
             f"changes: {', '.join(change_details)}"
         )
-        log_action(user_ip, action, log_message)
+        log_action(user_name, action, log_message)
 
     elif action == 'delete laptop':
         laptop_id = kwargs.get('laptop_id')
         laptop_name = kwargs.get('laptop_name','')
+
         log_message = (
             f"User delete laptop {laptop_name} with laptop ID {laptop_id}"
         )
-        log_action(user_ip, action, log_message)
+        log_action(user_name, action, log_message)
 
 def log_action(user_id, action, details=None):
 

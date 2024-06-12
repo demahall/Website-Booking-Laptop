@@ -5,6 +5,41 @@
 
 <link rel="stylesheet" href="/static/calendar_overview.css">
 <h1>Calendar Booking Overview</h1>
+<div class="container mt-5">
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <select class="form-control" id="laptopFilter">
+                <option value="all">Show laptops: All</option>
+                <!-- Add options dynamically for each laptop if needed -->
+            </select>
+        </div>
+        <div class="col-md-8 text-right">
+            <button class="btn btn-primary" onclick="previousMonth()">«</button>
+            <span id="currentMonthYear"></span>
+            <button class="btn btn-primary" onclick="nextMonth()">»</button>
+            <button class="btn btn-secondary" onclick="goToCurrentMonth()">Today</button>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th rowspan="2">Laptop</th>
+                    <th rowspan="2">Type</th>
+                    <th rowspan="2">Status</th>
+                    <th id="monthHeader" colspan="31"></th>
+                </tr>
+                <tr id="daysHeader">
+                    <!-- Day headers will be dynamically inserted here -->
+                </tr>
+            </thead>
+            <tbody id="calendarBody">
+                <!-- Rows for laptops will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
 
 <script src="/static/calendar_overview.js"></script>
 

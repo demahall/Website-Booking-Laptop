@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<!-- Delete Confirmation Modal -->
+<!--Confirmation Modal -->
 <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -25,6 +25,12 @@
       </div>
       <div class="modal-body">
         <p id="confirmationMessage"> Confirmation Message</p>
+        <form id="confirmationForm">
+          <div class="form-group">
+            <label for="userName">Enter your name</label>
+            <input type="text" class="form-control" id="userName" required>
+          </div>
+        </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelButton">Cancel</button>

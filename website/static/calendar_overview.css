@@ -1,75 +1,59 @@
-.calendar-container {
-  width: 100%;
-  margin: auto;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+body {
+    background-color: #f8f9fa;
 }
 
-.date-range {
-  padding: 10px;
+.table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #007bff;
+    color: white;
+    z-index: 1;
 }
 
-.table-container {
-  overflow-x: scroll; /* Enable horizontal scrolling for many dates */
+.table td,
+.table th {
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: middle;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
+.table td {
+    position: relative;
 }
 
-th, td {
-  padding: 5px;
-  border: 1px solid #ddd;
+.status {
+    display: inline-block;
+    padding: 0.25em 0.5em;
+    border-radius: 0.25em;
+    font-size: 0.85em;
 }
 
-.room-type, .room-status {  /* New styles for room type and status cells */
-  white-space: nowrap; /* Prevent wrapping of long text */
-  overflow: hidden; /* Hide overflow if text is too long */
-  text-overflow: ellipsis; /* Add ellipsis (...) for long text */
+.status.ready {
+    background-color: #28a745;
+    color: white;
 }
 
-.booking-block {
-  height: 100%; /* Fill entire cell height */
-  margin: 0; /* Remove margin for tight packing */
+.status.clean-up {
+    background-color: #ffc107;
+    color: white;
 }
 
-/* Example Status Colors (Replace with your logic) */
-.status-ready {
-  background-color: #99ff99; /* Light green */
+.status.dirty {
+    background-color: #dc3545;
+    color: white;
 }
 
-.status-clean-up {
-  background-color: #ffcc99; /* Light orange */
+.booking {
+    position: absolute;
+    height: 100%;
+    padding: 5px;
+    color: white;
+    border-radius: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.status-dirty {
-  background-color: #cccccc; /* Light gray */
-}
-
-/* Booking User Colors (Replace with your logic) */
-.user-a-12 {
-  background-color: #ffaa55; /* Light orange */
-}
-
-.user-a-28 {
-  background-color: #99ffaa; /* Light green */
-}
-
-.user-b-17 {
-  background-color: #aaff99; /* Light blue */
-}
-
-.navigation {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid #ddd;
-}
-
-.navigation button {
-  padding: 5px 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  cursor: pointer;
+.booking span {
+    font-size: 0.85em;
 }

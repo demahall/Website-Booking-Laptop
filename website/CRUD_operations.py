@@ -1,5 +1,5 @@
 from website import create_app, db
-from website.models import Laptop,Booking
+from website.models import Laptop,Booking,Log
 from sqlalchemy.orm import Session
 from sqlalchemy import inspect
 
@@ -166,9 +166,19 @@ def filter_laptops():
 
     print(filtered_laptops)
 
+def delete_all_logs():
+    try:
+        # Begin a transaction
+        db.session.query(Log).delete()
+        # Commit the transaction
+        db.session.commit()
+    except Exception as e:
+        # If an error occurs, rollback the transaction
+        db.session.rollback()
+        print(f"An error occurred while deleting logs: {e}")
 
 if __name__ == "__main__":
-    filter_laptops()
+    delete_all_logs()
     #"Made changes in development_website branch"
     #show_and_delete_booking(4)
     #available_laptop()

@@ -14,43 +14,47 @@ def generate_log_message(action, **kwargs):
         comment = kwargs.get('comment', '')
 
         laptop_details = [f"Name: {laptop.name}, ID: {laptop.id}" for laptop in laptops]
-        print(f"Laptop Details: {laptop_details}")  # Debugging
 
         log_message = (
-            f"User booking laptops with "
-            f"name: {name}, dates: {selected_dates}, "
-            f"laptops: [{'; '.join(laptop_details)}] and Comment: {comment}"
+            f"{name} booked the following laptops for the dates {selected_dates}: "
+            f"{', '.join(laptop_details)}. "
+            f"Comment provided: '{comment}'."
         )
+
         log_action(name, action, log_message)
 
     elif action == 'change status booking':
-        booking_id = kwargs.get('booking_id')
+
+        name = kwargs.get('name')
+        selected_dates = kwargs.get('selected_dates')
         current_status = kwargs.get('current_status','')
         new_status = kwargs.get('new_status','')
 
         log_message = (
-            f"User change Booking {booking_id} from {current_status} to "
-            f"{new_status}"
+            f"Booking status for a booking from {name} from {selected_dates} has been changed from "
+            f"'{current_status}' to '{new_status}'."
         )
         log_action(user_name,action,log_message)
 
     elif action == 'delete booking':
-        booking_id = kwargs.get('booking_id')
+
+        name = kwargs.get('name')
+        selected_dates = kwargs.get('selected_dates')
 
         log_message = (
-            f"User delete Booking {booking_id}"
+            f"User deleted a booking from {name}, which scheduled for {selected_dates}"
         )
         log_action(user_name,action,log_message)
 
     elif action == 'add laptop':
         laptop_name = kwargs.get('name','')
         log_message = (
-            f"User add a laptop under the name {laptop_name} into database"
+            f" A new laptop added with name '{laptop_name}' "
         )
         log_action(user_name,action,log_message)
 
     elif action == 'updated laptop':
-        laptop_id = kwargs.get('laptop_id')
+        laptop_name = kwargs.get('laptop_name')
         changes = kwargs.get('changes',{})
 
         change_details = []
@@ -58,17 +62,16 @@ def generate_log_message(action, **kwargs):
             change_details.append(f"{key}: {change['old']} -> {change['new']}")
 
         log_message = (
-            f"User update laptop with ID {laptop_id} and "
-            f"changes: {', '.join(change_details)}"
+            f"User updated a laptop '{laptop_name}' with the following changes: {', '.join(change_details)}"
         )
         log_action(user_name, action, log_message)
 
     elif action == 'delete laptop':
-        laptop_id = kwargs.get('laptop_id')
+
         laptop_name = kwargs.get('laptop_name','')
 
         log_message = (
-            f"User delete laptop {laptop_name} with laptop ID {laptop_id}"
+            f"User deleted a laptop with name '{laptop_name}' "
         )
         log_action(user_name, action, log_message)
 

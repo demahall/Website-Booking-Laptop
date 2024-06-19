@@ -9,7 +9,7 @@ auth = Blueprint('auth', __name__)
 
 
 @auth.route('/admin_bookings/<int:booking_id>', methods=['POST'])
-def update_booking_status(booking_id):
+def change_booking_status(booking_id):
 
     confirm_update_booking = request.form.get('confirm_update')
 
@@ -33,7 +33,13 @@ def update_booking_status(booking_id):
         db.session.commit()
 
         user_name = request.form.get('user_name')
-        generate_log_message(action='change status booking',user_name=user_name, booking_id=booking_id, current_status=current_status,new_status=new_status)
+        generate_log_message(action='change status booking',
+                             user_name=user_name,
+                             booking_id=booking_id,
+                             name=booking.name,
+                             selected_dates=booking.selected_dates,
+                             current_status=current_status,
+                             new_status=new_status)
         flash('Booking update successfully', 'success')
     # Redirect back to the admin bookings page
     return redirect(url_for('views.bookings_overview_page'))
@@ -55,7 +61,12 @@ def delete_booking(booking_id):
         db.session.commit()
 
         user_name = request.form.get('user_name')
-        generate_log_message(action='delete booking',user_name=user_name,booking_id=booking_id)
+        generate_log_message(action='delete booking',
+                             user_name=user_name,
+                             booking_id=booking_id,
+                             name=booking.name,
+                             selected_dates=booking.selected_dates
+                             )
         flash('Booking deleted successfully', 'success')
 
     return redirect(url_for('views.bookings_overview_page'))

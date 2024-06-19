@@ -4,7 +4,7 @@
 <h3 align="center">Add New Laptops</h3>
 <div class="container mt-5">
 
-    <form method="POST">
+    <form id="addNewLaptopForm" method="POST" action="{{ url_for('add_laptop.add_laptop')}}">
         <div class="form-group">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" class="form-control" required>
@@ -69,11 +69,10 @@
             <label for="gewaehrleistung">Gewaehrleistung:</label>
             <input type="text" id="gewaehrleistung" name="gewaehrleistung" class="form-control" required>
         </div>
-        <button type="submit" class="btn btn-primary">Add Laptop</button>
+        <button type="button" class="addNewLaptopButton btn btn-primary">Add Laptop</button>
     </form>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% include "confirmation_window.html" %}
+<script src="/static/handling_confirmation.js"></script>
 {% endblock %}

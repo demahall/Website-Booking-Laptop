@@ -33,23 +33,19 @@
                 Returned
               {% else %}
                 {{ booking.status }}
-                <form id="updateBookingForm_{{ booking.id }}" method="POST" action="{{ url_for('auth.update_booking_status', booking_id=booking.id) }}">
+                <form id="updateBookingForm_{{ booking.id }}" method="POST" action="{{ url_for('auth.change_booking_status', booking_id=booking.id) }}" >
                   <select name="status">
                     <option value="booked" {% if booking.status =='booked' %} selected {% endif %}>Booked</option>
                     <option value="returned">Returned</option>
                   </select>
-                  <button type="button" id="updateBookingButton_{{ booking.id }}" class="updateBookingButton">Update</button>
-                  <input type="hidden" id="confirmUpdateInput_{{ booking.id }}" name="confirm_update" value="">
-                  <input type="hidden" id="userNameInputa_{{ booking.id }}" name="user_name" value="">
+                  <button type="button" id="updateBookingButton_{{ booking.id }}" class="updateBookingButton" >Update</button>
                 </form>
               {% endif %}
             </td>
             <td> {{booking.comment}}</td>
             <td>
-              <form id="deleteBookingForm_{{ booking.id }}" method="POST" action="{{ url_for('auth.delete_booking', booking_id=booking.id) }}">
+              <form id="deleteBookingForm_{{ booking.id }}" method="POST" action="{{ url_for('auth.delete_booking', booking_id=booking.id) }}" >
                 <button type="button" id="deleteBookingButton_{{ booking.id }}" class="deleteBookingButton btn btn-danger btn-sm">Delete</button>
-                <input type="hidden" id="confirmDeleteInput_{{ booking.id }}" name="confirm_delete" value="">
-                <input type="hidden" id="userNameInputb_{{ booking.id }}" name="user_name" value="">
               </form>
             </td>
           </tr>

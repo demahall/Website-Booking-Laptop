@@ -17,7 +17,9 @@ def modify_laptop_page():
 def update_laptop_info(laptop_id):
     laptop = Laptop.query.get_or_404(laptop_id)
 
-    if request.method == 'POST':
+    confirm_update_laptop = request.form.get('confirm_update')
+
+    if confirm_update_laptop == 'yes':
         # Store original values
         original_values = {
             'name': laptop.name,
@@ -71,9 +73,15 @@ def update_laptop_info(laptop_id):
             if original_value != new_value:
                 changes[key] = {'old': original_value, 'new': new_value}
 
-        # Generate log message if there are changes
+        # Generate log message if there are changes and put the name who change the laptop
+        user_name = request.form.get('user_name')
         if changes:
-            generate_log_message(action='updated laptop', laptop_id=laptop.id, changes=changes)
+            generate_log_message(action='updated laptop',user_name=user_name,
+                                 laptop_name=laptop.name,
+                                 changes=changes)
+
+        flash_message = 'Update Laptop successfully'
+        flash(flash_message, 'success')
 
         return redirect(url_for('modify_laptop.modify_laptop_page', laptop_id=laptop_id))
 
@@ -82,27 +90,24 @@ def update_laptop_info(laptop_id):
 
 @modify_laptop_bp.route('/delete_laptop/<int:laptop_id>', methods=['POST'])
 def delete_laptop(laptop_id):
-    laptop = Laptop.query.get_or_404(laptop_id)
 
-    if request.method == 'POST':
-        confirm_delete_laptop = request.json.get('confirm_delete')
+    #get confirmation from javascript
+    confirm_delete_laptop = request.form.get('confirm_delete')
 
-        if confirm_delete_laptop == 'yes':
+    if confirm_delete_laptop == 'yes':
 
-            db.session.delete(laptop)
-            db.session.commit()
+        # get laptop
+        laptop = Laptop.query.get_or_404(laptop_id)
 
-            user_name = request.json.get('user')
-            action = request.json.get('action')
+        db.session.delete(laptop)
+        db.session.commit()
 
+        user_name = request.form.get('user_name')
+        generate_log_message(action='delete Laptop',user_name=user_name, laptop_name=laptop.name)
+        flash_message = 'Laptop deleted successfully'
+        flash(flash_message, 'success')
 
-            generate_log_message(action,user_name=user_name, laptop_id=laptop_id,laptop_name=laptop.name)
-            flash_message = 'Laptop deleted successfully'
-            flash(flash_message, 'success')
-
-            return jsonify(success=True, message=flash_message)
-        else:
-            return jsonify(success=False, message="Confirmation not received"), 400
+    return redirect(url_for('modify_laptop.modify_laptop_page'))
 
 
 

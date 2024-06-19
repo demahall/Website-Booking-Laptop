@@ -19,7 +19,7 @@
     <div class="container ">
         <div class="row">
             <div class="col-md-6 offset-md-3">
-                <form action="{{ url_for('modify_laptop.update_laptop_info', laptop_id=laptop.id) }}" method="POST">
+                <form id= "modifyLaptopForm_{{ laptop.id }}" action="{{ url_for('modify_laptop.update_laptop_info', laptop_id=laptop.id) }}" method="POST">
                     <div class="form-group">
                         <label for="name">Name:</label>
                         <input type="text" class="form-control" id="name" name="name" value="{{ laptop.name }}" readonly>
@@ -84,14 +84,13 @@
                         <label for="gewaehrleistung">Gewaehrleistung:</label>
                         <input type="text" class="form-control" id="gewaehrleistung" name="gewaehrleistung" value="{{ laptop.gewaehrleistung }}" readonly>
                     </div>
-                    <div class="d-flex justify-content-between"> <!-- Align buttons horizontally -->
-                        <button type="button" id="editButton" class="btn btn-primary">Edit</button>
-                        <button type="submit" id="saveButton" class="btn btn-success d-none">Save</button>
-                        <button type="button" id="deleteButton" data-target="#ConfirmationModal" data-toggle="modal" class="btn btn-danger">Delete Laptop</button>
+                    <div class="button-control d-flex justify-content-between" data-laptop-id="{{laptop.id}}"> <!-- Align buttons horizontally -->
+                        <button type="button" id="editLaptopButton" class="editLaptopButton btn btn-primary">Edit</button>
+                        <button type="button" id="saveLaptopButton_{{ laptop.id }}"  class="saveLaptopButton btn btn-success d-none">Save</button>
+                        <button type="button" id="deleteLaptopButton_{{ laptop.id }}" data-toggle="modal" class="deleteLaptopButton btn btn-danger">Delete Laptop</button>
                     </div>
                 </form>
-                <form id="deleteForm" class="float-right" action="{{ url_for('modify_laptop.delete_laptop', laptop_id=laptop.id) }}" method="POST">
-                    <input type="hidden" id="confirmDeleteInput" name="confirm_delete" value="">
+                <form id="deleteLaptopForm_{{ laptop.id }}" class="float-right" action="{{ url_for('modify_laptop.delete_laptop', laptop_id=laptop.id) }}" method="POST">
                 </form>
             </div>
         </div>

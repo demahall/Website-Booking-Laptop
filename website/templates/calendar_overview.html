@@ -4,30 +4,33 @@
 {% block content %}
 
 <link rel="stylesheet" href="/static/calendar_overview.css">
-<h1>Calendar Booking Overview</h1>
-<div class="container mt-5">
+<h3 align="center" >Calendar Booking Overview</h3>
+<div class="container centered mt-5">
     <div class="row mb-3">
-        <div class="col-md-4">
-            <select class="form-control" id="laptopFilter">
-                <option value="all">Show laptops: All</option>
-                <!-- Add options dynamically for each laptop if needed -->
+        <div class="col-md-4 d-flex align-items-center">
+            <label for="bookingStatusDropDown" class="mr-2" >Show Booking:</label>
+            <select id= "bookingStatusDropDown" class="form-control" onclick="bookingStatusToggleOptions(this)" >
+                <option value="bookingStatusAll">All</option>
+                <option value="bookingStatusPending">Pending</option>
+                <option value="bookingStatusBooked">Booked</option>
+                <option value="bookingStatusReturned">Returned</option>
             </select>
         </div>
-        <div class="col-md-8 text-right">
-            <button class="btn btn-primary" onclick="previousMonth()">«</button>
+        <div class="col-md-8 text-right timelineButton">
+            <button class="btn-nav" id="previousMonthButton">«</button>
+            <button class="btn btn-secondary" id="currentMonthButton">Today</button>
+            <button class="btn-nav" id="nextMonthButton">»</button>
             <span id="currentMonthYear"></span>
-            <button class="btn btn-primary" onclick="nextMonth()">»</button>
-            <button class="btn btn-secondary" onclick="goToCurrentMonth()">Today</button>
         </div>
     </div>
-    <div class="table-responsive">
-        <table class="table table-bordered">
+
+    <div class="calendar-table">
+        <table >
             <thead>
                 <tr>
-                    <th rowspan="2">Laptop</th>
-                    <th rowspan="2">Type</th>
+                    <th rowspan="2">Book By</th>
                     <th rowspan="2">Status</th>
-                    <th id="monthHeader" colspan="31"></th>
+                    <th colspan="31" id="monthHeader"> March 2024</th>
                 </tr>
                 <tr id="daysHeader">
                     <!-- Day headers will be dynamically inserted here -->

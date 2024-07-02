@@ -1,59 +1,83 @@
-body {
-    background-color: #f8f9fa;
+
+/*  All about Booking status drop down*/
+
+.d-flex {
+    display: flex; /* Makes the container a flexbox */
 }
 
-.table thead th {
-    position: sticky;
-    top: 0;
-    background-color: #007bff;
-    color: white;
-    z-index: 1;
+.align-items-center {
+    align-items: center; /* Aligns children vertically in the center */
 }
 
-.table td,
-.table th {
-    white-space: nowrap;
-    text-align: center;
-    vertical-align: middle;
+.mr-2 {
+    margin-right: 8px; /* Adds a small margin to the right of the label */
 }
 
-.table td {
-    position: relative;
+.form-control {
+    width: auto; /* Allows the select box to only take necessary width */
 }
 
-.status {
-    display: inline-block;
-    padding: 0.25em 0.5em;
-    border-radius: 0.25em;
-    font-size: 0.85em;
+#bookingStatusDropDown option {
+    display: block; /* This ensures that all options are visible when the select box is opened */
 }
 
-.status.ready {
-    background-color: #28a745;
-    color: white;
+
+
+/*  All about container mt-5*/
+
+
+.container.centered {
+    margin: 0 auto; /* Automatically adjust the margin on both sides to center */
+    width: 120%;
 }
 
-.status.clean-up {
-    background-color: #ffc107;
-    color: white;
+.calendar-table table {
+    width: 100%; /* Ensures the table spans the entire container */
+
+    /* Helps in evenly distributing column widths */
 }
 
-.status.dirty {
-    background-color: #dc3545;
-    color: white;
+/* Aligning the right side content (timeline and buttons) */
+.timelineButton {
+    display: flex;
+    justify-content: flex-end; /* Aligns content to the right */
+    align-items: center; /* Centers items vertically */
+    width: 100%; /* Ensures the div takes full width of its parent */
+
 }
 
-.booking {
-    position: absolute;
-    height: 100%;
-    padding: 5px;
-    color: white;
+/* Optional: Adjust spacing between elements */
+.timelineButton button {
     border-radius: 5px;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    margin-left: 3px;
+    margin-right: 3px;
+    transition: background-color 0.2s, color 0.2s;
 }
 
-.booking span {
-    font-size: 0.85em;
+.timelineButton .btn-nav {
+    display: flex; /* Use flexbox to center content */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    border: 1px solid #ccc;
+    transition: background-color 0.2s, color 0.2s;
 }
+
+.calendar-table th, .calendar-table td {
+    text-align: center; /* Centers text in cells */
+    border: 1px solid #ddd; /* Adds a subtle border for clarity */
+    padding: 8px; /* Adds padding to the cell for text alignment */
+    font-size: 0.9em; /* Reduces font size to fit more content */
+}
+
+.calendar-table thead th {
+    white-space: nowrap; /* Ensures the text does not wrap */
+}
+
+.calendar-table th.date, .calendar-table td.date {
+    width: 3%; /* Adjusts the width of each date column */
+}
+
+
+

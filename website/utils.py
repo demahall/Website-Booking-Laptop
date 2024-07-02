@@ -1,6 +1,5 @@
 from website import db
 from website.models import Log
-from flask import request,flash
 
 
 def generate_log_message(action, **kwargs):

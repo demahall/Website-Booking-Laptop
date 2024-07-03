@@ -64,9 +64,13 @@
     transition: background-color 0.2s, color 0.2s;
 }
 
+
+
+/* All about calendar table*/
+
 .calendar-table th, .calendar-table td {
     text-align: center; /* Centers text in cells */
-    border: 1px solid #ddd; /* Adds a subtle border for clarity */
+    border: 1px solid #ccc; /* Adds a subtle border for clarity */
     padding: 8px; /* Adds padding to the cell for text alignment */
     font-size: 0.9em; /* Reduces font size to fit more content */
 }
@@ -78,6 +82,41 @@
 .calendar-table th.date, .calendar-table td.date {
     width: 3%; /* Adjusts the width of each date column */
 }
+
+/* All about Booking Cell */
+
+.booking-cell {
+    background-color: #8fbc8f;  /* Similar green background color */
+    color: #ffffff;            /* White text color for readability */
+    justify-content: space-between; /* Space distribution */
+    align-items: center;       /* Align items vertically in the center */
+    padding: 4px 8px;          /* Padding around the content */
+    font-size: 0.9em;          /* Adjust font size as necessary */
+    border-radius: 4px;        /* Rounded corners */
+}
+
+.booking-header, .booking-dates, .booking-status {
+    padding: 2px;
+}
+
+.booking-header {
+    font-weight: bold;
+    color: #333;
+}
+
+.booking-dates {
+    font-size: 0.85em;
+    color: #666;
+    font-weight: bold;
+}
+
+.booking-status {
+    padding: 2px 5px;          /* Padding for status tags */
+    background-color: #2e8b57; /* Darker green background for contrast */
+    border-radius: 3px;        /* Rounded corners for status tags */
+    white-space: nowrap;       /* Prevents wrapping of status text */
+}
+
 
 
 

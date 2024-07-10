@@ -103,7 +103,7 @@ def delete_laptop(laptop_id):
         db.session.commit()
 
         user_name = request.form.get('user_name')
-        generate_log_message(action='delete Laptop',user_name=user_name, laptop_name=laptop.name)
+        generate_log_message(action='delete laptop',user_name=user_name, laptop_name=laptop.name)
         flash_message = 'Laptop deleted successfully'
         flash(flash_message, 'success')
 

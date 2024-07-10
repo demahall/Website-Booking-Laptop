@@ -67,6 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
         for (let day = 1; day <= daysInMonth; day++) {
             const dayCell = document.createElement('th');
             dayCell.textContent = day;
+            dayCell.className = 'day-cell';
             daysHeader.appendChild(dayCell);
         }
 
@@ -149,7 +150,9 @@ document.addEventListener('DOMContentLoaded', function () {
         cell.appendChild(dates);
         cell.appendChild(status);
 
+
         return cell;
+
     }
 
     function populateCalendar() {
@@ -160,20 +163,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
             //create new row, make column in a row sequentially or in order !
             const row = document.createElement("tr");
+            row.className = 'booking-row';
+            calendarBody.appendChild(row);
 
             // Create name cell in that row
             const nameCell = document.createElement("td");
             nameCell.textContent = booking.name;
+
             row.appendChild(nameCell);
 
             // Create status cell in that row
             const statusCell = document.createElement("td");
             statusCell.textContent = booking.status;
+
             row.appendChild(statusCell);
 
             // Prepare to fill the rest of the row with empty cells
             for (let i = 1; i <= monthHeader.colSpan; i++) {
-                 row.appendChild(document.createElement("td"));
+                const dateBox = document.createElement("td");
+                dateBox.className = 'date-box';
+                row.appendChild(dateBox);
+
+                 //row.rowSpan=3;
             }
 
             //get information of where should I put this bookingCell

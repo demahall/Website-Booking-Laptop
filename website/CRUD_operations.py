@@ -44,7 +44,7 @@ def print_booking():
     bookings= Booking.query.all()
 
     for booking in bookings:
-        print(f"ID: {booking.id}, Name: {booking.name}, Status: {booking.status}, Laptops: {[laptop.name for laptop in booking.laptops]}, Booking Date: {booking.date}")
+        print(f"ID: {booking.id}, Name: {booking.name}, Status: {booking.status}, Laptops: {[laptop.name for laptop in booking.laptops]}, Booking Date: {booking.date}, from until: {booking.selected_dates}")
 
 def available_laptop():
     # Retrieve laptops that are not currently booked
@@ -178,7 +178,7 @@ def delete_all_logs():
         print(f"An error occurred while deleting logs: {e}")
 
 if __name__ == "__main__":
-    delete_all_logs()
+    #delete_all_logs()
     #"Made changes in development_website branch"
     #show_and_delete_booking(4)
     #available_laptop()
@@ -187,7 +187,7 @@ if __name__ == "__main__":
     #reset_laptops()
     #change_status(1,'Returned')
     #delete_booking([4])
-    #print_booking()
+    print_booking()
     #laptop_status(15)
     #filter_laptops(['hersteller','mac_addresse'])
 

@@ -10,12 +10,21 @@ const bookings = [
     {
         id: 2,
         name: "Lisa",
-        status: "Confirmed",
+        status: "Returned",
         startDate: "2024-07-05",
         endDate: "2024-09-08",
         details: "Unpaid"
+    },
+    {
+        id: 3,
+        name: "John",
+        status: "Pending",
+        startDate: "2024-07-15",
+        endDate: "2024-07-20",
+        details: "Unpaid"
     }
 ];
+
 
 
 
@@ -23,10 +32,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     monthHeader = document.getElementById('monthHeader');
     let currentDate = new Date();
-    currentMonth = currentDate.getMonth()+1; //index from 0
+    currentMonth = currentDate.getMonth() + 1; //index from 0
     currentYear = currentDate.getFullYear();
     const calendarBody = document.getElementById("calendarBody");
-
 
     function nextMonth() {
         currentMonth++;
@@ -49,18 +57,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function goToCurrentMonth() {
         currentDate = new Date();
-        currentMonth = currentDate.getMonth()+1;
+        currentMonth = currentDate.getMonth() + 1;
         currentYear = currentDate.getFullYear();
-        updateCalendar(currentMonth,currentYear);
+        updateCalendar(currentMonth, currentYear);
     }
 
-    function updateCalendar(month,year) {
-
+    function updateCalendar(month, year) {
         const monthNames = ["January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"];
         const daysInMonth = new Date(year, month, 0).getDate();
         monthHeader.colSpan = daysInMonth; // Update colspan to match days in month
-        monthHeader.textContent = `${monthNames[month-1]} ${year}`; //index array from 0
+        monthHeader.textContent = `${monthNames[month - 1]} ${year}`; //index array from 0
 
         daysHeader.innerHTML = ''; // Clear existing day headers
 
@@ -75,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     //handling booking box display
-    function handlingBookingCell(booking){
+    function handlingBookingCell(booking) {
 
         const bookingStart = new Date(booking.startDate);
         const bookingEnd = new Date(booking.endDate);
@@ -83,9 +90,8 @@ document.addEventListener('DOMContentLoaded', function () {
         //adjust with start column of the table, in this case is two
 
         let startIndex = 2;
-        let endIndex = monthHeader.colSpan+1;
-        let spanLength = endIndex - startIndex +1;
-
+        let endIndex = monthHeader.colSpan + 1;
+        let spanLength = endIndex - startIndex + 1;
 
         // Condition 1: Both dates are within the current month
         if (bookingStart.getMonth() + 1 === currentMonth && bookingStart.getFullYear() === currentYear &&
@@ -111,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Condition 4: Booking spans over the entire displayed month
         else if (bookingStart < new Date(currentYear, currentMonth - 1, 1) && bookingEnd > new Date(currentYear, currentMonth, 0)) {
-            startIndex= startIndex;
+            startIndex = startIndex;
             endIndex = endIndex;
             spanLength = spanLength;
         }
@@ -123,14 +129,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         //to create booking cell
-        return [startIndex,endIndex,spanLength];
+        return [startIndex, endIndex, spanLength];
 
     }
 
-    function createBookingCell(booking,widthCell) {
+    function createBookingCell(booking, widthCell) {
 
         const cell = document.createElement('td');
-        cell.className = 'booking-cell';
+        cell.className = `booking-cell ${booking.status.toLowerCase()}`;
         cell.colSpan = widthCell; // Custom function to calculate the span
 
         const header = document.createElement('div');
@@ -145,11 +151,9 @@ document.addEventListener('DOMContentLoaded', function () {
         status.className = 'booking-status';
         status.textContent = booking.status;
 
-
         cell.appendChild(header);
         cell.appendChild(dates);
         cell.appendChild(status);
-
 
         return cell;
 
@@ -183,25 +187,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 const dateBox = document.createElement("td");
                 dateBox.className = 'date-box';
                 row.appendChild(dateBox);
-
-                 //row.rowSpan=3;
             }
 
             //get information of where should I put this bookingCell
-            [startIndex,endIndex,spanLength] = handlingBookingCell(booking);
+            [startIndex, endIndex, spanLength] = handlingBookingCell(booking);
 
             //createBookingCell based on their position
-            bookingCell = createBookingCell(booking,spanLength);
+            bookingCell = createBookingCell(booking, spanLength);
 
             // Create and insert the booking cell if conditions are met
             if (startIndex >= 2 && spanLength > 0) {
-
                 row.cells[startIndex].replaceWith(bookingCell); // Replace starting cell with booking cell
 
                 // Remove excess cells covered by the span
                 for (let i = 1; i < spanLength; i++) {
-                    if (row.cells[startIndex+1]) { // Check if the next cell exists before trying to remove it
-                        row.removeChild(row.cells[startIndex+1]); // Always remove the next cell after the start
+                    if (row.cells[startIndex + 1]) { // Check if the next cell exists before trying to remove it
+                        row.removeChild(row.cells[startIndex + 1]); // Always remove the next cell after the start
                     }
                 }
             }
@@ -209,9 +210,22 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Initial setup
-    updateCalendar(currentMonth,currentYear);
+    function fetchBookings() {
+        fetch('/get_bookings')
+            .then(response => response.json())
+            .then(booking_list => {
+                console.log(booking_list)
+                populateCalendar(booking_list);
+            })
+            .catch(error => {
+                console.error('Error fetching booking data:', error);
+            });
+    }
 
+    // Initial setup
+
+    updateCalendar(currentMonth, currentYear);
+    fetchBookings();
     // Bind these functions to your previous and next buttons
     document.getElementById('nextMonthButton').addEventListener('click', nextMonth);
     document.getElementById('previousMonthButton').addEventListener('click', previousMonth);

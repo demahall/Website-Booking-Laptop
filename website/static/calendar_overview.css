@@ -22,7 +22,6 @@
 }
 
 
-
 /*  All about container mt-5*/
 
 
@@ -64,7 +63,27 @@
     transition: background-color 0.2s, color 0.2s;
 }
 
+/* Style for the status indicator */
 
+.status-indicator {
+    width: 5px;
+    height: 100%;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+/* Colors for different statuses */
+.status-indicator.booked {
+    background-color: #8fbc8f; /* Green for Booked */
+}
+
+.status-indicator.confirmed {
+    background-color: #4682b4; /* Blue for Confirmed */
+}
+
+.status-indicator.pending {
+    background-color: #ffd700; /* Yellow for Pending */
+}
 
 /* All about calendar table*/
 
@@ -73,16 +92,16 @@
     border: 1px solid #ccc; /* Adds a subtle border for clarity */
     padding: 8px; /* Adds padding to the cell for text alignment */
     font-size: 0.9em; /* Reduces font size to fit more content */
-}
-
-.calendar-table thead th {
     white-space: nowrap; /* Ensures the text does not wrap */
 }
 
-.calendar-table th.date, .calendar-table td.date {
-    width: 3%; /* Adjusts the width of each date column */
+.calendar-table th.day-cell,
+.calendar-table td.date-box {
+    width: 35px; /* Adjust as necessary for your design */
+    min-width: 35px; /* Ensures the minimum width */
+    text-align: center; /* Centers the content */
+    border: 1px solid #ccc;
 }
-
 
 /* All about Booking Cell */
 
@@ -95,22 +114,26 @@
     overflow: hidden;          /* Prevents content from spilling out */
 }
 
-.calendar-table th.day-cell, .calendar-table td.date-box {
-    width: 35px; /* Adjust this width as needed */
-    border: 1px solid #ccc;
-}
-
-
 tr.booking-row {
     height : 90px;
 }
 
-.booking-status {
-    background-color: #2e8b57; /* Darker green for the status bar */
-    color: #ffffff;            /* White text for readability */
-    padding: 4px;              /* Padding around the text */
-    border-radius: 0 0 4px 4px; /* Rounded corners on bottom only */
+.booking-cell.booked {
+    background-color: #8fbc8f; /* Green for Booked */
+    color: #ffffff;            /* White text */
 }
+
+.booking-cell.returned {
+    background-color: #808080; /* Blue for Confirmed */
+    color: #ffffff;            /* White text */
+}
+
+.booking-cell.pending {
+    background-color: #87CEEB; /* Yellow for Pending */
+    color: #ffff;            /* Black text */
+}
+
+
 
 
 

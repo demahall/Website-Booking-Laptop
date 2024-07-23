@@ -1,5 +1,3 @@
-# Flask Web App Tutorial
-
 ## Setup & Installation
 
 Make sure you have the latest version of Python installed.
@@ -8,19 +6,21 @@ Make sure you have the latest version of Python installed.
 git clone <repo-url>
 ```
 
+Make sure to install all library and add ons to operate this website
+
 ```bash
 pip install -r requirements.txt
 ```
 
 
 
-## IP Address server Computer on command windows choose  IPv4-Address as your IP
+### IP-Address server Computer on command windows choose  IPv4-Address as your IP
 
 ```bash
 ipconfig
 ```
 
-## Set IP Address in app.py and running The App
+Set IP-Address in app.py and running The App
 
 ```bash
 python app.py
@@ -29,4 +29,4 @@ python app.py
 
 ## Viewing The App
 
-Go to `http://127.0.0.1:5000`
+Go to `ip-address:5000`

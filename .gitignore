@@ -1,2 +1,5 @@
 flask_session/
 instance/database.db
+README.md
+app.py
+migrations/g

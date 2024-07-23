@@ -12,11 +12,20 @@ git clone <repo-url>
 pip install -r requirements.txt
 ```
 
-## Running The App
+
+
+## IP Address server Computer on command windows choose  IPv4-Address as your IP
+
+```bash
+ipconfig
+```
+
+## Set IP Address in app.py and running The App
 
 ```bash
 python app.py
 ```
+
 
 ## Viewing The App
 

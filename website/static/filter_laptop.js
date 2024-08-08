@@ -14,7 +14,7 @@ var selectedSuggestion = '';
 
 flatpickr("#dates", {
     mode: "range",
-    dateFormat: "d.m",
+    dateFormat: "d.m.Y",
     minDate: "today", // Set minimum date to today
     weekNumbers: true, // Show week numbers
     onChange: function(selectedDates, dateStr, instance) {

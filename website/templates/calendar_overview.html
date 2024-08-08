@@ -4,16 +4,16 @@
 {% block content %}
 
 <link rel="stylesheet" href="/static/calendar_overview.css">
-<h3 align="center" >Calendar Booking Overview</h3>
-<div class="container centered mt-5">
+<div class="wrapper">
+    <h3 align="center">Calendar Booking Overview</h3>
     <div class="row mb-3">
         <div class="col-md-4 d-flex align-items-center">
-            <label for="bookingStatusDropDown" class="mr-2" >Show Booking:</label>
-            <select id= "bookingStatusDropDown" class="form-control" >
-                <option value="bookingStatusAll">All</option>
-                <option value="bookingStatusPending">Pending</option>
-                <option value="bookingStatusBooked">Booked</option>
-                <option value="bookingStatusReturned">Returned</option>
+            <label for="bookingStatusDropDown" class="mr-2">Show Booking:</label>
+            <select id="bookingStatusDropDown" name="bookingStatusDropDownOptions" class="form-control">
+                <option value="All">All</option>
+                <option value="Pending">Pending</option>
+                <option value="Booked">Booked</option>
+                <option value="Returned">Returned</option>
             </select>
         </div>
         <div class="col-md-8 text-right timelineButton">
@@ -24,24 +24,24 @@
         </div>
     </div>
 
-    <div class="calendar-table">
-        <table >
+    <div class="calendar-table-wrapper">
+        <table class="calendar-table">
             <thead>
                 <tr>
-                    <th rowspan="2">Book By</th>
-                    <th rowspan="2">Status</th>
-                    <th colspan="31" id="monthHeader"> March 2024</th>
+                    <th class="book-by" rowspan="2">Book By</th>
+                    <th class="status" rowspan="2">Status</th>
+                    <th colspan="31" id="monthHeader">July 2024</th>
                 </tr>
                 <tr id="daysHeader">
                     <!-- Day headers will be dynamically inserted here -->
                 </tr>
             </thead>
             <tbody id="calendarBody">
-                <!-- Rows for laptops will be dynamically inserted here -->
             </tbody>
         </table>
     </div>
 </div>
+
 
 
 <script src="/static/calendar_overview.js"></script>

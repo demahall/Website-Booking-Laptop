@@ -51,7 +51,6 @@ function fetchFilteredLaptops(selectedCriteria) {
     })
     .then(filteredLaptops => {
         // Once data is fetched, call renderFilteredLaptops function to render it
-        console.log(filteredLaptops)
         renderFilteredLaptops(filteredLaptops);
     })
     .catch(error => {

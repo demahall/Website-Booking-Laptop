@@ -1,33 +1,3 @@
-const bookings = [
-    {
-        id: 1,
-        name: "Fahru",
-        status: "Booked",
-        startDate: "2024-07-02",
-        endDate: "2024-08-10",
-        details: "Paid"
-    },
-    {
-        id: 2,
-        name: "Lisa",
-        status: "Returned",
-        startDate: "2024-07-05",
-        endDate: "2024-09-08",
-        details: "Unpaid"
-    },
-    {
-        id: 3,
-        name: "John",
-        status: "Pending",
-        startDate: "2024-07-15",
-        endDate: "2024-07-20",
-        details: "Unpaid"
-    }
-];
-
-
-
-
 document.addEventListener('DOMContentLoaded', function () {
 
     monthHeader = document.getElementById('monthHeader');
@@ -35,6 +5,9 @@ document.addEventListener('DOMContentLoaded', function () {
     currentMonth = currentDate.getMonth() + 1; //index from 0
     currentYear = currentDate.getFullYear();
     const calendarBody = document.getElementById("calendarBody");
+
+    const bookingStatusDropDown = document.getElementById('bookingStatusDropDown');
+    let currentStatus = bookingStatusDropDown.value || 'All'; // Set default status
 
     function nextMonth() {
         currentMonth++;
@@ -77,15 +50,18 @@ document.addEventListener('DOMContentLoaded', function () {
             dayCell.className = 'day-cell';
             daysHeader.appendChild(dayCell);
         }
-
-        populateCalendar();
+        //populateCalendar();
+        fetchBookings(currentStatus);
     }
 
     //handling booking box display
     function handlingBookingCell(booking) {
 
-        const bookingStart = new Date(booking.startDate);
-        const bookingEnd = new Date(booking.endDate);
+        const bookingStart = booking.startDate;
+        const bookingEnd = booking.endDate;
+
+
+        console.log(bookingStart,bookingEnd);
 
         //adjust with start column of the table, in this case is two
 
@@ -94,29 +70,30 @@ document.addEventListener('DOMContentLoaded', function () {
         let spanLength = endIndex - startIndex + 1;
 
         // Condition 1: Both dates are within the current month
-        if (bookingStart.getMonth() + 1 === currentMonth && bookingStart.getFullYear() === currentYear &&
-            bookingEnd.getMonth() + 1 === currentMonth && bookingEnd.getFullYear() === currentYear) {
-            startIndex = bookingStart.getDate() + 1; // +2 to adjust for first two non-booking columns
-            endIndex = bookingEnd.getDate() + 1;
+        if (bookingStart[1] === currentMonth && bookingStart[2] === currentYear &&
+            bookingEnd[1] === currentMonth && bookingEnd[2] === currentYear) {
+            startIndex = bookingStart[0] + 1; // +2 to adjust for first two non-booking columns
+            endIndex = bookingEnd[0] + 1;
             spanLength = endIndex - startIndex + 1;
         }
 
         // Condition 2: Start date is within the current month, end date extends beyond it
-        else if (bookingStart.getMonth() + 1 === currentMonth && bookingStart.getFullYear() === currentYear) {
-            startIndex = bookingStart.getDate() + 1;
+        else if (bookingStart[1] === currentMonth && bookingStart[2] === currentYear) {
+            startIndex = bookingStart[0] + 1;
             endIndex = endIndex;
             spanLength = endIndex - startIndex + 1;
         }
 
         // Condition 3: Start date is before the current month, end date is within it
-        else if (bookingEnd.getMonth() + 1 === currentMonth && bookingEnd.getFullYear() === currentYear) {
+        else if (bookingEnd[1] === currentMonth && bookingEnd[2] === currentYear) {
             startIndex = startIndex;
-            endIndex = bookingEnd.getDate() + 1;
+            endIndex = bookingEnd[0] + 1;
             spanLength = endIndex - startIndex + 1;
         }
 
         // Condition 4: Booking spans over the entire displayed month
-        else if (bookingStart < new Date(currentYear, currentMonth - 1, 1) && bookingEnd > new Date(currentYear, currentMonth, 0)) {
+        else if (new Date(bookingStart[2],bookingStart[1]-1,bookingStart[0]) < new Date(currentYear, currentMonth - 1, 1)
+                    && new Date(bookingEnd[2],bookingEnd[1]-1,bookingEnd[0]) > new Date(currentYear, currentMonth, 0)) {
             startIndex = startIndex;
             endIndex = endIndex;
             spanLength = spanLength;
@@ -139,13 +116,26 @@ document.addEventListener('DOMContentLoaded', function () {
         cell.className = `booking-cell ${booking.status.toLowerCase()}`;
         cell.colSpan = widthCell; // Custom function to calculate the span
 
+        const dateBoxWidth = 28;
+        const bookingCellWidth = dateBoxWidth * widthCell;
+        cell.style.width = `${bookingCellWidth}px`;
+
         const header = document.createElement('div');
         header.className = 'booking-header';
         header.textContent = booking.name; // Booking made by
 
         const dates = document.createElement('div');
         dates.className = 'booking-dates';
-        dates.textContent = `${booking.startDate} - ${booking.endDate}`;
+
+
+        if (booking.oneDay === true){
+            dates.textContent = `${booking.startDate[0]}.${booking.startDate[1]}.${booking.startDate[2]}`;
+        }
+        else {
+            dates.textContent = `${booking.startDate[0]}.${booking.startDate[1]}.${booking.startDate[2]} to
+             ${booking.endDate[0]}.${booking.endDate[1]}.${booking.endDate[2]}`;
+        }
+
 
         const status = document.createElement('div');
         status.className = 'booking-status';
@@ -159,11 +149,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
-    function populateCalendar() {
+    function fetchBookings(selectedStatus) {
+
+        if (!selectedStatus) {
+            selectedStatus = null;
+        }
+        console.log(selectedStatus);
+
+        fetch('/bookings_overview/get_bookings', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status: selectedStatus }) // Send the selected status as JSON
+        })
+        .then(response =>{
+            if (response.ok) {
+                // If response is successful, return the HTML content
+                return response.json();
+            } else {
+                // If response is not successful, throw an error
+                throw new Error('Network response was not ok.'+ response.statusText);
+            }
+        })
+        .then(data => {
+            console.log(data);
+            populateCalendar(data);
+        })
+        .catch(error => {
+            console.error('Error fetching booking data:', error);
+        });
+    }
+
+    function populateCalendar(data) {
 
         calendarBody.innerHTML = ''; // Clear existing calendar entry
 
-        bookings.forEach(booking => {
+        data.forEach(booking => {
 
             //create new row, make column in a row sequentially or in order !
             const row = document.createElement("tr");
@@ -173,13 +195,13 @@ document.addEventListener('DOMContentLoaded', function () {
             // Create name cell in that row
             const nameCell = document.createElement("td");
             nameCell.textContent = booking.name;
-
+            nameCell.className = 'book-by';
             row.appendChild(nameCell);
 
             // Create status cell in that row
             const statusCell = document.createElement("td");
             statusCell.textContent = booking.status;
-
+            statusCell.className = 'status';
             row.appendChild(statusCell);
 
             // Prepare to fill the rest of the row with empty cells
@@ -191,6 +213,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             //get information of where should I put this bookingCell
             [startIndex, endIndex, spanLength] = handlingBookingCell(booking);
+            console.log(startIndex,endIndex,spanLength);
 
             //createBookingCell based on their position
             bookingCell = createBookingCell(booking, spanLength);
@@ -210,27 +233,36 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function fetchBookings() {
-        fetch('/get_bookings')
-            .then(response => response.json())
-            .then(booking_list => {
-                console.log(booking_list)
-                populateCalendar(booking_list);
-            })
-            .catch(error => {
-                console.error('Error fetching booking data:', error);
-            });
-    }
 
     // Initial setup
-
     updateCalendar(currentMonth, currentYear);
-    fetchBookings();
+    fetchBookings(currentStatus);
+
+
     // Bind these functions to your previous and next buttons
     document.getElementById('nextMonthButton').addEventListener('click', nextMonth);
     document.getElementById('previousMonthButton').addEventListener('click', previousMonth);
     document.getElementById('currentMonthButton').addEventListener('click', goToCurrentMonth);
 
+    //get Drop down options value from html whenever its changed
+    document.getElementById('bookingStatusDropDown').addEventListener('change',function() {
+        currentStatus = this.value;
+        fetchBookings(currentStatus);
+    });
+
+    // Still on work with the sticky header while scrolling down the table
+
+    const tableWrapper = document.querySelector('.calendar-table-wrapper');
+    const tableHeader = document.querySelector('.calendar-table thead');
+
+    tableWrapper.addEventListener('scroll', function () {
+        if (tableWrapper.scrollTop > 0) {
+            tableHeader.classList.add('sticky-header');
+        }
+        else {
+            tableHeader.classList.remove('sticky-header');
+        }
+    });
 });
 
 

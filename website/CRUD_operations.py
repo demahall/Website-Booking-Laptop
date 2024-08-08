@@ -39,12 +39,11 @@ def filter_laptops(selected_criteria):
 
 
 def print_booking():
-
-
     bookings= Booking.query.all()
 
     for booking in bookings:
-        print(f"ID: {booking.id}, Name: {booking.name}, Status: {booking.status}, Laptops: {[laptop.name for laptop in booking.laptops]}, Booking Date: {booking.date}, from until: {booking.selected_dates}")
+        print(f"{booking.status},{booking.name}")
+
 
 def available_laptop():
     # Retrieve laptops that are not currently booked
@@ -108,9 +107,8 @@ def show_and_delete_booking(booking_ids):
             laptop.booking_id = None
 
     db.session.commit()
+
 def new_bookings(name, calendar_week, laptop_ids):
-
-
     new_booking = Booking(
         name=name,
         calendar_week = calendar_week
@@ -177,6 +175,28 @@ def delete_all_logs():
         db.session.rollback()
         print(f"An error occurred while deleting logs: {e}")
 
+def parse_date(dates):
+
+    dates = dates.split(' to ')
+    print(dates)
+    print(type(dates))
+    print(len(dates))
+
+    if len(dates) == 1: #If booked dates only one day
+        date = dates[0].split('.')
+        date = f'{date[2]}-{date[1]}-{date[0]}'
+        start_date = end_date = date
+        one_day = True
+
+    else:
+        start_date = dates[0].split('.')
+        start_date = f'{start_date[2]}-{start_date[1]}-{start_date[0]}'
+        end_date =  dates[1]('.')
+        end_date = f'{end_date[2]}-{end_date[1]}-{end_date[0]}'
+        one_day = False
+
+    return start_date,end_date,one_day
+
 if __name__ == "__main__":
     #delete_all_logs()
     #"Made changes in development_website branch"
@@ -190,5 +210,6 @@ if __name__ == "__main__":
     print_booking()
     #laptop_status(15)
     #filter_laptops(['hersteller','mac_addresse'])
+
 
 

@@ -25,21 +25,31 @@
     </div>
 
     <div class="calendar-table-wrapper">
-        <table class="calendar-table">
-            <thead>
-                <tr>
-                    <th class="book-by" rowspan="2">Book By</th>
-                    <th class="status" rowspan="2">Status</th>
-                    <th colspan="31" id="monthHeader">July 2024</th>
-                </tr>
-                <tr id="daysHeader">
-                    <!-- Day headers will be dynamically inserted here -->
-                </tr>
-            </thead>
-            <tbody id="calendarBody">
-            </tbody>
-        </table>
+        <div class="table-container">
+            <table class="calendar-table">
+                <thead>
+                    <tr>
+                        <th class="book-by" rowspan="2">Book By</th>
+                        <th class="status" rowspan="2">Status</th>
+                        <th colspan="31" id="monthHeader">July 2024</th>
+                    </tr>
+                    <tr id="daysHeader">
+                        <!-- Day headers will be dynamically inserted here -->
+                    </tr>
+                </thead>
+                <tbody id="calendarBody">
+                    <!-- Rows for bookings will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
     </div>
+
+    <div class="status-legend">
+        <span class="legend-item booked">Booked</span>
+        <span class="legend-item pending">Pending</span>
+        <span class="legend-item returned">Returned</span>
+    </div>
+
 </div>
 
 

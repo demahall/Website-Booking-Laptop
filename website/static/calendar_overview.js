@@ -45,9 +45,11 @@ document.addEventListener('DOMContentLoaded', function () {
         daysHeader.innerHTML = ''; // Clear existing day headers
 
         for (let day = 1; day <= daysInMonth; day++) {
+            const date = new Date(year,month-1,day);
             const dayCell = document.createElement('th');
             dayCell.textContent = day;
             dayCell.className = 'day-cell';
+
             daysHeader.appendChild(dayCell);
         }
         //populateCalendar();
@@ -209,6 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const dateBox = document.createElement("td");
                 dateBox.className = 'date-box';
                 row.appendChild(dateBox);
+
             }
 
             //get information of where should I put this bookingCell

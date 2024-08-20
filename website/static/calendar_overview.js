@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-
+    let allBookings = [];
     monthHeader = document.getElementById('monthHeader');
     let currentDate = new Date();
     currentMonth = currentDate.getMonth() + 1; //index from 0
@@ -62,9 +62,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const bookingStart = booking.startDate;
         const bookingEnd = booking.endDate;
 
-
-        console.log(bookingStart,bookingEnd);
-
         //adjust with start column of the table, in this case is two
 
         let startIndex = 2;
@@ -116,6 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const cell = document.createElement('td');
         cell.className = `booking-cell ${booking.status.toLowerCase()}`;
+        cell.setAttribute('data-booking-id', booking.id);
         cell.colSpan = widthCell; // Custom function to calculate the span
 
         const dateBoxWidth = 28;
@@ -175,8 +173,10 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         })
         .then(data => {
+            allBookings = data;
             console.log(data);
             populateCalendar(data);
+
         })
         .catch(error => {
             console.error('Error fetching booking data:', error);
@@ -236,6 +236,30 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    function showBookingDetails(booking) {
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modal = document.getElementById('bookingDetailsModal');
+        const modalContent = document.getElementById('modalContent');
+
+        if (modal && modalOverlay) {
+            const content = `
+                <h3>${booking.name}</h3>
+                <p>Status: ${booking.status}</p>
+                <p>Start Date: ${booking.startDate[0]}.${booking.startDate[1]}.${booking.startDate[2]}</p>
+                <p>End Date: ${booking.endDate[0]}.${booking.endDate[1]}.${booking.endDate[2]}</p>
+                <p>Booking Date: ${booking.date}</p>
+                <p>Comment: ${booking.comment || 'No comments available.'}</p>
+            `;
+            modalContent.innerHTML = content;
+            modal.style.display = 'block';
+            modalOverlay.style.display = 'block';
+        }
+    }
+
+    function closeWindowBookingDetails() {
+        document.getElementById('bookingDetailsModal').style.display = 'none';
+        document.getElementById('modalOverlay').style.display = 'none';
+    }
 
     // Initial setup
     updateCalendar(currentMonth, currentYear);
@@ -253,7 +277,8 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchBookings(currentStatus);
     });
 
-    // Still on work with the sticky header while scrolling down the table
+
+    //Settings fixed Header by scrolling down all booking lists
 
     const tableWrapper = document.querySelector('.calendar-table-wrapper');
     const tableHeader = document.querySelector('.calendar-table thead');
@@ -266,6 +291,19 @@ document.addEventListener('DOMContentLoaded', function () {
             tableHeader.classList.remove('sticky-header');
         }
     });
+
+
+    // All about Window Modal Booking Details
+    calendarBody.addEventListener('click', function(event) {
+        const target = event.target.closest('.booking-cell');
+        if (target) {
+            const bookingId = target.dataset.bookingId;
+            const selectedBooking = allBookings.find(booking => booking.id == bookingId);
+            console.log(selectedBooking);
+            showBookingDetails(selectedBooking);
+        }
+    });
+    document.getElementById('closeButton').addEventListener('click', closeWindowBookingDetails);
 });
 
 

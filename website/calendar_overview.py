@@ -29,11 +29,14 @@ def get_bookings():
             start_dates, end_dates, one_day = parse_date(booking.selected_dates)
 
             booking_data = {
+                'id' : booking.id,
                 'name': booking.name,
                 'status': booking.status,
                 'startDate': start_dates,
                 'endDate': end_dates,
-                'oneDay': one_day
+                'oneDay': one_day,
+                'date' : booking.date,
+                'comment' : booking.comment
             }
 
             booking_list.append(booking_data)

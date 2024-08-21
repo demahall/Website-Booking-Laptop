@@ -248,6 +248,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <p>Start Date: ${booking.startDate[0]}.${booking.startDate[1]}.${booking.startDate[2]}</p>
                 <p>End Date: ${booking.endDate[0]}.${booking.endDate[1]}.${booking.endDate[2]}</p>
                 <p>Booking Date: ${booking.date}</p>
+                <p>Laptops: ${booking.laptops}</p>
                 <p>Comment: ${booking.comment || 'No comments available.'}</p>
             `;
             modalContent.innerHTML = content;

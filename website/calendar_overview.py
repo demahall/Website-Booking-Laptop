@@ -36,6 +36,7 @@ def get_bookings():
                 'endDate': end_dates,
                 'oneDay': one_day,
                 'date' : booking.date,
+                'laptops' : [laptop.name for laptop in booking.laptops],
                 'comment' : booking.comment
             }
 

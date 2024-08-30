@@ -33,6 +33,7 @@ def add_laptop():
         creta_version = request.form['creta_version']
         creta_lizenz_datum = request.form['creta_lizenz_datum']
         gewaehrleistung = request.form['gewaehrleistung']
+        comment = request.form['comment']
 
         new_laptop = Laptop(name=name,
                             hersteller=hersteller,
@@ -49,7 +50,8 @@ def add_laptop():
                             cameo_lizenz_datum=cameo_lizenz_datum,
                             creta_version=creta_version,
                             creta_lizenz_datum=creta_lizenz_datum,
-                            gewaehrleistung=gewaehrleistung
+                            gewaehrleistung=gewaehrleistung,
+                            comment = comment
                             )
         db.session.add(new_laptop)
         db.session.commit()

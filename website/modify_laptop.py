@@ -37,7 +37,8 @@ def update_laptop_info(laptop_id):
             'cameo_lizenz_datum': laptop.cameo_lizenz_datum,
             'creta_version': laptop.creta_version,
             'creta_lizenz_datum': laptop.creta_lizenz_datum,
-            'gewaehrleistung': laptop.gewaehrleistung
+            'gewaehrleistung': laptop.gewaehrleistung,
+            'comment' : laptop.comment
         }
 
         # Get new values from the form
@@ -57,7 +58,8 @@ def update_laptop_info(laptop_id):
             'cameo_lizenz_datum': request.form['cameo_lizenz_datum'],
             'creta_version': request.form['creta_version'],
             'creta_lizenz_datum': request.form['creta_lizenz_datum'],
-            'gewaehrleistung': request.form['gewaehrleistung']
+            'gewaehrleistung': request.form['gewaehrleistung'],
+            'comment' : request.form['comment']
         }
 
         # Update laptop with new values
@@ -80,7 +82,8 @@ def update_laptop_info(laptop_id):
                                  laptop_name=laptop.name,
                                  changes=changes)
 
-        flash_message = 'Update Laptop successfully'
+        flash_message = f"Update Laptop {laptop.name} successfully"
+
         flash(flash_message, 'success')
 
         return redirect(url_for('modify_laptop.modify_laptop_page', laptop_id=laptop_id))

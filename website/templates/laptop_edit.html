@@ -84,6 +84,10 @@
                         <label for="gewaehrleistung">Gewaehrleistung:</label>
                         <input type="text" class="form-control" id="gewaehrleistung" name="gewaehrleistung" value="{{ laptop.gewaehrleistung }}" readonly>
                     </div>
+                    <div class="form-group">
+                        <label for="comment">Comment:</label>
+                        <input type="text" class="form-control" id="comment" name="comment" value="{{ laptop.comment }}" readonly>
+                    </div>
                     <div class="button-control d-flex justify-content-between" data-laptop-id="{{laptop.id}}"> <!-- Align buttons horizontally -->
                         <button type="button" id="editLaptopButton" class="editLaptopButton btn btn-primary">Edit</button>
                         <button type="button" id="saveLaptopButton_{{ laptop.id }}"  class="saveLaptopButton btn btn-success d-none">Save</button>

@@ -32,6 +32,12 @@ class Laptop(db.Model):
     mac_addresse = db.Column(db.String(150))
     puma_und_concerto_version = db.Column(db.String(150))
     puma_und_concerto_lizenz_datum = db.Column(db.String(150))
+    puma_ice = db.Column(db.String(150));
+    puma_ice_lizenz_datum = db.Column(db.String(150));
+    puma_e_motor = db.Column(db.String(150));
+    puma_e_motor_lizenz_datum = db.Column(db.String(150));
+    puma_batterie = db.Column(db.String(150));
+    puma_batterie_lizenz_datum = db.Column(db.String(150));
     lynx_version = db.Column(db.String(150))
     lynx_lizenz_datum = db.Column(db.String(150))
     cameo_version = db.Column(db.String(150))
@@ -39,6 +45,7 @@ class Laptop(db.Model):
     creta_version = db.Column(db.String(150))
     creta_lizenz_datum = db.Column(db.String(150))
     gewaehrleistung = db.Column(db.String(150))
+    comment = db.Column(db.String(500))
 
     booking_id = db.Column(db.Integer,db.ForeignKey('booking.id'))
     bookings = db.relationship('Booking',secondary=booking_laptop_association, back_populates='laptops')
@@ -55,13 +62,20 @@ class Laptop(db.Model):
             'mac_addresse'  : self.mac_addresse,
             'puma_und_concerto_version'  :self.puma_und_concerto_version,
             'puma_und_concerto_lizenz_datum' :self.puma_und_concerto_lizenz_datum,
+            'puma_ice': self.puma_ice,
+            'puma_ice_lizenz_datum': self.puma_ice_lizenz_datum,
+            'puma_e_motor': self.puma_e_motor,
+            'puma_e_motor_lizenz_datum': self.puma_e_motor_lizenz_datum,
+            'puma_batterie': self.puma_batterie,
+            'puma_batterie_lizenz_datum': self.puma_batterie_lizenz_datum,
             'lynx_version' :self.lynx_version,
             'lynx_lizenz_datum' :self.lynx_lizenz_datum,
             'cameo_version' :self.cameo_version,
             'cameo_lizenz_datum' :self.cameo_lizenz_datum,
             'creta_version' :self.creta_version,
             'creta_lizenz_datum':self.creta_lizenz_datum,
-            'gewaehrleistung' :self.gewaehrleistung
+            'gewaehrleistung' :self.gewaehrleistung,
+            'comment': self.comment
         }
 
 class Log(db.Model):

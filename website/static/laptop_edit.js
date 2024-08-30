@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const creta_version_input = document.getElementById('creta_version');
     const creta_lizenz_datum_input = document.getElementById('creta_lizenz_datum');
     const gewaehrleistung_input = document.getElementById('gewaehrleistung');
+    const comment_input = document.getElementById('comment');
 
 
     document.querySelectorAll('.editLaptopButton').forEach(button => {
@@ -38,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
             creta_version_input.removeAttribute('readonly');
             creta_lizenz_datum_input.removeAttribute('readonly');
             gewaehrleistung_input.removeAttribute('readonly');
+            comment_input.removeAttribute('readonly');
 
             const parentDiv = this.closest('.button-control');
             const saveButton = parentDiv.querySelector('.saveLaptopButton');

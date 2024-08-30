@@ -5,6 +5,7 @@ var laptopTable = document.getElementById('table');
 
 
 document.addEventListener('DOMContentLoaded', function() {
+    fetchFilteredLaptops(); // Automatically fetch and display laptops when the page loads
 
     criteriaButton.addEventListener('click', function() {
         // Toggle the display style of the dropdown menu
@@ -28,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function fetchFilteredLaptops(selectedCriteria) {
     var selectedOptions = criteriaDropdown.selectedOptions;
     var selectedCriteria = [];
+
     // Iterate over the selected options and add them to the selected criteria array
     for (var i = 0; i < selectedOptions.length; i++) {
         var criterion = selectedOptions[i].value;
@@ -61,14 +63,29 @@ function fetchFilteredLaptops(selectedCriteria) {
 // Function to render filtered laptops on the page
 function renderFilteredLaptops(filteredLaptops) {
 
+    // Define default headers
+    const defaultHeaders = ["Laptop Name", "Hersteller", "Dongle ID"];
+    const selectedHeaders = Object.keys(filteredLaptops);
+
+    // Combine default headers with additional selected headers
+    const allHeaders = [...defaultHeaders];
+
+    // Add additional headers only if they are not part of the default ones
+    selectedHeaders.forEach(header => {
+        if (!defaultHeaders.includes(header)) {
+            allHeaders.push(header);
+        }
+    });
+
+    // Clear previous table data
     var laptopTable = document.getElementById('laptopTable');
     laptopTable.innerHTML = ''; // Clear previous data
 
     // Create table header
     var tableHeader = document.createElement('thead');
     var headerRow = document.createElement('tr');
-    Object.keys(filteredLaptops).forEach(criterion => {
-        var formattedCriterion = formatKey(criterion); // Format the criterion key
+    allHeaders.forEach(header => {
+        var formattedCriterion = formatKey(header); // Format the criterion key
         var headerCell = document.createElement('th');
         headerCell.textContent = formattedCriterion;
         headerRow.appendChild(headerCell);
@@ -77,7 +94,7 @@ function renderFilteredLaptops(filteredLaptops) {
     laptopTable.appendChild(tableHeader);
 
     // Calculate the width of the table container based on the number of headers
-    var numHeaders = Object.keys(filteredLaptops).length;
+    var numHeaders = allHeaders.length;
     var tableContainer = document.getElementById('table-container');
     var containerWidth = numHeaders * 250; // Adjust this value as needed
     tableContainer.style.width = containerWidth + 'px';
@@ -87,8 +104,9 @@ function renderFilteredLaptops(filteredLaptops) {
     var numRows = Math.max(...Object.values(filteredLaptops).map(arr => arr.length));
     for (var i = 0; i < numRows; i++) {
         var row = document.createElement('tr');
-        Object.values(filteredLaptops).forEach(criteria => {
+        allHeaders.forEach(header => {
             var cell = document.createElement('td');
+            var criteria = filteredLaptops[header] || [];  // Safely access the criteria array
             cell.textContent = criteria[i] !== undefined ? criteria[i] : ''; // Check for undefined values
             row.appendChild(cell);
         });
@@ -96,6 +114,7 @@ function renderFilteredLaptops(filteredLaptops) {
     }
     laptopTable.appendChild(tableBody);
 }
+
 
 function formatKey(key) {
         // Split the key by underscores and capitalize each word

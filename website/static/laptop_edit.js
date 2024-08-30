@@ -10,6 +10,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const mac_addresse_input = document.getElementById('mac_addresse');
     const puma_und_concerto_version_input = document.getElementById('puma_und_concerto_version');
     const puma_und_concerto_lizenz_datum_input = document.getElementById('puma_und_concerto_lizenz_datum');
+    const puma_ice_version_input = document.getElementById('puma_ice_version');
+    const puma_ice_lizenz_datum_input = document.getElementById('puma_ice_lizenz_datum');
+    const puma_batterie_version_input = document.getElementById('puma_batterie_version');
+    const puma_batterie_lizenz_datum_input = document.getElementById('puma_batterie_lizenz_datum');
+    const puma_eMotor_version_input = document.getElementById('puma_eMotor_version');
+    const puma_eMotor_lizenz_datum_input = document.getElementById('puma_eMotor_lizenz_datum');
     const lynx_version_input = document.getElementById('lynx_version');
     const lynx_lizenz_datum_input = document.getElementById('lynx_lizenz_datum');
     const cameo_version_input = document.getElementById('cameo_version');
@@ -32,6 +38,12 @@ document.addEventListener('DOMContentLoaded', function () {
             mac_addresse_input.removeAttribute('readonly');
             puma_und_concerto_version_input.removeAttribute('readonly');
             puma_und_concerto_lizenz_datum_input.removeAttribute('readonly');
+            puma_ice_version_input.removeAttribute('readonly');
+            puma_ice_lizenz_datum_input.removeAttribute('readonly');
+            puma_batterie_version_input.removeAttribute('readonly');
+            puma_batterie_lizenz_datum_input.removeAttribute('readonly');
+            puma_eMotor_version_input.removeAttribute('readonly');
+            puma_eMotor_lizenz_datum_input.removeAttribute('readonly');
             lynx_version_input.removeAttribute('readonly');
             lynx_lizenz_datum_input.removeAttribute('readonly');
             cameo_version_input.removeAttribute('readonly');

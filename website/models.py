@@ -32,12 +32,12 @@ class Laptop(db.Model):
     mac_addresse = db.Column(db.String(150))
     puma_und_concerto_version = db.Column(db.String(150))
     puma_und_concerto_lizenz_datum = db.Column(db.String(150))
-    puma_ice = db.Column(db.String(150));
-    puma_ice_lizenz_datum = db.Column(db.String(150));
-    puma_e_motor = db.Column(db.String(150));
-    puma_e_motor_lizenz_datum = db.Column(db.String(150));
-    puma_batterie = db.Column(db.String(150));
-    puma_batterie_lizenz_datum = db.Column(db.String(150));
+    puma_ice_version = db.Column(db.String(150))
+    puma_ice_lizenz_datum = db.Column(db.String(150))
+    puma_eMotor_version = db.Column(db.String(150))
+    puma_eMotor_lizenz_datum = db.Column(db.String(150))
+    puma_batterie_version = db.Column(db.String(150))
+    puma_batterie_lizenz_datum = db.Column(db.String(150))
     lynx_version = db.Column(db.String(150))
     lynx_lizenz_datum = db.Column(db.String(150))
     cameo_version = db.Column(db.String(150))
@@ -62,11 +62,11 @@ class Laptop(db.Model):
             'mac_addresse'  : self.mac_addresse,
             'puma_und_concerto_version'  :self.puma_und_concerto_version,
             'puma_und_concerto_lizenz_datum' :self.puma_und_concerto_lizenz_datum,
-            'puma_ice': self.puma_ice,
+            'puma_ice_version': self.puma_ice_version,
             'puma_ice_lizenz_datum': self.puma_ice_lizenz_datum,
-            'puma_e_motor': self.puma_e_motor,
-            'puma_e_motor_lizenz_datum': self.puma_e_motor_lizenz_datum,
-            'puma_batterie': self.puma_batterie,
+            'puma_eMotor_version': self.puma_eMotor_version,
+            'puma_eMotor_lizenz_datum': self.puma_eMotor_lizenz_datum,
+            'puma_batterie_version': self.puma_batterie_version,
             'puma_batterie_lizenz_datum': self.puma_batterie_lizenz_datum,
             'lynx_version' :self.lynx_version,
             'lynx_lizenz_datum' :self.lynx_lizenz_datum,

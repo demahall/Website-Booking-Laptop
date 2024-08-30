@@ -207,7 +207,8 @@ if __name__ == "__main__":
     #reset_laptops()
     #change_status(1,'Returned')
     #delete_booking([4])
-    print_booking()
+    #print_booking()
+    print(Laptop.__table__.columns)
     #laptop_status(15)
     #filter_laptops(['hersteller','mac_addresse'])
 

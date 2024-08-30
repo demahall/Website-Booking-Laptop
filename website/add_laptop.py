@@ -26,6 +26,12 @@ def add_laptop():
         mac_addresse = request.form['mac_addresse']
         puma_und_concerto_version = request.form['puma_und_concerto_version']
         puma_und_concerto_lizenz_datum = request.form['puma_und_concerto_lizenz_datum']
+        puma_ice_version = request.form['puma_ice_version']
+        puma_ice_lizenz_datum = request.form['puma_ice_version_lizenz_datum']
+        puma_batterie_version = request.form['puma_batterie_version']
+        puma_batterie_lizenz_datum = request.form['puma_batterie_lizenz_datum']
+        puma_eMotor_version = request.form['puma_eMotor_version']
+        puma_eMotor_lizenz_datum = request.form['puma_eMotor_lizenz_datum']
         lynx_version = request.form['lynx_version']
         lynx_lizenz_datum = request.form['lynx_lizenz_datum']
         cameo_version = request.form['cameo_version']
@@ -44,6 +50,12 @@ def add_laptop():
                             mac_addresse=mac_addresse,
                             puma_und_concerto_version=puma_und_concerto_version,
                             puma_und_concerto_lizenz_datum=puma_und_concerto_lizenz_datum,
+                            puma_ice_version = puma_ice_version,
+                            puma_ice_lizenz_datum = puma_ice_lizenz_datum,
+                            puma_batterie_version = puma_batterie_version,
+                            puma_batterie_lizenz_datum = puma_batterie_lizenz_datum,
+                            puma_eMotor_version = puma_eMotor_version,
+                            puma_eMotor_lizenz_datum = puma_eMotor_lizenz_datum,
                             lynx_version=lynx_version,
                             lynx_lizenz_datum=lynx_lizenz_datum,
                             cameo_version=cameo_version,

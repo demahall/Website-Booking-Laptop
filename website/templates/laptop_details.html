@@ -3,23 +3,25 @@
 
 {% block content %}
 <link rel="stylesheet" href="/static/laptop_table.css">
-  <h3 id="info-heading" align="center">Laptop Information</h3>
-    <form id="filterForm" method="POST" action="{{ url_for('views.show_laptop') }}">
-      <div id="criteriaDropdownContainer">
-          <select id="criteriaDropdown" name="criteria" multiple style="display: none;">
-              <option value="hersteller">Hersteller</option>
-              <option value="user_password">Username and Password</option>
-              <option value="dongle_id">Dongle ID</option>
-              <option value="mac_addresse">MAC Address</option>
-              <option value="puma_und_concerto_version">Puma Version</option>
-              <option value="lynx_version">Lynx Version</option>
-              <option value="creta_version">Creta Version</option>
-          </select>
-      </div>
-    </form>
+    <h3 id="info-heading" align="center">Laptop Information</h3>
+        <form id="filterForm" method="POST" action="{{ url_for('views.show_laptop') }}">
+            <div id="criteriaDropdownContainer">
+                <select id="criteriaDropdown" name="criteria" multiple style="display: none;">
+                    <option value="user_password">Username and Password</option>
+                    <option value="mac_addresse">MAC Addresse</option>
+                    <option value="puma_und_concerto_version">Puma Version</option>
+                    <option value="puma_ice_version">Puma ICE Version</option>
+                    <option value="puma_batterie_version">Puma Battery Version</option>
+                    <option value="puma_eMotor_version">Puma E-Motor Version</option>
+                    <option value="lynx_version">Lynx Version</option>
+                    <option value="creta_version">Creta Version</option>
+                    <option value="comment">Kommentar</option>
+                </select>
+            </div>
+        </form>
+
 <button type="button" class="btn btn-secondary" id="criteriaButton">Select Criteria</button>
 <button type="button" class="btn btn-secondary" id="applyFilterButton" onclick="fetchFilteredLaptops()" >Apply Filter</button>
-
 
 <div id="table-container">
     <table id="laptopTable">

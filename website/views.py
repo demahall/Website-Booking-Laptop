@@ -8,9 +8,6 @@ from sqlalchemy import inspect
 views = Blueprint('views',__name__)
 session = SQLAlchemySession()
 
-
-
-
 @views.route('/',methods=['GET'])
 def booking_form_page():
     managing_page = request.args.get('managing_page', 'false')
@@ -55,6 +52,15 @@ def show_laptop_information():
             elif criteria == 'puma_und_concerto_version':
                 filtered_laptops = [laptop.serialize() for laptop in laptops
                                     if query.lower() in laptop.puma_und_concerto_version.lower()]
+            elif criteria == 'puma_ice_version':
+                filtered_laptops = [laptop.serialize() for laptop in laptops
+                                    if query.lower() in laptop.puma_ice_version.lower()]
+            elif criteria == 'puma_batterie_version':
+                filtered_laptops = [laptop.serialize() for laptop in laptops
+                                    if query.lower() in laptop.puma_batterie_version.lower()]
+            elif criteria == 'puma_eMotor_version':
+                filtered_laptops = [laptop.serialize() for laptop in laptops
+                                    if query.lower() in laptop.puma_eMotor_version.lower()]
             elif criteria == 'creta_version':
                 filtered_laptops = [laptop.serialize() for laptop in laptops if query.lower() in laptop.creta_version.lower()]
 
@@ -64,7 +70,6 @@ def show_laptop_information():
     else:
         # Handle GET request
         return jsonify([laptop.serialize() for laptop in laptops])
-
 
 @views.route('/suggestions', methods=['POST'])
 def get_suggestions():
@@ -79,7 +84,6 @@ def get_suggestions():
         return jsonify(suggestions)
     else:
         return jsonify([])
-
 
 @views.route('/laptop_information', methods=['GET'])
 def laptop_information_page():
@@ -134,27 +138,18 @@ def book_laptops():
 
     return redirect(url_for('views.booking_form_page'))
 
-def filter_laptops(selected_criteria,laptops):
+def filter_laptops(selected_criteria, laptops):
     # Initialize a dictionary to store the filtered criteria for each laptop
-    filtered_laptops = {}
+    filtered_laptops = {
+        "Laptop Name": [laptop.name for laptop in laptops],
+        "Hersteller" : [laptop.hersteller for laptop in laptops],
+        "Dongle ID" : [laptop.dongle_id for laptop in laptops],
+    }
 
-    laptop_bookings={}
-    for laptop in laptops:
-        bookings=laptop.bookings
-        booking = next((b for b in bookings if b.status == "booked"), None)
-        if booking:
-            laptop_bookings[laptop.name] = f'{booking.name} from {booking.selected_dates}'
-        else:
-            laptop_bookings[laptop.name] = 'Available'
-
-    # Populate the filtered laptops dictionary with laptop names, borrowers, and selected dates
-
-    filtered_laptops["Laptop Name"] = [laptop.name for laptop in laptops]
-    filtered_laptops["Booked by"] = [laptop_bookings[laptop.name] for laptop in laptops]
-
+    # Loop through each criterion and check if it's a valid attribute of the Laptop class
     for criterion in selected_criteria:
         if hasattr(Laptop, criterion):
-            filtered_laptops[f'{criterion}'] = [getattr(laptop,criterion) for laptop in laptops]
+            filtered_laptops[criterion] = [getattr(laptop, criterion) for laptop in laptops]
 
     return filtered_laptops
 

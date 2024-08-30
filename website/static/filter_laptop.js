@@ -225,6 +225,7 @@ function applyFilter() {
 filterInput.addEventListener('input', function() {
     var criteria = document.getElementById('filterCriteria').value;
     var partialQuery = filterInput.value.trim();
+
     suggestionsList.style.display= 'block';
     if (partialQuery !== '') {
     fetchSuggestions(criteria, partialQuery); // Fetch suggestions if query is not empty

@@ -31,6 +31,12 @@ def update_laptop_info(laptop_id):
             'mac_addresse': laptop.mac_addresse,
             'puma_und_concerto_version': laptop.puma_und_concerto_version,
             'puma_und_concerto_lizenz_datum': laptop.puma_und_concerto_lizenz_datum,
+            'puma_ice_version': laptop.puma_ice_version,
+            'puma_ice_version_lizenz_datum': laptop.puma_ice_version_lizenz_datum,
+            'puma_batterie_version': laptop.puma_batterie_version,
+            'puma_batterie_lizenz_datum': laptop.puma_batterie_lizenz_datum,
+            'puma_eMotor_version': laptop.puma_eMotor_version,
+            'puma_eMotor_lizenz_datum':laptop.puma_eMotor_lizenz_datum,
             'lynx_version': laptop.lynx_version,
             'lynx_lizenz_datum': laptop.lynx_lizenz_datum,
             'cameo_version': laptop.cameo_version,
@@ -52,6 +58,12 @@ def update_laptop_info(laptop_id):
             'mac_addresse': request.form['mac_addresse'],
             'puma_und_concerto_version': request.form['puma_und_concerto_version'],
             'puma_und_concerto_lizenz_datum': request.form['puma_und_concerto_lizenz_datum'],
+            'puma_ice_version': request.form['puma_ice_version'],
+            'puma_ice_version_lizenz_datum': request.form['puma_ice_version_lizenz_datum'],
+            'puma_batterie_version': request.form['puma_batterie_version'],
+            'puma_batterie_lizenz_datum': request.form['puma_batterie_lizenz_datum'],
+            'puma_eMotor_version': request.form['puma_eMotor_version'],
+            'puma_eMotor_lizenz_datum': request.form['puma_eMotor_lizenz_datum'],
             'lynx_version': request.form['lynx_version'],
             'lynx_lizenz_datum': request.form['lynx_lizenz_datum'],
             'cameo_version': request.form['cameo_version'],
@@ -59,7 +71,7 @@ def update_laptop_info(laptop_id):
             'creta_version': request.form['creta_version'],
             'creta_lizenz_datum': request.form['creta_lizenz_datum'],
             'gewaehrleistung': request.form['gewaehrleistung'],
-            'comment' : request.form['comment']
+            'comment': request.form['comment']
         }
 
         # Update laptop with new values

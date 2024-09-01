@@ -3,7 +3,6 @@ from website.models import Booking,Laptop,Log
 from website import db
 from website.utils import generate_log_message
 from sqlalchemy.orm import Session as SQLAlchemySession
-from sqlalchemy import inspect
 
 views = Blueprint('views',__name__)
 session = SQLAlchemySession()
@@ -76,6 +75,8 @@ def get_suggestions():
     laptops = available_laptops()
     criteria = request.form.get('criteria')
     partial_query = request.form.get('partial_query')
+    print(f'debug {criteria},{partial_query}')
+    print(f'{Laptop.__table__.columns}')
 
     if criteria in Laptop.__table__.columns:
         columns = [getattr(laptop,criteria) for laptop in laptops]

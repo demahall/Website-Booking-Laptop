@@ -8,6 +8,7 @@ var availableLaptops = document.getElementById('availableLaptops');
 var filtered_laptops = document.getElementById('filtered_laptops');
 var suggestionsList = document.getElementById('suggestionsList');
 var selectedLaptopsForm = document.getElementById('selectedLaptopsForm');
+var selectLaptopList = document.getElementById('selectedLaptopList');
 var selectedSuggestion = '';
 
 
@@ -46,6 +47,7 @@ function handleChooseLaptops() {
         filterContainer.style.display = 'block';
         laptopList.style.display = 'block';
         selectButton.style.display = 'block';
+        selectLaptopList.style.display = 'none';
 
 
         // Reset filter input and hide filtered list
@@ -124,6 +126,9 @@ function renderLaptops(filteredLaptops) {
         var label = document.createElement('label');
         label.htmlFor = 'laptop' + laptop.id;
         label.textContent = laptop.name;
+
+        // Add spacing between checkbox and label
+        label.style.marginLeft = '10px';
 
         listItem.appendChild(checkbox);
         listItem.appendChild(label);
@@ -213,7 +218,6 @@ function applyFilter() {
         }
     })
     .then(filteredLaptops  => {
-        console.log(filteredLaptops)
         renderLaptops(filteredLaptops);
     })
     .catch(error => {
@@ -236,6 +240,10 @@ filterInput.addEventListener('input', function() {
 });
 
 function selectLaptops() {
+
+    selectLaptopList.style.display = 'block';
+    laptopListContainer.style.display = 'none';
+
     var selectedLaptops = document.querySelectorAll('.laptop-checkbox:checked');
     var selectedLaptopIds = new Set(); // Use a Set to store unique laptop IDs
 
@@ -259,7 +267,7 @@ function selectLaptops() {
             form.appendChild(listItem);
         }
     });
-    laptopListContainer.style.display = 'none';
+
 }
 
 document.getElementById('selectButton').addEventListener('click', selectLaptops);

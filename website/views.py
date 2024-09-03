@@ -39,29 +39,29 @@ def show_laptop_information():
         query = request.form.get('query')
         if query and criteria:
             if criteria == 'name':
-                filtered_laptops = [laptop.serialize() for laptop in laptops if query.lower() in laptop.name.lower()]
+                filtered_laptops = [laptop.serialize() for laptop in laptops if laptop.name and query.lower() in laptop.name.lower()]
             if criteria == 'hersteller':
-                filtered_laptops = [laptop.serialize() for laptop in laptops if query.lower() in laptop.hersteller.lower()]
+                filtered_laptops = [laptop.serialize() for laptop in laptops if laptop.hersteller and query.lower() in laptop.hersteller.lower()]
             elif criteria == 'dongle_id':
-                filtered_laptops = [laptop.serialize() for laptop in laptops if query.lower() in laptop.dongle_id.lower()]
+                filtered_laptops = [laptop.serialize() for laptop in laptops if laptop.dongle_id and query.lower() in laptop.dongle_id.lower()]
             elif criteria == 'mac_addresse':
-                filtered_laptops = [laptop.serialize() for laptop in laptops if query.lower() in laptop.mac_addresse.lower()]
+                filtered_laptops = [laptop.serialize() for laptop in laptops if laptop.mac_addresse and query.lower() in laptop.mac_addresse.lower()]
             elif criteria == 'lynx_version':
-                filtered_laptops = [laptop.serialize() for laptop in laptops if query.lower() in laptop.lynx_version.lower()]
+                filtered_laptops = [laptop.serialize() for laptop in laptops if laptop.lynx_version and query.lower() in laptop.lynx_version.lower()]
             elif criteria == 'puma_und_concerto_version':
                 filtered_laptops = [laptop.serialize() for laptop in laptops
-                                    if query.lower() in laptop.puma_und_concerto_version.lower()]
+                                    if laptop.puma_und_concerto_version and query.lower() in laptop.puma_und_concerto_version.lower()]
             elif criteria == 'puma_ice_version':
                 filtered_laptops = [laptop.serialize() for laptop in laptops
-                                    if query.lower() in laptop.puma_ice_version.lower()]
+                                    if laptop.puma_ice_version and query.lower() in laptop.puma_ice_version.lower()]
             elif criteria == 'puma_batterie_version':
                 filtered_laptops = [laptop.serialize() for laptop in laptops
-                                    if query.lower() in laptop.puma_batterie_version.lower()]
+                                    if laptop.puma_batterie_version and query.lower() in laptop.puma_batterie_version.lower()]
             elif criteria == 'puma_eMotor_version':
                 filtered_laptops = [laptop.serialize() for laptop in laptops
-                                    if query.lower() in laptop.puma_eMotor_version.lower()]
+                                    if laptop.puma_eMotor_version and query.lower() in laptop.puma_eMotor_version.lower()]
             elif criteria == 'creta_version':
-                filtered_laptops = [laptop.serialize() for laptop in laptops if query.lower() in laptop.creta_version.lower()]
+                filtered_laptops = [laptop.serialize() for laptop in laptops if laptop.creta_version and query.lower() in laptop.creta_version.lower()]
 
             return jsonify(filtered_laptops)
         else:
@@ -75,12 +75,10 @@ def get_suggestions():
     laptops = available_laptops()
     criteria = request.form.get('criteria')
     partial_query = request.form.get('partial_query')
-    print(f'debug {criteria},{partial_query}')
-    print(f'{Laptop.__table__.columns}')
 
     if criteria in Laptop.__table__.columns:
         columns = [getattr(laptop,criteria) for laptop in laptops]
-        suggestions = [suggestion for suggestion in columns if partial_query.lower() in suggestion.lower()]
+        suggestions = [suggestion for suggestion in columns if suggestion and partial_query.lower() in suggestion.lower()]
         suggestions = list(set(suggestions))
         return jsonify(suggestions)
     else:

@@ -3,13 +3,13 @@ var laptopList = document.getElementById('laptopList');
 var filterContainer = document.getElementById('filterContainer');
 var filterInput = document.getElementById('filterInput');
 var selectButton = document.getElementById('selectButton');
-var filteredLaptopList = document.getElementById('filteredLaptopList');
+var selectFilteredButton = document.getElementById('selectFilteredButton');
 var availableLaptops = document.getElementById('availableLaptops');
-var filtered_laptops = document.getElementById('filtered_laptops');
 var suggestionsList = document.getElementById('suggestionsList');
 var selectedLaptopsForm = document.getElementById('selectedLaptopsForm');
 var selectLaptopList = document.getElementById('selectedLaptopList');
 var selectedSuggestion = '';
+var selectedLaptopIds = new Set();
 
 
 
@@ -35,44 +35,36 @@ flatpickr("#dates", {
             const date = flatpickr.formatDate(selectedDates,"d.m.Y");
             instance.setDate([date])
         }
-
     }
 });
 
 function handleChooseLaptops() {
+    if (laptopListContainer.style.display === 'none' || laptopListContainer.style.display === '') {
 
-    if (laptopListContainer.style.display === 'none') {
-        // Show the laptop list and related elements
-        laptopListContainer.style.display = 'block';
-        filterContainer.style.display = 'block';
-        laptopList.style.display = 'block';
-        selectButton.style.display = 'block';
-        selectLaptopList.style.display = 'none';
+        laptopListContainer.style.display = 'flex';
+        laptopList.style.display = 'block'; // Show laptop list
+        filterContainer.style.display = 'block'; // Always show the filter
+        selectLaptopList.style.display = 'none'; // Hide selected laptops list
 
 
         // Reset filter input and hide filtered list
         document.getElementById('filterInput').value = '';
-        filteredLaptopList.style.display = 'none';
-        filteredLaptopList.querySelector('#filtered_laptops').innerHTML = '';
-
-        // Fetch and display all available laptops
         showAvailableLaptops();
-        selectButton.style.top = availableLaptops.getBoundingClientRect().bottom + 'px';
 
     } else {
-        // Hide the laptop list and related elements
+        // Hide the entire container and reset
         laptopListContainer.style.display = 'none';
-        filterContainer.style.display = 'none';
         laptopList.style.display = 'none';
+        filterContainer.style.display = 'none';
+        selectLaptopList.style.display = 'none';
 
         // Reset filter input and hide filtered list
         document.getElementById('filterInput').value = '';
-        filteredLaptopList.style.display = 'none';
-        filteredLaptopList.querySelector('#filtered_laptops').innerHTML = '';
     }
 }
 
 function showAvailableLaptops() {
+
     // Fetch and display all available laptops
     fetch('/filter')
         .then(response => {
@@ -82,27 +74,8 @@ function showAvailableLaptops() {
             throw new Error('Network response was not ok.');
         })
         .then(data => {
-            availableLaptops.innerHTML = ''; // Clear previous content
-            console.log(data);
-            data.forEach(function(laptop) {
-                var listItem = document.createElement('li');
-                var checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.id = 'laptop' + laptop.id;
-                checkbox.name = 'selected_laptops';
-                checkbox.value = laptop.id;
-                checkbox.classList.add('laptop-checkbox');
-
-                var label = document.createElement('label');
-                label.htmlFor = 'laptop' + laptop.id;
-                label.textContent = laptop.name;
-
-                listItem.appendChild(checkbox);
-                listItem.appendChild(label);
-
-                availableLaptops.appendChild(listItem);
-            });
-        })
+                renderLaptops(data);
+            })
         .catch(error => {
             console.error('Error:', error);
             // Handle errors here, such as displaying a message to the user
@@ -110,9 +83,7 @@ function showAvailableLaptops() {
 }
 
 function renderLaptops(filteredLaptops) {
-    // Clear previous content
-    filtered_laptops.innerHTML = '';
-
+    availableLaptops.innerHTML = '';
     // Iterate over the filtered laptops and create list items
     filteredLaptops.forEach(function(laptop) {
         var listItem = document.createElement('li');
@@ -122,6 +93,20 @@ function renderLaptops(filteredLaptops) {
         checkbox.name = 'selected_laptops';
         checkbox.value = laptop.id;
         checkbox.classList.add('laptop-checkbox');
+
+        // Check if this laptop was previously selected and mark it as checked
+        if (selectedLaptopIds.has(laptop.id)) {
+            checkbox.checked = true;
+        }
+
+        // Add an event listener to track when a laptop is checked or unchecked
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                selectedLaptopIds.add(laptop.id); // Add to selected set
+            } else {
+                selectedLaptopIds.delete(laptop.id); // Remove from selected set
+            }
+        });
 
         var label = document.createElement('label');
         label.htmlFor = 'laptop' + laptop.id;
@@ -133,14 +118,9 @@ function renderLaptops(filteredLaptops) {
         listItem.appendChild(checkbox);
         listItem.appendChild(label);
 
-        filtered_laptops.appendChild(listItem);
+        availableLaptops.appendChild(listItem);
+        console.log('selectedlaptopIdsSet',selectedLaptopIds);
     });
-
-    // Hidden the list of available laptops
-    document.getElementById('laptopList').style.display = 'none';
-    // Show the laptop list
-    filteredLaptopList.style.display = 'block';
-    selectButton.style.top = filteredLaptopList.getBoundingClientRect().bottom + 'px';
 }
 
 function fetchSuggestions(criteria, partialQuery) {
@@ -182,14 +162,13 @@ function renderSuggestions(suggestions) {
             document.getElementById('filterInput').value = selectedSuggestion; // Set filter input value to the selected suggestion
             // Trigger filtering process
             suggestionsList.style.display = 'none' ;
-            applyFilter();
         });
         suggestionsList.appendChild(listItem);
     });
 
     var suggestionsContainer = document.getElementById('suggestionsContainer');
     suggestionsContainer.style.display = 'block';
-    selectButton.style.top = filteredLaptopList.getBoundingClientRect().bottom + 'px';
+
 }
 
 function applyFilter() {
@@ -224,6 +203,7 @@ function applyFilter() {
         console.error('Error:', error);
         // Handle the error here, such as displaying a message to the user
     });
+
 }
 
 filterInput.addEventListener('input', function() {
@@ -241,35 +221,55 @@ filterInput.addEventListener('input', function() {
 
 function selectLaptops() {
 
+    // Show the selected laptops section
     selectLaptopList.style.display = 'block';
-    laptopListContainer.style.display = 'none';
 
-    var selectedLaptops = document.querySelectorAll('.laptop-checkbox:checked');
-    var selectedLaptopIds = new Set(); // Use a Set to store unique laptop IDs
+    //Take laptops that checked
+    console.log('selectedLaptopIds in selectLaptops',selectedLaptopIds);
 
     // Clear previous selections
     var form = document.getElementById('selectedLaptopsForm');
 
+    // Iterate over selected laptops (checkboxes) and update Set
+    var selectedLaptops = document.querySelectorAll('.laptop-checkbox:checked');
+    console.log(selectedLaptops);
+
+    selectedLaptops.forEach(function (laptop) {
+        var laptopId = parseInt(laptop.value);
+        console.log( laptopId);
+        console.log(typeof laptopId);
+        console.log(typeof selectedLaptopIds);
+
+        // Add to the Set to ensure unique IDs
+        if (!selectedLaptopIds.has(laptopId)) {
+            selectedLaptopIds.add(laptopId);
+        }
+    });
+
+    // Render the selected laptops based on the updated Set
     form.innerHTML = '';
 
-    // Iterate over selected laptops
-    selectedLaptops.forEach(function (laptop) {
-        var laptopId = laptop.value;
+    // Use Set to display all selected laptops
+    selectedLaptopIds.forEach(function (laptopId) {
+        var listItem = document.createElement('li');
+        var laptopLabel = document.querySelector(`label[for="laptop${laptopId}"]`);
 
-        // Check if the laptop ID has already been added
-        if (!selectedLaptopIds.has(laptopId)) {
-            // Add the laptop ID to the Set
-            selectedLaptopIds.add(laptopId);
-
-            // Create a list item for the selected laptop
-            var listItem = document.createElement('li');
-            listItem.textContent = laptop.nextElementSibling.textContent;
+        if (laptopLabel) {
+            listItem.textContent = laptopLabel.textContent; // Display the label of the selected laptop
             form.appendChild(listItem);
         }
     });
 
 }
 
+// Event Listeners
 document.getElementById('selectButton').addEventListener('click', selectLaptops);
+document.getElementById('applyFilterButton').addEventListener('click', applyFilter);
+
+// Reset filter input on choose laptops
+function resetFilterInput() {
+    document.getElementById('filterInput').value = '';
+    filteredLaptopList.querySelector('#filtered_laptops').innerHTML = '';
+}
 
 

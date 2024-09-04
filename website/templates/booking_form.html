@@ -22,17 +22,18 @@
           <button id="choose_laptop_button" type="button" class="btn btn-secondary" onclick="handleChooseLaptops()">Choose Laptops</button>
         </div>
 
-        <div id="laptopListContainer" style="display: none;">
+        <div id="laptopListContainer" class= "d-flex" style="display: none;">
 
-          <div id="laptopList">
-            <h4 style="margin-bottom: 10px;" class="form-group text-center">Available Laptops</h4>
+          <div id="laptopList" class="half-width" style="display: none;">
+            <h4 style="margin-bottom: 10px;" >Available Laptops</h4>
             <ul id="availableLaptops"></ul>
-
+            <button id="selectButton" type="button" class="btn btn-secondary" onclick="selectLaptops()" >Select</button>
           </div>
 
-          <div id="filterContainer" style="display: none;">
-            <h4 style="margin-bottom: 10px;" class="form-group text-center"> Filter Options</h4>
+          <div id="filterContainer" class= "half-width" style="display: none;">
+            <h4 style="margin-bottom: 10px;"> Filter Options</h4>
             <select id="filterCriteria" class="form-control" style="margin-bottom: 10px;">
+              <option value="all">All</option>
               <option value="name">Name</option>
               <option value="hersteller">Hersteller</option>
               <option value="dongle_id">Dongle ID</option>
@@ -45,18 +46,12 @@
               <option value="creta_version">Creta Version</option>
             </select>
             <input type="text" id="filterInput" class="form-control" placeholder="Enter filter query" style="margin-bottom: 10px;">
-            <div id="suggestionsContainer" style="display: none;">
+            <div id="suggestionsContainer" >
               <ul id="suggestionsList"></ul>
             </div>
             <button id="applyFilterButton" type="button" class="btn btn-secondary" onclick="applyFilter()">Apply Filter</button>
           </div>
 
-          <div id="filteredLaptopList" style="display: none;">
-            <h4 style="margin-bottom: 10px;" class="form-group text-center">Available Laptops</h4>
-            <ul id="filtered_laptops"></ul>
-          </div>
-
-          <button id="selectButton" type="button" class="btn btn-secondary" onclick="selectLaptops()" style="display: none;">Select</button>
         </div>
 
         <div id="selectedLaptopList" style="display: none;">

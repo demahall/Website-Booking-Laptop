@@ -1,86 +1,62 @@
-/* styles.css */
+/* Styling for  whole page */
 
 #booking-form-container {
     width:180%;
 }
 
-#availableLaptops {
-  list-style-type: none; /* Remove default list styles */
+/* Styling for list of available laptops and filtered_laptops */
+
+#availableLaptops, #filtered_laptops {
+  list-style-type: none;
   padding: 0;
   margin: 0;
-  max-height: 200px; /* Limit maximum height to enable scrolling */
-  overflow-y: auto; /* Enable vertical scrolling if needed */
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 /* Apply similar styles to list items */
+
 #availableLaptops li {
-  padding: 10px; /* Add padding for better readability */
-  cursor: pointer; /* Change cursor to pointer on hover */
-  transition: background-color 0.3s; /* Smooth transition for highlighting */
-  border-bottom: 1px solid #ccc; /* Add border between items */
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-bottom: 1px solid #ccc;
 }
 
 #availableLaptops li:last-child {
-  border-bottom: none; /* Remove border from the last item */
+  border-bottom: none;
 }
 
-#availableLaptops li:hover {
-  background-color: #f0f0f0; /* Highlight item on hover */
+#availableLaptops li:hover{
+  background-color: #f0f0f0;
 }
 
 
+/*Styling for filter container and laptop list*/
 #laptopListContainer {
   display: none;
-  justify-content: space-between; /* Space between the laptop list and filter container */
-  flex-wrap: wrap;
-
-  position: relative;
-  margin-bottom: 20px;
+  justify-content: space-between; /* Space between containers */
+  gap: 20px; /* Gap between containers */
   padding: 10px;
-  width:50%;
-  min-height: 250px;
-  background-color: #fff;
 }
 
-#applyFilterButton, #selectButton {
-    align-self: center; /* Center the button horizontally */
-    margin-top: auto; /* Push the button to the bottom */
-    margin-bottom: 10px; /* Add some space below the button */
-}
-
-#availableLaptops, #filtered_laptops {
-    flex-grow: 1; /* Ensure the list expands to take up available space */
-    margin-bottom: 10px;
-    overflow-y: auto; /* Add scroll if the list grows too long */
-}
-
-#filterContainer {
-  position: absolute;
-  top: 0;
-  left: calc(100% + 10px);
-  display: none;
-  padding: 10px; /* Add padding for better spacing */
-  width: 100%;
-  min-height: 250px;
-  margin-bottom: 20px;
+.half-width {
+  flex: 1;
   border: 1px solid #ccc;
-  background-color: #fff;
-  z-index: 999;
+  padding: 15px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 300px;
 }
 
-#laptopList, #filterContainer, #filteredLaptopList {
-    flex: 1;
-    min-height: 400px; /* Ensure both containers have a minimum height */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-}
 
-h4 {
-    text-align: center;
+/* Align buttons properly */
+#selectButton, #applyFilterButton{
+  align-self: center;  /* Center horizontally */
+  margin-top: auto;     /* Push to bottom */
+  margin-bottom: 10px;  /* Add space below button */
 }
 
 #suggestionsContainer {
@@ -108,27 +84,6 @@ h4 {
 }
 
 #suggestionsList li:hover {
-  background-color: #f0f0f0;
-}
-
-#filtered_laptop_list {
-  list-style-type: none; /* Remove default list styles */
-  padding: 0;
-  margin: 0;
-  max-height: 200px; /* Limit maximum height to enable scrolling */
-  overflow-y: auto; /* Enable vertical scrolling if needed */
-}
-
-/* Apply styling universally to list items */
-#filteredLaptopList li {
-  padding: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  border-bottom: 1px solid #ccc;
-}
-
-/* Highlight item on hover */
-#filteredLaptopList li:hover {
   background-color: #f0f0f0;
 }
 

@@ -38,6 +38,8 @@ def show_laptop_information():
         criteria = request.form.get('criteria')
         query = request.form.get('query')
         if query and criteria:
+            if criteria == 'all':
+                filtered_laptops = [laptop.serialize() for laptop in laptops]
             if criteria == 'name':
                 filtered_laptops = [laptop.serialize() for laptop in laptops if laptop.name and query.lower() in laptop.name.lower()]
             if criteria == 'hersteller':
@@ -62,7 +64,6 @@ def show_laptop_information():
                                     if laptop.puma_eMotor_version and query.lower() in laptop.puma_eMotor_version.lower()]
             elif criteria == 'creta_version':
                 filtered_laptops = [laptop.serialize() for laptop in laptops if laptop.creta_version and query.lower() in laptop.creta_version.lower()]
-
             return jsonify(filtered_laptops)
         else:
             return jsonify([laptop.serialize() for laptop in laptops])

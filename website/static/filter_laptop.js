@@ -3,40 +3,12 @@ var laptopList = document.getElementById('laptopList');
 var filterContainer = document.getElementById('filterContainer');
 var filterInput = document.getElementById('filterInput');
 var selectButton = document.getElementById('selectButton');
-var selectFilteredButton = document.getElementById('selectFilteredButton');
 var availableLaptops = document.getElementById('availableLaptops');
 var suggestionsList = document.getElementById('suggestionsList');
 var selectedLaptopsForm = document.getElementById('selectedLaptopsForm');
 var selectLaptopList = document.getElementById('selectedLaptopList');
 var selectedSuggestion = '';
 var selectedLaptopIds = new Set();
-
-
-
-flatpickr("#dates", {
-    mode: "range",
-    dateFormat: "d.m.Y",
-    minDate: "today", // Set minimum date to today
-    weekNumbers: true, // Show week numbers
-    onChange: function(selectedDates, dateStr, instance) {
-
-        // Convert the selected week range into dates
-        if (selectedDates.length === 2) {
-            const startDate = selectedDates[0];
-            const endDate = selectedDates[1];
-
-            // Format the dates and update the input value
-            const startDateFormatted = flatpickr.formatDate(startDate, "d.m.Y");
-            const endDateFormatted = flatpickr.formatDate(endDate, "d.m.Y");
-
-            instance.setDate([startDateFormatted, endDateFormatted]);
-        }
-        else {
-            const date = flatpickr.formatDate(selectedDates,"d.m.Y");
-            instance.setDate([date])
-        }
-    }
-});
 
 function handleChooseLaptops() {
     if (laptopListContainer.style.display === 'none' || laptopListContainer.style.display === '') {
@@ -82,10 +54,11 @@ function showAvailableLaptops() {
         });
 }
 
-function renderLaptops(filteredLaptops) {
-    availableLaptops.innerHTML = '';
-    // Iterate over the filtered laptops and create list items
-    filteredLaptops.forEach(function(laptop) {
+function renderLaptops(laptops) {
+    availableLaptops.innerHTML = ''; // Clear the previous list
+
+    // Iterate over the laptops and create list items
+    laptops.forEach(function(laptop) {
         var listItem = document.createElement('li');
         var checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
@@ -95,16 +68,24 @@ function renderLaptops(filteredLaptops) {
         checkbox.classList.add('laptop-checkbox');
 
         // Check if this laptop was previously selected and mark it as checked
-        if (selectedLaptopIds.has(laptop.id)) {
-            checkbox.checked = true;
-        }
+        selectedLaptopIds.forEach(function(tuple) {
+            if (tuple[0] === laptop.id) {
+                checkbox.checked = true;
+            }
+        });
 
-        // Add an event listener to track when a laptop is checked or unchecked
+        // Add event listener to track when a laptop is checked or unchecked
         checkbox.addEventListener('change', function() {
             if (this.checked) {
-                selectedLaptopIds.add(laptop.id); // Add to selected set
+                // Add [laptopId, laptopName] tuple to the Set
+                selectedLaptopIds.add([laptop.id, laptop.name]);
             } else {
-                selectedLaptopIds.delete(laptop.id); // Remove from selected set
+                // Remove the tuple from the Set
+                selectedLaptopIds.forEach(function(tuple) {
+                    if (tuple[0] === laptop.id) {
+                        selectedLaptopIds.delete(tuple);
+                    }
+                });
             }
         });
 
@@ -117,11 +98,10 @@ function renderLaptops(filteredLaptops) {
 
         listItem.appendChild(checkbox);
         listItem.appendChild(label);
-
         availableLaptops.appendChild(listItem);
-        console.log('selectedlaptopIdsSet',selectedLaptopIds);
     });
 }
+
 
 function fetchSuggestions(criteria, partialQuery) {
     fetch('/suggestions', {
@@ -150,25 +130,29 @@ function fetchSuggestions(criteria, partialQuery) {
 }
 
 function renderSuggestions(suggestions) {
+
+    var suggestionsContainer = document.getElementById('suggestionsContainer');
     suggestionsList.innerHTML = ''; // Clear previous suggestions
 
     suggestions.forEach(function(suggestion) {
         var listItem = document.createElement('li');
         listItem.innerHTML = suggestion.replace(/\n/g, '<br>'); // Display suggestion with newline breaks
         listItem.dataset.suggestionValue = suggestion; // Store unaltered suggestion text as a custom data attribute
+        suggestionsList.appendChild(listItem);
+
         listItem.addEventListener('click', function() {
             // Handle selection of suggestion
             selectedSuggestion = this.dataset.suggestionValue; // Store unaltered suggestion text in the global variable
+
             document.getElementById('filterInput').value = selectedSuggestion; // Set filter input value to the selected suggestion
             // Trigger filtering process
-            suggestionsList.style.display = 'none' ;
+            suggestionsList.style.display = 'none';
+            suggestionsContainer.style.display = 'none';
         });
-        suggestionsList.appendChild(listItem);
     });
 
-    var suggestionsContainer = document.getElementById('suggestionsContainer');
     suggestionsContainer.style.display = 'block';
-
+    suggestionsList.style.display = 'block';  // Ensure the list itself is displayed
 }
 
 function applyFilter() {
@@ -206,19 +190,6 @@ function applyFilter() {
 
 }
 
-filterInput.addEventListener('input', function() {
-    var criteria = document.getElementById('filterCriteria').value;
-    var partialQuery = filterInput.value.trim();
-
-    suggestionsList.style.display= 'block';
-    if (partialQuery !== '') {
-    fetchSuggestions(criteria, partialQuery); // Fetch suggestions if query is not empty
-    }
-    else {
-    suggestionsList.innerHTML = ''; // Clear suggestions if query is empty
-  }
-});
-
 function selectLaptops() {
 
     // Show the selected laptops section
@@ -230,46 +201,108 @@ function selectLaptops() {
     // Clear previous selections
     var form = document.getElementById('selectedLaptopsForm');
 
+    // Render the selected laptops based on the updated Set
+    form.innerHTML = '';
+
     // Iterate over selected laptops (checkboxes) and update Set
     var selectedLaptops = document.querySelectorAll('.laptop-checkbox:checked');
     console.log(selectedLaptops);
 
     selectedLaptops.forEach(function (laptop) {
         var laptopId = parseInt(laptop.value);
+        var laptopName = laptop.nextElementSibling.textContent;
         console.log( laptopId);
         console.log(typeof laptopId);
         console.log(typeof selectedLaptopIds);
 
-        // Add to the Set to ensure unique IDs
-        if (!selectedLaptopIds.has(laptopId)) {
-            selectedLaptopIds.add(laptopId);
+        /// Check if this laptopId already exists in selectedLaptopIds
+        if (![...selectedLaptopIds].some(tuple => tuple[0] === laptopId)) {
+            // If not, add the tuple [laptopId, laptopName]
+            selectedLaptopIds.add([laptopId, laptopName]);
         }
     });
 
-    // Render the selected laptops based on the updated Set
-    form.innerHTML = '';
-
     // Use Set to display all selected laptops
-    selectedLaptopIds.forEach(function (laptopId) {
+    selectedLaptopIds.forEach(function (tuple) {
+        var laptopName = tuple[1];
         var listItem = document.createElement('li');
-        var laptopLabel = document.querySelector(`label[for="laptop${laptopId}"]`);
 
-        if (laptopLabel) {
-            listItem.textContent = laptopLabel.textContent; // Display the label of the selected laptop
-            form.appendChild(listItem);
-        }
+        listItem.textContent = laptopName;
+        form.appendChild(listItem);
+
     });
 
 }
+
+// Core logic that handles filtering and visibility
+function handleFilterChange() {
+    var criteria = filterCriteria.value;
+    var partialQuery = filterInput.value.trim();
+
+    // If "All" is selected
+    if (criteria === 'all') {
+        filterInput.style.display = 'none';
+        filterInput.value = ''; // Clear the input value
+        suggestionsList.style.display = 'none'; // Hide suggestions
+        showAvailableLaptops(); // Show all laptops (this is your function)
+
+    } else {
+        // Show input field for other criteria
+        filterInput.style.display = 'block';
+
+        // Fetch suggestions only if query is not empty
+        if (partialQuery !== '') {
+            fetchSuggestions(criteria, partialQuery);
+        } else {
+            suggestionsList.innerHTML = ''; // Clear suggestions if query is empty
+            suggestionsList.style.display = 'none'; // Hide suggestions
+        }
+    }
+}
+
+//Dates Configuration
+flatpickr("#dates", {
+    mode: "range",
+    dateFormat: "d.m.Y",
+    minDate: "today", // Set minimum date to today
+    weekNumbers: true, // Show week numbers
+    onChange: function(selectedDates, dateStr, instance) {
+
+        // Convert the selected week range into dates
+        if (selectedDates.length === 2) {
+            const startDate = selectedDates[0];
+            const endDate = selectedDates[1];
+
+            // Format the dates and update the input value
+            const startDateFormatted = flatpickr.formatDate(startDate, "d.m.Y");
+            const endDateFormatted = flatpickr.formatDate(endDate, "d.m.Y");
+
+            instance.setDate([startDateFormatted, endDateFormatted]);
+        }
+        else {
+            const date = flatpickr.formatDate(selectedDates,"d.m.Y");
+            instance.setDate([date])
+        }
+    }
+});
+
 
 // Event Listeners
 document.getElementById('selectButton').addEventListener('click', selectLaptops);
 document.getElementById('applyFilterButton').addEventListener('click', applyFilter);
 
-// Reset filter input on choose laptops
-function resetFilterInput() {
-    document.getElementById('filterInput').value = '';
-    filteredLaptopList.querySelector('#filtered_laptops').innerHTML = '';
-}
+filterCriteria.addEventListener('change', function() {
+    filterInput.value = ''; // Clear the input value
+    handleFilterChange(); // Call core logic when filter criteria changes
+});
+
+filterInput.addEventListener('input', function() {
+   handleFilterChange();
+});
+
+// Initial check on page load to adjust input visibility
+handleFilterChange();
+
+
 
 

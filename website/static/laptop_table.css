@@ -2,46 +2,99 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-}
-
-#info-heading {
     text-align: center;
-    font-size: 36px; /* Increase the font size for the heading */
-    margin-top: 20px; /* Add some top margin to separate from the buttons */
 }
 
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+h3#info-heading {
+    font-size: 36px;
+    margin-top: 20px;
+    margin-bottom: 30px; /* Add margin between title and buttons */
+}
+
+/* Ensure the buttons are properly aligned and have enough margin */
 #filterForm {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
 }
 
+/* Styling for Filter Options dropdown */
+#criteriaDropdown {
+    width: 100%; /* Make the dropdown full width */
+    padding: 8px; /* Add some padding for better readability */
+    border: 1px solid #ccc; /* Border color and width */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 16px; /* Larger font size */
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1); /* Light shadow effect */
+    appearance: none; /* Remove default dropdown arrow */
+    background-color: white; /* Background color */
+}
+
+/* Styling for when the dropdown is focused (clicked on) */
+#criteriaDropdown:focus {
+    outline: none; /* Remove default browser outline */
+    border-color: #6c757d; /* Change border color on focus */
+}
+
+/* Customize the arrow for the dropdown */
+#criteriaDropdownContainer {
+    position: relative;
+}
+
+/* Center the table container and ensure it adapts to the screen width */
 #table-container {
-    margin-top: 100px; /* Adjust margin top to accommodate the buttons */
-    max-height: calc(100vh - 150px); /* Set maximum height for the table */
-    overflow-y: auto; /* Enable vertical scrolling for overflow */
-    width: 90%;
+    margin-top: 20px;
+    width: 100%; /* Increase table width */
+    max-width: 1200px; /* Set a max-width to prevent the table from being too large */
+    max-height: 600px;
     margin-left: auto;
     margin-right: auto;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    overflow-y: auto;
+    border: 1px solid #ddd; /* Add border around table container */
 }
 
+/* Basic table styling */
 table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: auto;
+    white-space: nowrap; /* Prevents table header/content from wrapping */
 }
 
 th, td {
     padding: 12px 15px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border: 1px solid #ddd; /* Add border between cells */
 }
 
 th {
     background-color: #f2f2f2;
     position: sticky;
-    top: 0; /* Stick the header to the top */
-    z-index: 999; /* Ensure the header is above the table content */
+    top: 0;
+    z-index: 1;
 }
 
 tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
+/* Scrollable styling for overflow */
+#table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+#table-container::-webkit-scrollbar-thumb {
+    background-color: #aaa;
+    border-radius: 4px;
+}

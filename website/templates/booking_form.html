@@ -31,7 +31,7 @@
           </div>
 
           <div id="filterContainer" class= "half-width" style="display: none;">
-            <h4 style="margin-bottom: 10px;"> Filter Options</h4>
+            <h4 style="margin-bottom: 30px;"> Filter Options</h4>
             <select id="filterCriteria" class="form-control" style="margin-bottom: 10px;">
               <option value="all">All</option>
               <option value="name">Name</option>
@@ -46,9 +46,11 @@
               <option value="creta_version">Creta Version</option>
             </select>
             <input type="text" id="filterInput" class="form-control" placeholder="Enter filter query" style="margin-bottom: 10px;">
+
             <div id="suggestionsContainer" >
               <ul id="suggestionsList"></ul>
             </div>
+
             <button id="applyFilterButton" type="button" class="btn btn-secondary" onclick="applyFilter()">Apply Filter</button>
           </div>
 

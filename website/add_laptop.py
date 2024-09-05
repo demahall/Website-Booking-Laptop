@@ -30,6 +30,7 @@ def add_laptop():
         puma_ice_lizenz_datum = request.form['puma_ice_version_lizenz_datum']
         puma_batterie_version = request.form['puma_batterie_version']
         puma_batterie_lizenz_datum = request.form['puma_batterie_lizenz_datum']
+
         puma_eMotor_version = request.form['puma_eMotor_version']
         puma_eMotor_lizenz_datum = request.form['puma_eMotor_lizenz_datum']
         lynx_version = request.form['lynx_version']
@@ -71,5 +72,6 @@ def add_laptop():
         user_name = request.form.get('user_name')
         flash('New laptop added successfully!', 'success')
         generate_log_message(action='add laptop',user_name=user_name, name=name)
+
 
     return redirect(url_for('add_laptop.add_laptop_page'))

@@ -1,8 +1,5 @@
 /* Styling for  whole page */
 
-#booking-form-container {
-    width:180%;
-}
 
 /* Styling for list of available laptops and filtered_laptops */
 
@@ -12,6 +9,8 @@
   margin: 0;
   max-height: 200px;
   overflow-y: auto;
+  margin-bottom: 20px;
+  margin-top: 30px;
 }
 
 /* Apply similar styles to list items */
@@ -37,7 +36,7 @@
   display: none;
   justify-content: space-between; /* Space between containers */
   gap: 20px; /* Gap between containers */
-  padding: 10px;
+  margin-bottom: 10px;
 }
 
 .half-width {
@@ -48,15 +47,19 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 300px;
+  min-height: 350px;
+  position: relative;
+
 }
 
 
 /* Align buttons properly */
-#selectButton, #applyFilterButton{
-  align-self: center;  /* Center horizontally */
-  margin-top: auto;     /* Push to bottom */
-  margin-bottom: 10px;  /* Add space below button */
+#selectButton, #applyFilterButton {
+    position: absolute;
+    bottom: 10px; /* Adjust distance from the bottom */
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally */
+    width: 150px; /* Adjust button width */
 }
 
 #suggestionsContainer {

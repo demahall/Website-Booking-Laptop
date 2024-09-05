@@ -35,12 +35,12 @@
           {% if not session.get('managing_page') %}
             <a class="nav-item nav-link" id="Booking Form" href="/">Booking Form</a>
             <a class="nav-item nav-link" id="Laptop Information" href="/laptop_information">Laptop Information</a>
-            <a class="nav-item nav-link" id="Bookings Overview" href="/bookings_overview?managing_page=true">Bookings Overview</a>
+            <a class="nav-item nav-link" id="Bookings Overview" href="/bookings_overview?managing_page=true">Bookings Management</a>
             <a class="nav-item nav-link" id="Logs" href="/logs">Log Message</a>
           {% else %}
             <a class="nav-item nav-link" id="Back To Booking Form" href="/?managing_page=false">Booking Form</a>
-            <a class="nav-item nav-link" id="Add Laptop" href="/bookings_overview/add_laptop?managing_page=true">Add Laptop</a>
-            <a class="nav-item nav-link" id="Update Specification" href="/bookings_overview/modify_laptop?managing_page=true">Update Specification Page</a>
+            <a class="nav-item nav-link" id="Add Laptop" href="/bookings_overview/add_laptop?managing_page=true">Add New Laptop</a>
+            <a class="nav-item nav-link" id="Update Specification" href="/bookings_overview/modify_laptop?managing_page=true">Update Laptop Information</a>
             <a class="nav-item nav-link" id="Calendar Overview" href="/bookings_overview/calendar_overview?managing_page=true">Calendar Overview</a>
           {% endif %}
         </div>

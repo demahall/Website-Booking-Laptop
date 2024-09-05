@@ -1,5 +1,5 @@
 var criteriaButton = document.getElementById('criteriaButton');
-var criteriaDropdown = document.getElementById('criteriaDropdown');
+var criteriaDropdownContainer = document.getElementById('criteriaDropdownContainer');
 var applyFilterButton = document.getElementById('applyFilterButton');
 var laptopTable = document.getElementById('table');
 
@@ -9,17 +9,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     criteriaButton.addEventListener('click', function() {
         // Toggle the display style of the dropdown menu
-        if (criteriaDropdown.style.display === 'none') {
-            criteriaDropdown.style.display = 'block';
+        if (criteriaDropdownContainer.style.display === 'none') {
+            criteriaDropdownContainer.style.display = 'block';
+            //criteriaDropdown.style.display = 'block';
         } else {
-            criteriaDropdown.style.display = 'none';
+            criteriaDropdownContainer.style.display = 'none';
         }
     });
 
     applyFilterButton.addEventListener('click',function(){
 
-        if (criteriaDropdown.style.display = 'block'){
-            criteriaDropdown.style.display = 'none';
+        if (criteriaDropdownContainer.style.display = 'block'){
+            criteriaDropdownContainer.style.display = 'none';
             }
     });
 });

@@ -1,0 +1,120 @@
+
+
+/* Center the "Manage Bookings" title with some margin-bottom */
+h3 {
+    margin-bottom: 30px; /* Adds space below the title */
+    text-align: center; /* Centers the title */
+}
+
+/* Style for the table container to ensure it's centered */
+table {
+    width: 100%; /* Make the table a bit larger */
+    border-collapse: collapse; /* Make sure the borders are clean */
+    border-right: none;
+}
+
+/* Add padding and styling to table cells */
+th, td {
+    padding: 15px;
+    text-align: left;
+    border: 1px solid #ddd; /* Border between table rows and columns */
+}
+
+/* Table Header Styling */
+th {
+    background-color: #f9f9f9;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    text-align: center;
+}
+
+/* Style the select box to look more interactive */
+td select {
+    display: block;
+    width: 100%; /* Make the select box full width within the container */
+    padding: 5px;
+    margin-bottom: 10px; /* Add space below the select box */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Add hover and focus effects for better interaction */
+td select:hover, td select:focus {
+    border-color: #5bc0de; /* Light blue border when hovered or focused */
+    background-color: #eef6f8; /* Slightly lighter background */
+}
+
+/* Remove the border-right of the last table cell */
+td:last-child, th:last-child {
+    border-right: none; /* Hide the right border of the last column */
+}
+
+/* Style the delete and update buttons for consistency */
+button.deleteBookingButton {
+    background-color: #d9534f; /* Red for delete button */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button.updateBookingButton {
+    background-color: #1E90FF;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    width: 100%;
+    position: relative;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: auto; /* Push the button to the bottom of the container */
+    display: block;
+}
+
+/* Add hover effects to buttons */
+button.deleteBookingButton:hover, button.updateBookingButton:hover {
+    opacity: 0.85;
+}
+
+/* Make the table scrollable when there are many rows */
+.table-wrapper {
+    overflow-x: hidden; /* Add horizontal scroll for small screens */
+    overflow-y: auto;
+    max-height: 800px;
+    border: 1px solid #ddd;
+    margin: 0 auto; /* Center the table */
+    width: 120% ;
+    transform: translateX(-10%);
+    margin: 0 auto;
+}
+
+.table-wrapper table {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Ensure no blank space at the end of scrolling */
+.table-wrapper::-webkit-scrollbar {
+    display: block; /* Visible scrollbar */
+    width: 10px;
+}
+.table-wrapper::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1;
+    border-radius: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+    background-color: #f9f9f9;
+}
+

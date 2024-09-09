@@ -154,9 +154,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!selectedStatus) {
             selectedStatus = null;
         }
-        console.log(selectedStatus);
 
-        fetch('/bookings_overview/get_bookings', {
+
+        fetch('/get_bookings', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -174,7 +174,6 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(data => {
             allBookings = data;
-            console.log(data);
             populateCalendar(data);
 
         })
@@ -216,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             //get information of where should I put this bookingCell
             [startIndex, endIndex, spanLength] = handlingBookingCell(booking);
-            console.log(startIndex,endIndex,spanLength);
+            
 
             //createBookingCell based on their position
             bookingCell = createBookingCell(booking, spanLength);

@@ -4,58 +4,61 @@
 {% block content %}
   <h3 align="center">Manage Bookings</h3>
   {% if bookings %}
-    <table class="table">
-      <thead>
-        <tr>
-          <th>User</th>
-          <th>Dates</th>
-          <th>Book Date</th>
-          <th>Laptops</th>
-          <th>Status</th>
-          <th>Comment</th>
-          <th>Action</th> <!-- New column for dropdown menu -->
-        </tr>
-      </thead>
-
-      <tbody>
-        {% for booking in bookings %}
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
           <tr>
-            <td>{{ booking.name }}</td>
-            <td>{{ booking.selected_dates }}</td>
-            <td>{{ booking.date.strftime('%d.%m.%Y') }}</td>
-            <td>
-              {% for laptop in booking.laptops %}
-                {{ laptop.name }}<br>
-              {% endfor %}
-            </td>
-            <td>
-              {% if booking.status == 'returned' %}
-                Returned
-              {% else %}
-                {{ booking.status }}
-                <form id="updateBookingForm_{{ booking.id }}" method="POST" action="{{ url_for('auth.change_booking_status', booking_id=booking.id) }}" >
-                  <select name="status">
-                    <option value="booked" {% if booking.status =='booked' %} selected {% endif %}>Booked</option>
-                    <option value="returned">Returned</option>
-                  </select>
-                  <button type="button" id="updateBookingButton_{{ booking.id }}" class="updateBookingButton" >Update</button>
-                </form>
-              {% endif %}
-            </td>
-            <td> {{booking.comment}}</td>
-            <td>
-              <form id="deleteBookingForm_{{ booking.id }}" method="POST" action="{{ url_for('auth.delete_booking', booking_id=booking.id) }}" >
-                <button type="button" id="deleteBookingButton_{{ booking.id }}" class="deleteBookingButton btn btn-danger btn-sm">Delete</button>
-              </form>
-            </td>
+            <th>User</th>
+            <th>Dates</th>
+            <th>Book Date</th>
+            <th>Laptops</th>
+            <th>Status</th>
+            <th>Comment</th>
+            <th>Action</th> <!-- New column for dropdown menu -->
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+        </thead>
+
+        <tbody>
+          {% for booking in bookings %}
+            <tr>
+              <td>{{ booking.name }}</td>
+              <td>{{ booking.selected_dates }}</td>
+              <td>{{ booking.date.strftime('%d.%m.%Y') }}</td>
+              <td>
+                {% for laptop in booking.laptops %}
+                  {{ laptop.name }}<br>
+                {% endfor %}
+              </td>
+              <td>
+                {% if booking.status == 'returned' %}
+                  Returned
+                {% else %}
+                  {{ booking.status }}
+                  <form id="updateBookingForm_{{ booking.id }}" method="POST" action="{{ url_for('auth.change_booking_status', booking_id=booking.id) }}" >
+                    <select name="status">
+                      <option value="booked" {% if booking.status =='booked' %} selected {% endif %}>Booked</option>
+                      <option value="returned">Returned</option>
+                    </select>
+                    <button type="button" id="updateBookingButton_{{ booking.id }}" class="updateBookingButton" >Update</button>
+                  </form>
+                {% endif %}
+              </td>
+              <td> {{booking.comment}}</td>
+              <td>
+                <form id="deleteBookingForm_{{ booking.id }}" method="POST" action="{{ url_for('auth.delete_booking', booking_id=booking.id) }}" >
+                  <button type="button" id="deleteBookingButton_{{ booking.id }}" class="deleteBookingButton btn btn-danger btn-sm">Delete</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   {% else %}
     <p>No bookings available.</p>
   {% endif %}
 
   {% include "confirmation_window.html" %}
   <script src="/static/handling_confirmation.js"></script>
+  <link rel="stylesheet" href="static/manage_booking.css">
 {% endblock %}

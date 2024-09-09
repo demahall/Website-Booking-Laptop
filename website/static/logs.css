@@ -1,0 +1,68 @@
+h3 {
+    text-align: center;
+    margin-bottom: 50px; /* Adjust margin to your preference */
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    border: 1px solid #dee2e6; /* Adds outside border to the table */
+    border-collapse: collapse; /* Collapses borders between cells */
+    table-layout: auto; /* Let table columns resize dynamically */
+}
+
+.table-container {
+    margin: 0 auto; /* Centers the table container */
+
+}
+
+.table-responsive {
+    max-height: 700px; /* Set a maximum height for the table container */
+    overflow-y: auto; /* Adds vertical scroll */
+    overflow-x: auto; /* Adds horizontal scroll to prevent overflow */
+}
+
+.table th, .table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border: 1px solid #dee2e6; /* Ensure each cell has a border */
+}
+
+.table thead th {
+    text-align: center; /* Center-align header text */
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+    position: sticky; /* Makes the header stick to the top */
+    top: 0;
+    background-color: #f2f2f2; /* Apply background color for the header */
+    color: #000; /* Ensures header text color is black */
+}
+
+.table tbody td {
+    text-align: left; /* Align text to left inside the cells */
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none; /* Remove bottom border from the last row */
+}
+
+/* Scrollbar styles */
+.table-responsive::-webkit-scrollbar {
+    width: 10px; /* Width of the scrollbar */
+    height: 10px; /* Height of the horizontal scrollbar */
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background-color: #ccc; /* Thumb color */
+    border-radius: 10px; /* Rounded corners */
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* Track color */
+}
+
+/* Remove the border-right of the last table cell */
+td:last-child, th:last-child {
+    border-right: none; /* Hide the right border of the last column */
+}

@@ -1,5 +1,11 @@
-/* Styling for  whole page */
+/* Styling for input text */
 
+input[type="text"] {
+    width: 100%; /* Adjust this to fit your design */
+    padding: 8px; /* Adds some padding inside the input box */
+    margin-bottom: 10px; /* Adds space below the input box */
+    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+}
 
 /* Styling for list of available laptops and filtered_laptops */
 

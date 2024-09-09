@@ -2,52 +2,8 @@
 {% extends "base.html" %}
 
 {% block title %}Logs{% endblock %}
-
-{% block head %}
-<!-- For styling css -->
-<style>
-    h3 {
-        text-align: center;
-        margin-bottom: 50px; /* Adjust margin to your preference */
-    }
-    .table {
-        width: 100%;
-        margin-bottom: 1rem;
-        color: #212529;
-    }
-
-    .table-responsive {
-        max-height: 700px; /* Set a maximum height for the table container */
-        overflow-y: auto; /* Adds vertical scroll */
-        overflow-x: hidden; /* Hides horizontal scroll, remove if necessary */
-    }
-
-    .table th, .table td {
-        padding: 0.75rem;
-        vertical-align: top;
-        border-top: 1px solid #dee2e6;
-    }
-
-    .table thead th {
-        vertical-align: bottom;
-        border-bottom: 2px solid #dee2e6;
-        position: sticky; /* Makes the header stick to the top */
-        top: 0;
-        background-color: #fff; /* Ensures the header background is not transparent */
-    }
-
-    .action-column {
-        min-width: 200px;
-    }
-
-    .timestamp-column {
-        min-width: 200px;
-    }
-
-</style>
-{% endblock %}
-
 {% block content %}
+
 <div class="container table-container">
     <h3 class="text-center">Action Logs</h3>
     <div class="table-responsive">
@@ -73,4 +29,5 @@
         </table>
     </div>
 </div>
+<link rel="stylesheet" href="static/logs.css">
 {% endblock %}

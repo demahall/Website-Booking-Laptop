@@ -1,9 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
     let allBookings = [];
-    monthHeader = document.getElementById('monthHeader');
     let currentDate = new Date();
+
     currentMonth = currentDate.getMonth() + 1; //index from 0
     currentYear = currentDate.getFullYear();
+
+    monthHeader = document.getElementById('monthHeader');
     const calendarBody = document.getElementById("calendarBody");
 
     const bookingStatusDropDown = document.getElementById('bookingStatusDropDown');
@@ -36,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateCalendar(month, year) {
+
         const monthNames = ["January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"];
         const daysInMonth = new Date(year, month, 0).getDate();
@@ -52,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             daysHeader.appendChild(dayCell);
         }
-        //populateCalendar();
+
         fetchBookings(currentStatus);
     }
 
@@ -190,7 +193,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
             //create new row, make column in a row sequentially or in order !
             const row = document.createElement("tr");
-            row.className = 'booking-row';
+            row.className = `booking-row booking-${booking.id}`;
+            row.setAttribute('data-booking-id', booking.id);
+
             calendarBody.appendChild(row);
 
             // Create name cell in that row
@@ -205,6 +210,13 @@ document.addEventListener('DOMContentLoaded', function () {
             statusCell.className = 'status';
             row.appendChild(statusCell);
 
+            // Create customer cell in that row
+            //const customerCell = document.createElement("td");
+            //customerCell.textContent = booking.customer;
+            //customerCell.className = 'customer';
+            //row.appendChild(customerCell);
+
+
             // Prepare to fill the rest of the row with empty cells
             for (let i = 1; i <= monthHeader.colSpan; i++) {
                 const dateBox = document.createElement("td");
@@ -215,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             //get information of where should I put this bookingCell
             [startIndex, endIndex, spanLength] = handlingBookingCell(booking);
-            
+
 
             //createBookingCell based on their position
             bookingCell = createBookingCell(booking, spanLength);
@@ -235,6 +247,23 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    function scrollToBooking(bookingId) {
+
+        const booking = allBookings.find(b => b.id === parseInt(bookingId,10));
+
+        if(!booking) {
+            console.error('Booking not found');
+            return;
+        }
+
+        [_,month,year] = booking.startDate;
+
+        currentMonth = month;
+        currentYear = year;
+        updateCalendar(currentMonth,currentYear);
+
+    }
+
     function showBookingDetails(booking) {
         const modalOverlay = document.getElementById('modalOverlay');
         const modal = document.getElementById('bookingDetailsModal');
@@ -248,6 +277,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 <p>End Date: ${booking.endDate[0]}.${booking.endDate[1]}.${booking.endDate[2]}</p>
                 <p>Booking Date: ${booking.date}</p>
                 <p>Laptops: ${booking.laptops}</p>
+                <p>Customer: ${booking.customer}</p>
+                <p>Location: ${booking.location}</p>
                 <p>Comment: ${booking.comment || 'No comments available.'}</p>
             `;
             modalContent.innerHTML = content;
@@ -263,7 +294,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initial setup
     updateCalendar(currentMonth, currentYear);
-    fetchBookings(currentStatus);
+
+
+    // Use event delegation to handle click events on booking rows
+    calendarBody.addEventListener('click', function(event) {
+        const row = event.target.closest('.booking-row'); // Find the closest booking-row element
+
+        if (row) { // If a booking row was clicked
+            const bookingId = row.getAttribute('data-booking-id'); // Get the booking ID
+
+            scrollToBooking(bookingId);
+
+        }
+    });
 
 
     // Bind these functions to your previous and next buttons
@@ -276,7 +319,6 @@ document.addEventListener('DOMContentLoaded', function () {
         currentStatus = this.value;
         fetchBookings(currentStatus);
     });
-
 
     //Settings fixed Header by scrolling down all booking lists
 

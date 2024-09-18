@@ -14,6 +14,8 @@ class Booking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
     selected_dates = db.Column(db.String(150))
+    customer = db.Column(db.String(150))
+    location = db.Column(db.String(150))
     status = db.Column(db.String(20), default="pending")
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     comment = db.Column(db.Text)

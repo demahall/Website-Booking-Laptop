@@ -36,7 +36,7 @@ function fetchFilteredLaptops(selectedCriteria) {
         var criterion = selectedOptions[i].value;
         selectedCriteria.push(criterion);
     }
-    console.log(selectedCriteria)
+
 
     fetch('/show_laptop', {
         method: 'POST',

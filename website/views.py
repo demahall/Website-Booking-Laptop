@@ -111,13 +111,16 @@ def book_laptops():
         name = request.form.get('name')
         selected_dates = request.form.get('dates')
         selected_laptops = request.form.getlist('selected_laptops')
+        customer = request.form.get('customer')
+        location = request.form.get('location')
         comment = request.form.get('comment')
 
         if not name or not selected_dates or not selected_laptops:
             flash('Please fill in all required fields.', 'error')
             return redirect(url_for('views.booking_form_page'))
 
-        new_booking = Booking(name=name, selected_dates=selected_dates,comment=comment)
+        new_booking = Booking(name=name, selected_dates=selected_dates,customer=customer,location=location
+                              ,comment=comment)
         db.session.add(new_booking)
         db.session.flush()
 
@@ -132,7 +135,8 @@ def book_laptops():
 
         db.session.commit()
 
-        generate_log_message(action='booking laptops',name=name,selected_dates=selected_dates,laptops=selected_laptops,comment=comment)
+        generate_log_message(action='booking laptops',name=name,selected_dates=selected_dates,laptops=selected_laptops
+                             ,comment=comment)
 
         flash('Booking successful!', 'success')
 

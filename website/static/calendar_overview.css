@@ -265,3 +265,9 @@ tr.booking-row {
     border: none;
 }
 
+
+.booking-row:hover {
+    background-color: #D3D3D3;
+    cursor: pointer;
+}
+

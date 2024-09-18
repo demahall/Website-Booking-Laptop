@@ -34,6 +34,9 @@ def get_bookings():
                 'oneDay': one_day,
                 'date' : booking.date,
                 'laptops' : [laptop.name for laptop in booking.laptops],
+                #Handle Null values by old booking without customer and location information (Temporary)
+                'customer' : booking.customer if booking.customer else '-',
+                'location' : booking.location if booking.location else '-',
                 'comment' : booking.comment
             }
 

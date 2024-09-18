@@ -245,6 +245,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             calendarBody.appendChild(row);
         });
+        // Call this function after populating the calendar
+        addHoverListeners();
     }
 
     function scrollToBooking(bookingId) {
@@ -264,47 +266,60 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
-    function showBookingDetails(booking) {
-        const modalOverlay = document.getElementById('modalOverlay');
-        const modal = document.getElementById('bookingDetailsModal');
-        const modalContent = document.getElementById('modalContent');
+    function showBookingModal(booking) {
+        const modal = document.getElementById('bookingInfoModal');
+        const modalDetails = document.getElementById('modalDetails');
 
-        if (modal && modalOverlay) {
-            const content = `
-                <h3>${booking.name}</h3>
-                <p>Status: ${booking.status}</p>
-                <p>Start Date: ${booking.startDate[0]}.${booking.startDate[1]}.${booking.startDate[2]}</p>
-                <p>End Date: ${booking.endDate[0]}.${booking.endDate[1]}.${booking.endDate[2]}</p>
-                <p>Booking Date: ${booking.date}</p>
-                <p>Laptops: ${booking.laptops}</p>
-                <p>Customer: ${booking.customer}</p>
-                <p>Location: ${booking.location}</p>
-                <p>Comment: ${booking.comment || 'No comments available.'}</p>
-            `;
-            modalContent.innerHTML = content;
-            modal.style.display = 'block';
-            modalOverlay.style.display = 'block';
-        }
+        // Set booking details in the modal
+        modalDetails.innerHTML = `
+            <h3>${booking.name}</h3>
+            <p>Status: ${booking.status}</p>
+            <p>Start Date: ${booking.startDate[0]}.${booking.startDate[1]}.${booking.startDate[2]}</p>
+            <p>End Date: ${booking.endDate[0]}.${booking.endDate[1]}.${booking.endDate[2]}</p>
+            <p>Booking Date: ${booking.date}</p>
+            <p>Laptops: ${booking.laptops}</p>
+            <p>Customer: ${booking.customer}</p>
+            <p>Location: ${booking.location}</p>
+            <p>Note: ${booking.comment || 'No comments available.'}</p>
+        `;
+
+        // Show the modal
+        modal.style.display = 'block';
     }
 
-    function closeWindowBookingDetails() {
-        document.getElementById('bookingDetailsModal').style.display = 'none';
-        document.getElementById('modalOverlay').style.display = 'none';
+    function closeBookingModal() {
+        document.getElementById('bookingInfoModal').style.display = 'none';
+    }
+
+
+    function addHoverListeners() {
+        const bookingCells = document.querySelectorAll('.booking-cell');
+
+        bookingCells.forEach(cell => {
+            cell.addEventListener('mouseenter', function () {
+                const bookingId = cell.dataset.bookingId;
+                const selectedBooking = allBookings.find(booking => booking.id == bookingId);
+                if (selectedBooking) {
+                    showBookingModal(selectedBooking);
+                }
+            });
+
+            // Optional: Close modal when mouse leaves the booking cell
+            cell.addEventListener('mouseleave', function () {
+                closeBookingModal();
+            });
+        });
     }
 
     // Initial setup
     updateCalendar(currentMonth, currentYear);
 
-
     // Use event delegation to handle click events on booking rows
     calendarBody.addEventListener('click', function(event) {
         const row = event.target.closest('.booking-row'); // Find the closest booking-row element
-
         if (row) { // If a booking row was clicked
             const bookingId = row.getAttribute('data-booking-id'); // Get the booking ID
-
             scrollToBooking(bookingId);
-
         }
     });
 
@@ -334,18 +349,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-
-    // All about Window Modal Booking Details
-    calendarBody.addEventListener('click', function(event) {
-        const target = event.target.closest('.booking-cell');
-        if (target) {
-            const bookingId = target.dataset.bookingId;
-            const selectedBooking = allBookings.find(booking => booking.id == bookingId);
-            console.log(selectedBooking);
-            showBookingDetails(selectedBooking);
-        }
-    });
-    document.getElementById('closeButton').addEventListener('click', closeWindowBookingDetails);
 });
 
 

@@ -1,8 +1,7 @@
-{% extends "base.html" %}
+{% extends "common/base.html" %}
 {% block title %}Laptop Information{% endblock %}
 
 {% block content %}
-    <link rel="stylesheet" href="/static/laptop_table.css">
     <div class="container">
         <h3 id="info-heading">Laptop Information</h3>
 
@@ -42,5 +41,7 @@
             </table>
         </div>
     </div>
-    <script src="/static/laptop_details.js"></script>
+
+    <link rel="stylesheet" href="/static/css/laptop_table.css">
+    <script src="/static/js/laptop_details.js"></script>
 {% endblock %}

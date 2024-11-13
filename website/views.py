@@ -1,7 +1,7 @@
 from flask import Blueprint,jsonify ,render_template, request, flash, redirect, url_for, session as flask_session
 from website.models import Booking,Laptop,Log
 from website import db
-from website.utils import generate_log_message
+from website.log_message import generate_log_message
 from sqlalchemy.orm import Session as SQLAlchemySession
 
 views = Blueprint('views',__name__)
@@ -12,18 +12,22 @@ def booking_form_page():
     managing_page = request.args.get('managing_page', 'false')
     flask_session['managing_page'] = (managing_page == 'true')
     laptops = available_laptops()
-    return render_template("booking_form.html", available_laptops=laptops)
+    return render_template("bookings/booking_form.html", available_laptops=laptops)
 
 @views.route('/bookings_overview',methods=['GET'])
 def bookings_overview_page():
     flask_session['managing_page'] = True
     bookings = Booking.query.all()
-    return render_template('admin_bookings.html',bookings=bookings)
+    return render_template('bookings/manage_bookings.html',bookings=bookings)
+
+@views.route('/laptop_information', methods=['GET'])
+def laptop_information_page():
+    return render_template('laptops/laptop_information.html')
 
 @views.route('/logs')
 def logs_page():
     logs = Log.query.order_by(Log.timestamp.desc()).all()
-    return render_template('logs.html', logs=logs)
+    return render_template('common/logs.html', logs=logs)
 
 @views.route('/back_to_booking_form')
 def back_to_booking_form():
@@ -85,10 +89,6 @@ def get_suggestions():
     else:
         return jsonify([])
 
-@views.route('/laptop_information', methods=['GET'])
-def laptop_information_page():
-    return render_template('laptop_details.html')
-
 @views.route('/show_laptop', methods=['GET', 'POST'])
 def show_laptop():
 
@@ -135,8 +135,13 @@ def book_laptops():
 
         db.session.commit()
 
-        generate_log_message(action='booking laptops',name=name,selected_dates=selected_dates,laptops=selected_laptops
-                             ,comment=comment)
+        generate_log_message(action='booking laptops',
+                             name=name,
+                             selected_dates=selected_dates,
+                             laptops=selected_laptops,
+                             customer =customer,
+                             location=location,
+                             comment=comment)
 
         flash('Booking successful!', 'success')
 

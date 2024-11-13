@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template,session, request,redirect,url_for,flash,jsonify
 from website.models import Laptop
 from website import db
-from website.utils import generate_log_message
+from website.log_message import generate_log_message
 
 
 modify_laptop_bp = Blueprint('modify_laptop', __name__)
@@ -10,7 +10,7 @@ def modify_laptop_page():
     session['managing_page'] = True
     laptops = Laptop.query.all()
     laptops.sort(key=lambda  laptop:laptop.name, reverse=False)
-    return render_template('laptop_edit.html',laptops=laptops)
+    return render_template('laptops/laptop_edit.html',laptops=laptops)
 
 
 @modify_laptop_bp.route('/update_laptop_info/<int:laptop_id>', methods=['GET', 'POST'])
@@ -100,7 +100,7 @@ def update_laptop_info(laptop_id):
 
         return redirect(url_for('modify_laptop.modify_laptop_page', laptop_id=laptop_id))
 
-    return render_template('laptop_edit.html', laptop=laptop)
+    return render_template('laptops/laptop_edit.html', laptop=laptop)
 
 
 @modify_laptop_bp.route('/delete_laptop/<int:laptop_id>', methods=['POST'])

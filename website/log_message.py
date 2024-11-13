@@ -10,6 +10,8 @@ def generate_log_message(action, **kwargs):
         name = kwargs.get('name', '')
         selected_dates = kwargs.get('selected_dates', '')
         laptops = kwargs.get('laptops', [])
+        customer = kwargs.get('customer','')
+        location = kwargs.get('location','')
         comment = kwargs.get('comment', '')
 
         laptop_details = [f"Name: {laptop.name}, ID: {laptop.id}" for laptop in laptops]
@@ -17,6 +19,7 @@ def generate_log_message(action, **kwargs):
         log_message = (
             f"{name} booked the following laptops for the dates {selected_dates}: "
             f"{', '.join(laptop_details)}. "
+            f"for customer {customer} and take place at {location} "
             f"Comment provided: '{comment}'."
         )
 

@@ -1,14 +1,13 @@
-from flask import Blueprint, jsonify, request, flash, redirect, url_for,session
-from website.utils import generate_log_message
+from flask import Blueprint, request, flash, redirect, url_for,session
+from website.log_message import generate_log_message
 from website.models import Booking
 from website import db
 
 
 
-auth = Blueprint('auth', __name__)
+manage_bookings_bp = Blueprint('manage_booking', __name__)
 
-
-@auth.route('/admin_bookings/<int:booking_id>', methods=['POST'])
+@manage_bookings_bp.route('/admin_bookings/<int:booking_id>', methods=['POST'])
 def change_booking_status(booking_id):
 
     confirm_update_booking = request.form.get('confirm_update')
@@ -44,7 +43,7 @@ def change_booking_status(booking_id):
     # Redirect back to the admin bookings page
     return redirect(url_for('views.bookings_overview_page'))
 
-@auth.route('/delete_booking/<int:booking_id>', methods=['POST'])
+@manage_bookings_bp.route('/delete_booking/<int:booking_id>', methods=['POST'])
 def delete_booking(booking_id):
     # Retrieve the booking object
     confirm_delete_booking = request.form.get('confirm_delete')

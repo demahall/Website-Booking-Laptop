@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "common/base.html" %}
 {% block title %}Laptop Information{% endblock %}
 {% block content %}
 <div class="container">
@@ -125,7 +125,7 @@
     </div>
 
 {% endif %}
-{% include "confirmation_window.html" %}
-<script src="/static/laptop_edit.js"></script>
-<script src="/static/handling_confirmation.js"></script>
+{% include "common/confirmation_window.html" %}
+<script src="/static/js/laptop_edit.js"></script>
+<script src="/static/js/handling_confirmation.js"></script>
 {% endblock %}

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "common/base.html" %}
 {% block title %}Add Laptops{% endblock %}
 {% block content %}
 <h3 align="center">Add New Laptops</h3>
@@ -101,6 +101,6 @@
     </form>
 </div>
 
-{% include "confirmation_window.html" %}
-<script src="/static/handling_confirmation.js"></script>
+{% include "common/confirmation_window.html" %}
+<script src="/static/js/handling_confirmation.js"></script>
 {% endblock %}

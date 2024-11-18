@@ -3,10 +3,6 @@ from website.models import Booking
 
 calendar_overview_bp = Blueprint('calendar_overview', __name__)
 
-@calendar_overview_bp.route('/calendar_overview')
-def calendar_overview():
-    return render_template('calendar_overview.html')
-
 @calendar_overview_bp.route('/get_bookings', methods=['GET', 'POST'])
 def get_bookings():
     booking_list = []

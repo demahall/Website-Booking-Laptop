@@ -38,7 +38,7 @@ function handleChooseLaptops() {
 function showAvailableLaptops() {
 
     // Fetch and display all available laptops
-    fetch('/filter')
+    fetch('/api/filter')
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -46,6 +46,7 @@ function showAvailableLaptops() {
             throw new Error('Network response was not ok.');
         })
         .then(data => {
+                console.log(data);
                 renderLaptops(data);
             })
         .catch(error => {
@@ -104,7 +105,7 @@ function renderLaptops(laptops) {
 
 
 function fetchSuggestions(criteria, partialQuery) {
-    fetch('/suggestions', {
+    fetch('/api/suggestions', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -161,7 +162,7 @@ function applyFilter() {
     var query = selectedSuggestion;
 
     // Send a POST request to the server with the criteria and query
-    fetch('/filter', {
+    fetch('/api/filter', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'

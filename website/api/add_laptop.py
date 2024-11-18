@@ -1,14 +1,11 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, session
+from flask import Blueprint, request, flash, redirect, url_for, session
 from website.models import Laptop
 from website import db
-from website.log_message import generate_log_message
+from website.api.log_message import generate_log_message
 
 #add_laptop als URL for html
 add_laptop_bp = Blueprint('add_laptop', __name__)
-@add_laptop_bp.route('/add_laptop',methods = ['GET'])
-def add_laptop_page():
-    session['managing_page'] = True
-    return render_template('laptops/laptop_add.html')
+
 
 @add_laptop_bp.route('/add_new_laptop',methods = ['GET','POST'])
 def add_laptop():

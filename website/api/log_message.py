@@ -1,7 +1,6 @@
 from website import db
 from website.models import Log
 
-
 def generate_log_message(action, **kwargs):
 
     user_name = kwargs.get('user_name','')

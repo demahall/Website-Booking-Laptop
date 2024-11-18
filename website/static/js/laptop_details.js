@@ -38,7 +38,7 @@ function fetchFilteredLaptops(selectedCriteria) {
     }
 
 
-    fetch('/show_laptop', {
+    fetch('/api/show_laptop', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

@@ -1,5 +1,5 @@
-from flask import Blueprint, request, flash, redirect, url_for,session
-from website.log_message import generate_log_message
+from flask import Blueprint, request, flash, redirect, url_for
+from website.api.log_message import generate_log_message
 from website.models import Booking
 from website import db
 

@@ -1,17 +1,10 @@
-from flask import Blueprint, render_template,session, request,redirect,url_for,flash,jsonify
+from flask import Blueprint, render_template, request,redirect,url_for,flash
 from website.models import Laptop
 from website import db
-from website.log_message import generate_log_message
+from website.api.log_message import generate_log_message
 
 
 modify_laptop_bp = Blueprint('modify_laptop', __name__)
-@modify_laptop_bp.route('/modify_laptop',methods = ['GET'])
-def modify_laptop_page():
-    session['managing_page'] = True
-    laptops = Laptop.query.all()
-    laptops.sort(key=lambda  laptop:laptop.name, reverse=False)
-    return render_template('laptops/laptop_edit.html',laptops=laptops)
-
 
 @modify_laptop_bp.route('/update_laptop_info/<int:laptop_id>', methods=['GET', 'POST'])
 def update_laptop_info(laptop_id):

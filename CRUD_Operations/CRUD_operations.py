@@ -10,6 +10,11 @@ with app.app_context():
 
 app.app_context().push()
 
+all_laptops = None
+
+
+
+
 def filter_laptops(selected_criteria):
     # Initialize a dictionary to store the filtered criteria for each laptop
     laptops = Laptop.query.all()
@@ -175,6 +180,7 @@ def delete_all_logs():
         db.session.rollback()
         print(f"An error occurred while deleting logs: {e}")
 
+
 def parse_date(dates):
 
     dates = dates.split(' to ')
@@ -211,6 +217,5 @@ if __name__ == "__main__":
     print(Laptop.__table__.columns)
     #laptop_status(15)
     #filter_laptops(['hersteller','mac_addresse'])
-
 
 

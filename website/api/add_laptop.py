@@ -71,4 +71,4 @@ def add_laptop():
         generate_log_message(action='add laptop',user_name=user_name, name=name)
 
 
-    return redirect(url_for('add_laptop.add_laptop_page'))
+    return redirect(url_for('views.add_laptop_page'))

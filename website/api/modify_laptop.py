@@ -91,7 +91,7 @@ def update_laptop_info(laptop_id):
 
         flash(flash_message, 'success')
 
-        return redirect(url_for('modify_laptop.modify_laptop_page', laptop_id=laptop_id))
+        return redirect(url_for('views.modify_laptop_page', laptop_id=laptop_id))
 
     return render_template('laptops/laptop_edit.html', laptop=laptop)
 
@@ -115,7 +115,7 @@ def delete_laptop(laptop_id):
         flash_message = 'Laptop deleted successfully'
         flash(flash_message, 'success')
 
-    return redirect(url_for('modify_laptop.modify_laptop_page'))
+    return redirect(url_for('views.modify_laptop_page'))
 
 
 

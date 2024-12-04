@@ -1,3 +1,5 @@
+// This java script module is to process the data flow from database and visualize it dynamically into laptop information page
+
 var criteriaButton = document.getElementById('criteriaButton');
 var criteriaDropdownContainer = document.getElementById('criteriaDropdownContainer');
 var applyFilterButton = document.getElementById('applyFilterButton');
@@ -6,6 +8,9 @@ var laptopTable = document.getElementById('table');
 
 document.addEventListener('DOMContentLoaded', function() {
     fetchFilteredLaptops(); // Automatically fetch and display laptops when the page loads
+
+
+    //Handling the visibility of filter feature window by clicking "Filter Options" and "Apply Filter" buttons
 
     criteriaButton.addEventListener('click', function() {
         // Toggle the display style of the dropdown menu
@@ -26,8 +31,13 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// Function to fetch filtered laptops based on selected criteria
-function fetchFilteredLaptops(selectedCriteria) {
+
+function fetchFilteredLaptops() {
+
+    // Get filtered laptops from database based on selected criteria and then throw the data into renderFilteredLaptops function
+    // Input: selectedOptions -> selected laptop's criteria from html
+    // Output: -
+
     var selectedOptions = criteriaDropdown.selectedOptions;
     var selectedCriteria = [];
 
@@ -61,8 +71,11 @@ function fetchFilteredLaptops(selectedCriteria) {
     });
 }
 
-// Function to render filtered laptops on the page
+
 function renderFilteredLaptops(filteredLaptops) {
+    // Render filtered laptops on the laptop information page
+    // Input: filtered laptops data information
+    // Output: dynamically table of the information
 
     // Define default headers
     const defaultHeaders = ["Laptop Name", "Hersteller", "Dongle ID"];

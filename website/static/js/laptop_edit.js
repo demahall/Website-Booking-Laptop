@@ -1,3 +1,5 @@
+//This javascript module is used to show and put a new input laptop data information in modify laptop page
+
 document.addEventListener('DOMContentLoaded', function () {
 
     //get data input laptop

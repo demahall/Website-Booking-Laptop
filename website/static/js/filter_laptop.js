@@ -1,3 +1,7 @@
+//This javascript module is used to handle the laptop filter feature on booking form page such as showing all available laptops,
+//showing it only by selected criteria, selecting and unselecting the laptops and dynamic visualization when specified buttons triggered
+
+
 var laptopListContainer = document.getElementById('laptopListContainer');
 var laptopList = document.getElementById('laptopList');
 var filterContainer = document.getElementById('filterContainer');
@@ -11,7 +15,11 @@ var selectedSuggestion = '';
 var selectedLaptopIds = new Set();
 
 function handleChooseLaptops() {
-    if (laptopListContainer.style.display === 'none' || laptopListContainer.style.display === '') {
+    // Handle laptop filter feature in booking form page. By selecting "choose laptops" button, two window will showed.
+    // On the left side is for list of available laptops and on the right side for filter criteria
+    //Input: -
+    //Output:-
+  if (laptopListContainer.style.display === 'none' || laptopListContainer.style.display === '') {
 
         laptopListContainer.style.display = 'flex';
         laptopList.style.display = 'block'; // Show laptop list
@@ -36,8 +44,10 @@ function handleChooseLaptops() {
 }
 
 function showAvailableLaptops() {
+    // Get all available laptop information from database and send it to renderLaptops() function
+    //Input: -
+    //Output:-
 
-    // Fetch and display all available laptops
     fetch('/api/filter')
         .then(response => {
             if (response.ok) {
@@ -56,6 +66,11 @@ function showAvailableLaptops() {
 }
 
 function renderLaptops(laptops) {
+    // Render dynamically all available laptops or laptops with specified criteria
+    // and allow user selecting laptops by checking the box beside the laptop name
+    // Input: laptop information based on selected criteria
+    // Output: list of laptops name and check box for each of them
+
     availableLaptops.innerHTML = ''; // Clear the previous list
 
     // Iterate over the laptops and create list items
@@ -105,6 +120,13 @@ function renderLaptops(laptops) {
 
 
 function fetchSuggestions(criteria, partialQuery) {
+    // Get Laptop information based on criteria and its details. For example try to get laptop name with Dell or HP
+    // It should not be a complete details. The server side will find the suggestion based on the given details.
+    //e.g: Dell 5910, when the details only Dell, it suggest all the Dell laptop version
+    // Input: 1. Criteria for what kind of laptop information. e.g: Laptop's name
+    //        2. partialQuery details information about selected criteria e.g: Dell
+    // Output: Details suggestion and render it by using renderSuggestions function
+
     fetch('/api/suggestions', {
         method: 'POST',
         headers: {
@@ -131,6 +153,9 @@ function fetchSuggestions(criteria, partialQuery) {
 }
 
 function renderSuggestions(suggestions) {
+    // Render the suggestion dynamically
+    // Input: suggestions-> information from database based on selected criteria and details input
+    // Output: -
 
     var suggestionsContainer = document.getElementById('suggestionsContainer');
     suggestionsList.innerHTML = ''; // Clear previous suggestions
@@ -157,6 +182,11 @@ function renderSuggestions(suggestions) {
 }
 
 function applyFilter() {
+    // When "Apply Filter" button clicked, this function get the laptop information from database based on criteria and details input from user
+    // and then throw the data into renderLaptops function
+    // Input: criteria and input details from html
+    // Output: list data of filtered laptops
+
     // Get the criteria and query from the input fields
     var criteria = document.getElementById('filterCriteria').value;
     var query = selectedSuggestion;
@@ -193,11 +223,14 @@ function applyFilter() {
 
 function selectLaptops() {
 
+    // By clicking "Select" button, this function get all information of selected laptops, make a new window
+    // and show a list of selected laptop's name
+    // Input: -
+    // Output: New window and list of selected laptop's name
+
     // Show the selected laptops section
     selectLaptopList.style.display = 'block';
 
-    //Take laptops that checked
-    console.log('selectedLaptopIds in selectLaptops',selectedLaptopIds);
 
     // Clear previous selections
     var form = document.getElementById('selectedLaptopsForm');
@@ -235,8 +268,13 @@ function selectLaptops() {
 
 }
 
-// Core logic that handles filtering and visibility
+
 function handleFilterChange() {
+
+    // Core logic that handles filtering and visibility of laptop list
+    // Input: criteria and details input
+    // Output: -
+
     var criteria = filterCriteria.value;
     var partialQuery = filterInput.value.trim();
 

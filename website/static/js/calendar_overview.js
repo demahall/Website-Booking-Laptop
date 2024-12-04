@@ -1,4 +1,9 @@
+//This javascript module is used to handle the dynamic visualization of calendar overview page, filtering booking based on their status,
+//making calendar header,rows and cells and some other features.
+
 document.addEventListener('DOMContentLoaded', function () {
+
+
     let allBookings = [];
     let currentDate = new Date();
 
@@ -11,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const bookingStatusDropDown = document.getElementById('bookingStatusDropDown');
     let currentStatus = bookingStatusDropDown.value || 'All'; // Set default status
 
+    //Update calendar table booking to next month
     function nextMonth() {
         currentMonth++;
         if (currentMonth > 12) {
@@ -20,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
         updateCalendar(currentMonth, currentYear);
     }
 
+    //Update calendar table booking to previous month
     function previousMonth() {
         currentMonth--;
         if (currentMonth < 1) {
@@ -30,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
+    //Update calendar table booking to current month
     function goToCurrentMonth() {
         currentDate = new Date();
         currentMonth = currentDate.getMonth() + 1;
@@ -37,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
         updateCalendar(currentMonth, currentYear);
     }
 
+    //Populate calendar booking header with selected month
     function updateCalendar(month, year) {
 
         const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -59,13 +68,17 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchBookings(currentStatus);
     }
 
-    //handling booking box display
+
     function handlingBookingCell(booking) {
+        // handling size of booking cell
+        // Input: booking data
+        // Output: range of booking cell or column index when the booking started and ended
 
         const bookingStart = booking.startDate;
         const bookingEnd = booking.endDate;
 
         //adjust with start column of the table, in this case is two
+        //(the first and the second columns are for the person who booked and booking status)
 
         let startIndex = 2;
         let endIndex = monthHeader.colSpan + 1;
@@ -112,7 +125,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
+
     function createBookingCell(booking, widthCell) {
+        // To create a booking row and cell
+        // Input: booking data and size of booking cell (how many columns are they)
+        // Output: booking row and booking cell within the row
 
         const cell = document.createElement('td');
         cell.className = `booking-cell ${booking.status.toLowerCase()}`;
@@ -154,6 +171,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function fetchBookings(selectedStatus) {
 
+        //Get booking information from database based on the booking status
+        //Input: Booking Status
+        //Output: Booking information
+
         if (!selectedStatus) {
             selectedStatus = null;
         }
@@ -185,7 +206,15 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+
+
     function populateCalendar(data) {
+
+        //Populate booking calendar rows based on booking information -> booked by, status and booking cell
+        // and add hover function to show all information about the booking
+        //Input: Booking information from database, fetched by "fetchBookings" function
+        //       Size of booking cell
+        //Output: Booking list
 
         calendarBody.innerHTML = ''; // Clear existing calendar entry
 
@@ -250,6 +279,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function scrollToBooking(bookingId) {
+        //Get the dates when someone booked laptops and update calendar into the time when its booked
+        //Input: unique bookingId to get booking date
+        //Output: -
 
         const booking = allBookings.find(b => b.id === parseInt(bookingId,10));
 
@@ -267,6 +299,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function showBookingModal(booking) {
+
+        //Show a window provided all booking information when mouse pointer hovered within booking cell
+        //Input: booking information
+        //Output: Modal Window
+
         const modal = document.getElementById('bookingInfoModal');
         const modalDetails = document.getElementById('modalDetails');
 
@@ -288,13 +325,19 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function closeBookingModal() {
+        //Close booking modal window whenever mouse pointer not within booking cell anymore
+        //Input:-
+        //Output:-
         document.getElementById('bookingInfoModal').style.display = 'none';
     }
 
 
     function addHoverListeners() {
-        const bookingCells = document.querySelectorAll('.booking-cell');
+        // Adding hover feature to show modal window
+        //Input:-
+        //Output:-
 
+        const bookingCells = document.querySelectorAll('.booking-cell');
         bookingCells.forEach(cell => {
             cell.addEventListener('mouseenter', function () {
                 const bookingId = cell.dataset.bookingId;
@@ -324,19 +367,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    // Bind these functions to your previous and next buttons
+    // Connect these functions to previous and next buttons
     document.getElementById('nextMonthButton').addEventListener('click', nextMonth);
     document.getElementById('previousMonthButton').addEventListener('click', previousMonth);
     document.getElementById('currentMonthButton').addEventListener('click', goToCurrentMonth);
 
-    //get Drop down options value from html whenever its changed
+    // get dropdown value of booking status from html and then get the booking information
     document.getElementById('bookingStatusDropDown').addEventListener('change',function() {
         currentStatus = this.value;
         fetchBookings(currentStatus);
     });
 
     //Settings fixed Header by scrolling down all booking lists
-
     const tableWrapper = document.querySelector('.calendar-table-wrapper');
     const tableHeader = document.querySelector('.calendar-table thead');
 

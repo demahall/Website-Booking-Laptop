@@ -19,6 +19,6 @@ def insert_laptops_from_json(file_path=curr_dir+'/static/laptop_information.json
 
     db.session.commit()
 
-# Call the function to insert laptops
+# Call the function to insert laptops from json data
 if __name__ == "__main__":
     insert_laptops_from_json()

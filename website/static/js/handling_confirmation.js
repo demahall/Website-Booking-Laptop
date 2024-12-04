@@ -1,4 +1,13 @@
-// Function to show the confirmation modal
+// This javascript module used to show the confirmation modal by taking some important action to track who, when and what is happen by this action
+//List Action:
+//1. Booking laptops
+//2. Change status booking
+//3. Delete booking
+//4. Add laptop
+//5. Update laptop
+//6. Delete laptop
+
+
 function showConfirmationModal(title, message, confirmButtonText, cancelButtonText, confirmAction, showForm) {
     $('#confirmationModalLabel').text(title);
     $('#confirmationMessage').text(message);
@@ -43,9 +52,6 @@ function showConfirmationModal(title, message, confirmButtonText, cancelButtonTe
 
 }
 
-
-
-
 //Booking confirmation in homepage
 $('#submitBookingButton').on('click',function(){
 
@@ -68,7 +74,7 @@ $('#submitBookingButton').on('click',function(){
     showConfirmationModal(title, message, 'Submit', 'Cancel', confirmAction,false);
 });
 
-//deleteBookingButton by admin bookings
+//deleteBookingButton
 // $('#deleteBookingButton').on('click',function(){ for id
 // $('.deleteBookingButton').on('click',function(){ for class
 //why class? bookingId value then get after this button clicked, id is with booking id specified
@@ -118,7 +124,7 @@ $('.deleteBookingButton').on('click', function() {
 
 
 
-//updateBookingButton by admin bookings
+//updateBookingButton
 $('.updateBookingButton').on('click',function(){
 
     var bookingId = $(this).attr('id').split('_')[1];
@@ -161,7 +167,7 @@ $('.updateBookingButton').on('click',function(){
 
 
 
-//deleteLaptopButton by modify laptop page
+//deleteLaptopButton by modify laptop
 $('.deleteLaptopButton').on('click',function(){
 
     var laptopId = $(this).attr('id').split('_')[1]; //from button id
@@ -198,7 +204,7 @@ $('.deleteLaptopButton').on('click',function(){
 });
 
 
-//saveLaptopButton by modify laptop page
+//saveLaptopButton by modify laptop
 $('.saveLaptopButton').on('click',function(){
 
     var laptopId = $(this).attr('id').split('_')[1]; //from button id
@@ -238,7 +244,7 @@ $('.saveLaptopButton').on('click',function(){
     showConfirmationModal(title, message, 'Save', 'Cancel', confirmAction,true);
 });
 
-//addNewLaptopButton by add laptop page
+//addNewLaptopButton by add laptop
 $('.addNewLaptopButton').on('click',function(){
 
     var addNewLaptopForm = $('#addNewLaptopForm');

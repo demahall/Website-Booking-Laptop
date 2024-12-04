@@ -1,6 +1,5 @@
 from website.models import Laptop
 
-
 def get_available_laptops():
     from website.api.laptop_api import load_laptops  # Import locally to avoid circular dependencies
 

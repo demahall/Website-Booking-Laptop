@@ -13,7 +13,7 @@ def update_laptop_info(laptop_id):
     confirm_update_laptop = request.form.get('confirm_update')
 
     if confirm_update_laptop == 'yes':
-        # Store original values
+        # Get original values
         original_values = {
             'name': laptop.name,
             'hersteller': laptop.hersteller,

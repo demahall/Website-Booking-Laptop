@@ -1,13 +1,12 @@
-# Flask Web App Tutorial
+# Website Booking Laptop
 
 ## Setup & Installation
 
-Make sure you have the latest version of Python installed.
+Before proceeding with the installation, ensure you have reviewed the Documentation regarding prerequisites, setup, and installation steps.
+Link: https://confluence.avl.com/its/x/_rCvGg
 
-```bash
-git clone <repo-url>
-```
 
+To install required packages, execute the following command:
 ```bash
 pip install -r requirements.txt
 ```
